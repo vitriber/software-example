@@ -581,7 +581,7 @@ export class PrismaClient<
    */
   $use(cb: Prisma.Middleware): void
 
-  /**
+/**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
    * ```
@@ -641,7 +641,6 @@ export class PrismaClient<
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends PrismaPromise<any>[]>(arg: [...P]): Promise<UnwrapTuple<P>>;
-
 
       /**
    * `prisma.berth_products`: Exposes CRUD operations for the **berth_products** model.
@@ -941,7 +940,7 @@ export namespace Prisma {
   export import Decimal = runtime.Decimal
 
   /**
-   * Prisma Client JS version: 3.8.1
+   * Prisma Client JS version: 3.13.0
    * Query Engine version: efdf9b1183dddfd4258cd181a72125755215ab7b
    */
   export type PrismaVersion = {
@@ -1104,7 +1103,11 @@ export namespace Prisma {
    * XOR is needed to have a real mutually exclusive union type
    * https://stackoverflow.com/questions/42123407/does-typescript-support-mutually-exclusive-types
    */
-  type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+  type XOR<T, U> =
+    T extends object ?
+    U extends object ?
+      (Without<T, U> & U) | (Without<U, T> & T)
+    : U : T
 
 
   /**
@@ -1371,7 +1374,7 @@ export namespace Prisma {
     ? IsReject<LocalRejectSettings>
     : GlobalRejectSettings extends RejectPerOperation
     ? Action extends keyof GlobalRejectSettings
-      ? GlobalRejectSettings[Action] extends boolean
+      ? GlobalRejectSettings[Action] extends RejectOnNotFound
         ? IsReject<GlobalRejectSettings[Action]>
         : GlobalRejectSettings[Action] extends RejectPerModel
         ? Model extends keyof GlobalRejectSettings[Action]
@@ -1472,6 +1475,7 @@ export namespace Prisma {
     | 'queryRaw'
     | 'aggregate'
     | 'count'
+    | 'runCommandRaw'
 
   /**
    * These options are being passed in to the middleware as "params"
@@ -1493,7 +1497,8 @@ export namespace Prisma {
   ) => Promise<T>
 
   // tested in getLogLevel.test.ts
-  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined; 
+  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
+
   export type Datasource = {
     url?: string
   }
@@ -1528,9 +1533,8 @@ export namespace Prisma {
     ? Berth_productsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Berth_productsCountOutputType ?Berth_productsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Berth_productsCountOutputType ? Berth_productsCountOutputType[P] : never
   } 
     : Berth_productsCountOutputType
   : Berth_productsCountOutputType
@@ -1580,9 +1584,8 @@ export namespace Prisma {
     ? BerthsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof BerthsCountOutputType ?BerthsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof BerthsCountOutputType ? BerthsCountOutputType[P] : never
   } 
     : BerthsCountOutputType
   : BerthsCountOutputType
@@ -1630,9 +1633,8 @@ export namespace Prisma {
     ? Checklist_itemsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Checklist_itemsCountOutputType ?Checklist_itemsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Checklist_itemsCountOutputType ? Checklist_itemsCountOutputType[P] : never
   } 
     : Checklist_itemsCountOutputType
   : Checklist_itemsCountOutputType
@@ -1680,9 +1682,8 @@ export namespace Prisma {
     ? Checklist_port_itemsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Checklist_port_itemsCountOutputType ?Checklist_port_itemsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Checklist_port_itemsCountOutputType ? Checklist_port_itemsCountOutputType[P] : never
   } 
     : Checklist_port_itemsCountOutputType
   : Checklist_port_itemsCountOutputType
@@ -1730,9 +1731,8 @@ export namespace Prisma {
     ? ChecklistsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ChecklistsCountOutputType ?ChecklistsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof ChecklistsCountOutputType ? ChecklistsCountOutputType[P] : never
   } 
     : ChecklistsCountOutputType
   : ChecklistsCountOutputType
@@ -1782,9 +1782,8 @@ export namespace Prisma {
     ? Checklist_shipping_itemsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Checklist_shipping_itemsCountOutputType ?Checklist_shipping_itemsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Checklist_shipping_itemsCountOutputType ? Checklist_shipping_itemsCountOutputType[P] : never
   } 
     : Checklist_shipping_itemsCountOutputType
   : Checklist_shipping_itemsCountOutputType
@@ -1834,9 +1833,8 @@ export namespace Prisma {
     ? CountriesCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof CountriesCountOutputType ?CountriesCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof CountriesCountOutputType ? CountriesCountOutputType[P] : never
   } 
     : CountriesCountOutputType
   : CountriesCountOutputType
@@ -1890,9 +1888,8 @@ export namespace Prisma {
     ? PortsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof PortsCountOutputType ?PortsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof PortsCountOutputType ? PortsCountOutputType[P] : never
   } 
     : PortsCountOutputType
   : PortsCountOutputType
@@ -1942,9 +1939,8 @@ export namespace Prisma {
     ? ProductsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ProductsCountOutputType ?ProductsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof ProductsCountOutputType ? ProductsCountOutputType[P] : never
   } 
     : ProductsCountOutputType
   : ProductsCountOutputType
@@ -1992,9 +1988,8 @@ export namespace Prisma {
     ? ProformasCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ProformasCountOutputType ?ProformasCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof ProformasCountOutputType ? ProformasCountOutputType[P] : never
   } 
     : ProformasCountOutputType
   : ProformasCountOutputType
@@ -2042,9 +2037,8 @@ export namespace Prisma {
     ? Shipping_documentsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Shipping_documentsCountOutputType ?Shipping_documentsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Shipping_documentsCountOutputType ? Shipping_documentsCountOutputType[P] : never
   } 
     : Shipping_documentsCountOutputType
   : Shipping_documentsCountOutputType
@@ -2104,9 +2098,8 @@ export namespace Prisma {
     ? ShippingsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ShippingsCountOutputType ?ShippingsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof ShippingsCountOutputType ? ShippingsCountOutputType[P] : never
   } 
     : ShippingsCountOutputType
   : ShippingsCountOutputType
@@ -2170,9 +2163,8 @@ export namespace Prisma {
     ? UsersCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof UsersCountOutputType ?UsersCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof UsersCountOutputType ? UsersCountOutputType[P] : never
   } 
     : UsersCountOutputType
   : UsersCountOutputType
@@ -2222,9 +2214,8 @@ export namespace Prisma {
     ? VesselsCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof VesselsCountOutputType ?VesselsCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof VesselsCountOutputType ? VesselsCountOutputType[P] : never
   } 
     : VesselsCountOutputType
   : VesselsCountOutputType
@@ -2272,9 +2263,8 @@ export namespace Prisma {
     ? InquiresCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof InquiresCountOutputType ?InquiresCountOutputType [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof InquiresCountOutputType ? InquiresCountOutputType[P] : never
   } 
     : InquiresCountOutputType
   : InquiresCountOutputType
@@ -2523,7 +2513,7 @@ export namespace Prisma {
     _max: Berth_productsMaxAggregateOutputType | null
   }
 
-  type GetBerth_productsGroupByPayload<T extends Berth_productsGroupByArgs> = Promise<
+  type GetBerth_productsGroupByPayload<T extends Berth_productsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Berth_productsGroupByOutputType, T['by']> &
         {
@@ -2569,28 +2559,19 @@ export namespace Prisma {
     : S extends berth_productsArgs | berth_productsFindManyArgs
     ?'include' extends U
     ? berth_products  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'berths'
-        ? berthsGetPayload<S['include'][P]> :
-        P extends 'products'
-        ? productsGetPayload<S['include'][P]> :
-        P extends 'proformas'
-        ? Array < proformasGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? Berth_productsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'berths' ? berthsGetPayload<S['include'][P]> :
+        P extends 'products' ? productsGetPayload<S['include'][P]> :
+        P extends 'proformas' ? Array < proformasGetPayload<S['include'][P]>>  :
+        P extends '_count' ? Berth_productsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof berth_products ?berth_products [P]
-  : 
-          P extends 'berths'
-        ? berthsGetPayload<S['select'][P]> :
-        P extends 'products'
-        ? productsGetPayload<S['select'][P]> :
-        P extends 'proformas'
-        ? Array < proformasGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? Berth_productsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'berths' ? berthsGetPayload<S['select'][P]> :
+        P extends 'products' ? productsGetPayload<S['select'][P]> :
+        P extends 'proformas' ? Array < proformasGetPayload<S['select'][P]>>  :
+        P extends '_count' ? Berth_productsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof berth_products ? berth_products[P] : never
   } 
     : berth_products
   : berth_products
@@ -2904,7 +2885,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Berth_productsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBerth_productsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Berth_productsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBerth_productsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -3127,6 +3108,10 @@ export namespace Prisma {
    * berth_products createMany
    */
   export type berth_productsCreateManyArgs = {
+    /**
+     * The data used to create many berth_products.
+     * 
+    **/
     data: Enumerable<berth_productsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -3163,7 +3148,15 @@ export namespace Prisma {
    * berth_products updateMany
    */
   export type berth_productsUpdateManyArgs = {
+    /**
+     * The data used to update berth_products.
+     * 
+    **/
     data: XOR<berth_productsUpdateManyMutationInput, berth_productsUncheckedUpdateManyInput>
+    /**
+     * Filter which berth_products to update
+     * 
+    **/
     where?: berth_productsWhereInput
   }
 
@@ -3226,6 +3219,10 @@ export namespace Prisma {
    * berth_products deleteMany
    */
   export type berth_productsDeleteManyArgs = {
+    /**
+     * Filter which berth_products to delete
+     * 
+    **/
     where?: berth_productsWhereInput
   }
 
@@ -3517,7 +3514,7 @@ export namespace Prisma {
     _max: BerthsMaxAggregateOutputType | null
   }
 
-  type GetBerthsGroupByPayload<T extends BerthsGroupByArgs> = Promise<
+  type GetBerthsGroupByPayload<T extends BerthsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<BerthsGroupByOutputType, T['by']> &
         {
@@ -3568,28 +3565,19 @@ export namespace Prisma {
     : S extends berthsArgs | berthsFindManyArgs
     ?'include' extends U
     ? berths  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'ports'
-        ? portsGetPayload<S['include'][P]> | null :
-        P extends 'berth_products'
-        ? Array < berth_productsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? BerthsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'ports' ? portsGetPayload<S['include'][P]> | null :
+        P extends 'berth_products' ? Array < berth_productsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? BerthsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof berths ?berths [P]
-  : 
-          P extends 'ports'
-        ? portsGetPayload<S['select'][P]> | null :
-        P extends 'berth_products'
-        ? Array < berth_productsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? BerthsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'ports' ? portsGetPayload<S['select'][P]> | null :
+        P extends 'berth_products' ? Array < berth_productsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? BerthsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof berths ? berths[P] : never
   } 
     : berths
   : berths
@@ -3903,7 +3891,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, BerthsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBerthsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, BerthsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBerthsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -4126,6 +4114,10 @@ export namespace Prisma {
    * berths createMany
    */
   export type berthsCreateManyArgs = {
+    /**
+     * The data used to create many berths.
+     * 
+    **/
     data: Enumerable<berthsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -4162,7 +4154,15 @@ export namespace Prisma {
    * berths updateMany
    */
   export type berthsUpdateManyArgs = {
+    /**
+     * The data used to update berths.
+     * 
+    **/
     data: XOR<berthsUpdateManyMutationInput, berthsUncheckedUpdateManyInput>
+    /**
+     * Filter which berths to update
+     * 
+    **/
     where?: berthsWhereInput
   }
 
@@ -4225,6 +4225,10 @@ export namespace Prisma {
    * berths deleteMany
    */
   export type berthsDeleteManyArgs = {
+    /**
+     * Filter which berths to delete
+     * 
+    **/
     where?: berthsWhereInput
   }
 
@@ -4511,7 +4515,7 @@ export namespace Prisma {
     _max: Checklist_itemsMaxAggregateOutputType | null
   }
 
-  type GetChecklist_itemsGroupByPayload<T extends Checklist_itemsGroupByArgs> = Promise<
+  type GetChecklist_itemsGroupByPayload<T extends Checklist_itemsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Checklist_itemsGroupByOutputType, T['by']> &
         {
@@ -4561,24 +4565,17 @@ export namespace Prisma {
     : S extends checklist_itemsArgs | checklist_itemsFindManyArgs
     ?'include' extends U
     ? checklist_items  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklists'
-        ? checklistsGetPayload<S['include'][P]> | null :
-        P extends 'checklist_port_items'
-        ? Array < checklist_port_itemsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? Checklist_itemsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklists' ? checklistsGetPayload<S['include'][P]> | null :
+        P extends 'checklist_port_items' ? Array < checklist_port_itemsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? Checklist_itemsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklist_items ?checklist_items [P]
-  : 
-          P extends 'checklists'
-        ? checklistsGetPayload<S['select'][P]> | null :
-        P extends 'checklist_port_items'
-        ? Array < checklist_port_itemsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? Checklist_itemsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklists' ? checklistsGetPayload<S['select'][P]> | null :
+        P extends 'checklist_port_items' ? Array < checklist_port_itemsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? Checklist_itemsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof checklist_items ? checklist_items[P] : never
   } 
     : checklist_items
   : checklist_items
@@ -4892,7 +4889,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Checklist_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_itemsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Checklist_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_itemsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -5113,6 +5110,10 @@ export namespace Prisma {
    * checklist_items createMany
    */
   export type checklist_itemsCreateManyArgs = {
+    /**
+     * The data used to create many checklist_items.
+     * 
+    **/
     data: Enumerable<checklist_itemsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -5149,7 +5150,15 @@ export namespace Prisma {
    * checklist_items updateMany
    */
   export type checklist_itemsUpdateManyArgs = {
+    /**
+     * The data used to update checklist_items.
+     * 
+    **/
     data: XOR<checklist_itemsUpdateManyMutationInput, checklist_itemsUncheckedUpdateManyInput>
+    /**
+     * Filter which checklist_items to update
+     * 
+    **/
     where?: checklist_itemsWhereInput
   }
 
@@ -5212,6 +5221,10 @@ export namespace Prisma {
    * checklist_items deleteMany
    */
   export type checklist_itemsDeleteManyArgs = {
+    /**
+     * Filter which checklist_items to delete
+     * 
+    **/
     where?: checklist_itemsWhereInput
   }
 
@@ -5441,7 +5454,7 @@ export namespace Prisma {
     _max: Checklist_port_itemsMaxAggregateOutputType | null
   }
 
-  type GetChecklist_port_itemsGroupByPayload<T extends Checklist_port_itemsGroupByArgs> = Promise<
+  type GetChecklist_port_itemsGroupByPayload<T extends Checklist_port_itemsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Checklist_port_itemsGroupByOutputType, T['by']> &
         {
@@ -5486,28 +5499,19 @@ export namespace Prisma {
     : S extends checklist_port_itemsArgs | checklist_port_itemsFindManyArgs
     ?'include' extends U
     ? checklist_port_items  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklist_items'
-        ? checklist_itemsGetPayload<S['include'][P]> | null :
-        P extends 'ports'
-        ? portsGetPayload<S['include'][P]> | null :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? Checklist_port_itemsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklist_items' ? checklist_itemsGetPayload<S['include'][P]> | null :
+        P extends 'ports' ? portsGetPayload<S['include'][P]> | null :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? Checklist_port_itemsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklist_port_items ?checklist_port_items [P]
-  : 
-          P extends 'checklist_items'
-        ? checklist_itemsGetPayload<S['select'][P]> | null :
-        P extends 'ports'
-        ? portsGetPayload<S['select'][P]> | null :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? Checklist_port_itemsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklist_items' ? checklist_itemsGetPayload<S['select'][P]> | null :
+        P extends 'ports' ? portsGetPayload<S['select'][P]> | null :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? Checklist_port_itemsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof checklist_port_items ? checklist_port_items[P] : never
   } 
     : checklist_port_items
   : checklist_port_items
@@ -5821,7 +5825,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Checklist_port_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_port_itemsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Checklist_port_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_port_itemsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -6044,6 +6048,10 @@ export namespace Prisma {
    * checklist_port_items createMany
    */
   export type checklist_port_itemsCreateManyArgs = {
+    /**
+     * The data used to create many checklist_port_items.
+     * 
+    **/
     data: Enumerable<checklist_port_itemsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -6080,7 +6088,15 @@ export namespace Prisma {
    * checklist_port_items updateMany
    */
   export type checklist_port_itemsUpdateManyArgs = {
+    /**
+     * The data used to update checklist_port_items.
+     * 
+    **/
     data: XOR<checklist_port_itemsUpdateManyMutationInput, checklist_port_itemsUncheckedUpdateManyInput>
+    /**
+     * Filter which checklist_port_items to update
+     * 
+    **/
     where?: checklist_port_itemsWhereInput
   }
 
@@ -6143,6 +6159,10 @@ export namespace Prisma {
    * checklist_port_items deleteMany
    */
   export type checklist_port_itemsDeleteManyArgs = {
+    /**
+     * Filter which checklist_port_items to delete
+     * 
+    **/
     where?: checklist_port_itemsWhereInput
   }
 
@@ -6357,7 +6377,7 @@ export namespace Prisma {
     _max: ChecklistsMaxAggregateOutputType | null
   }
 
-  type GetChecklistsGroupByPayload<T extends ChecklistsGroupByArgs> = Promise<
+  type GetChecklistsGroupByPayload<T extends ChecklistsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<ChecklistsGroupByOutputType, T['by']> &
         {
@@ -6397,20 +6417,15 @@ export namespace Prisma {
     : S extends checklistsArgs | checklistsFindManyArgs
     ?'include' extends U
     ? checklists  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklist_items'
-        ? Array < checklist_itemsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? ChecklistsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklist_items' ? Array < checklist_itemsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ChecklistsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklists ?checklists [P]
-  : 
-          P extends 'checklist_items'
-        ? Array < checklist_itemsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? ChecklistsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklist_items' ? Array < checklist_itemsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ChecklistsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof checklists ? checklists[P] : never
   } 
     : checklists
   : checklists
@@ -6724,7 +6739,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ChecklistsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklistsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ChecklistsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklistsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -6943,6 +6958,10 @@ export namespace Prisma {
    * checklists createMany
    */
   export type checklistsCreateManyArgs = {
+    /**
+     * The data used to create many checklists.
+     * 
+    **/
     data: Enumerable<checklistsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -6979,7 +6998,15 @@ export namespace Prisma {
    * checklists updateMany
    */
   export type checklistsUpdateManyArgs = {
+    /**
+     * The data used to update checklists.
+     * 
+    **/
     data: XOR<checklistsUpdateManyMutationInput, checklistsUncheckedUpdateManyInput>
+    /**
+     * Filter which checklists to update
+     * 
+    **/
     where?: checklistsWhereInput
   }
 
@@ -7042,6 +7069,10 @@ export namespace Prisma {
    * checklists deleteMany
    */
   export type checklistsDeleteManyArgs = {
+    /**
+     * Filter which checklists to delete
+     * 
+    **/
     where?: checklistsWhereInput
   }
 
@@ -7271,7 +7302,7 @@ export namespace Prisma {
     _max: Checklist_shipping_item_commentariesMaxAggregateOutputType | null
   }
 
-  type GetChecklist_shipping_item_commentariesGroupByPayload<T extends Checklist_shipping_item_commentariesGroupByArgs> = Promise<
+  type GetChecklist_shipping_item_commentariesGroupByPayload<T extends Checklist_shipping_item_commentariesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Checklist_shipping_item_commentariesGroupByOutputType, T['by']> &
         {
@@ -7312,20 +7343,15 @@ export namespace Prisma {
     : S extends checklist_shipping_item_commentariesArgs | checklist_shipping_item_commentariesFindManyArgs
     ?'include' extends U
     ? checklist_shipping_item_commentaries  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklist_shipping_items'
-        ? checklist_shipping_itemsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklist_shipping_items' ? checklist_shipping_itemsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklist_shipping_item_commentaries ?checklist_shipping_item_commentaries [P]
-  : 
-          P extends 'checklist_shipping_items'
-        ? checklist_shipping_itemsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklist_shipping_items' ? checklist_shipping_itemsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :  P extends keyof checklist_shipping_item_commentaries ? checklist_shipping_item_commentaries[P] : never
   } 
     : checklist_shipping_item_commentaries
   : checklist_shipping_item_commentaries
@@ -7639,7 +7665,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Checklist_shipping_item_commentariesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_item_commentariesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Checklist_shipping_item_commentariesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_item_commentariesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -7860,6 +7886,10 @@ export namespace Prisma {
    * checklist_shipping_item_commentaries createMany
    */
   export type checklist_shipping_item_commentariesCreateManyArgs = {
+    /**
+     * The data used to create many checklist_shipping_item_commentaries.
+     * 
+    **/
     data: Enumerable<checklist_shipping_item_commentariesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -7896,7 +7926,15 @@ export namespace Prisma {
    * checklist_shipping_item_commentaries updateMany
    */
   export type checklist_shipping_item_commentariesUpdateManyArgs = {
+    /**
+     * The data used to update checklist_shipping_item_commentaries.
+     * 
+    **/
     data: XOR<checklist_shipping_item_commentariesUpdateManyMutationInput, checklist_shipping_item_commentariesUncheckedUpdateManyInput>
+    /**
+     * Filter which checklist_shipping_item_commentaries to update
+     * 
+    **/
     where?: checklist_shipping_item_commentariesWhereInput
   }
 
@@ -7959,6 +7997,10 @@ export namespace Prisma {
    * checklist_shipping_item_commentaries deleteMany
    */
   export type checklist_shipping_item_commentariesDeleteManyArgs = {
+    /**
+     * Filter which checklist_shipping_item_commentaries to delete
+     * 
+    **/
     where?: checklist_shipping_item_commentariesWhereInput
   }
 
@@ -8202,7 +8244,7 @@ export namespace Prisma {
     _max: Checklist_shipping_item_filesMaxAggregateOutputType | null
   }
 
-  type GetChecklist_shipping_item_filesGroupByPayload<T extends Checklist_shipping_item_filesGroupByArgs> = Promise<
+  type GetChecklist_shipping_item_filesGroupByPayload<T extends Checklist_shipping_item_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Checklist_shipping_item_filesGroupByOutputType, T['by']> &
         {
@@ -8245,20 +8287,15 @@ export namespace Prisma {
     : S extends checklist_shipping_item_filesArgs | checklist_shipping_item_filesFindManyArgs
     ?'include' extends U
     ? checklist_shipping_item_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklist_shipping_items'
-        ? checklist_shipping_itemsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklist_shipping_items' ? checklist_shipping_itemsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklist_shipping_item_files ?checklist_shipping_item_files [P]
-  : 
-          P extends 'checklist_shipping_items'
-        ? checklist_shipping_itemsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklist_shipping_items' ? checklist_shipping_itemsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :  P extends keyof checklist_shipping_item_files ? checklist_shipping_item_files[P] : never
   } 
     : checklist_shipping_item_files
   : checklist_shipping_item_files
@@ -8572,7 +8609,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Checklist_shipping_item_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_item_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Checklist_shipping_item_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_item_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -8793,6 +8830,10 @@ export namespace Prisma {
    * checklist_shipping_item_files createMany
    */
   export type checklist_shipping_item_filesCreateManyArgs = {
+    /**
+     * The data used to create many checklist_shipping_item_files.
+     * 
+    **/
     data: Enumerable<checklist_shipping_item_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -8829,7 +8870,15 @@ export namespace Prisma {
    * checklist_shipping_item_files updateMany
    */
   export type checklist_shipping_item_filesUpdateManyArgs = {
+    /**
+     * The data used to update checklist_shipping_item_files.
+     * 
+    **/
     data: XOR<checklist_shipping_item_filesUpdateManyMutationInput, checklist_shipping_item_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which checklist_shipping_item_files to update
+     * 
+    **/
     where?: checklist_shipping_item_filesWhereInput
   }
 
@@ -8892,6 +8941,10 @@ export namespace Prisma {
    * checklist_shipping_item_files deleteMany
    */
   export type checklist_shipping_item_filesDeleteManyArgs = {
+    /**
+     * Filter which checklist_shipping_item_files to delete
+     * 
+    **/
     where?: checklist_shipping_item_filesWhereInput
   }
 
@@ -9221,7 +9274,7 @@ export namespace Prisma {
     _max: Checklist_shipping_itemsMaxAggregateOutputType | null
   }
 
-  type GetChecklist_shipping_itemsGroupByPayload<T extends Checklist_shipping_itemsGroupByArgs> = Promise<
+  type GetChecklist_shipping_itemsGroupByPayload<T extends Checklist_shipping_itemsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Checklist_shipping_itemsGroupByOutputType, T['by']> &
         {
@@ -9282,36 +9335,23 @@ export namespace Prisma {
     : S extends checklist_shipping_itemsArgs | checklist_shipping_itemsFindManyArgs
     ?'include' extends U
     ? checklist_shipping_items  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null :
-        P extends 'checklist_port_items'
-        ? checklist_port_itemsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null :
-        P extends 'checklist_shipping_item_commentaries'
-        ? Array < checklist_shipping_item_commentariesGetPayload<S['include'][P]>>  :
-        P extends 'checklist_shipping_item_files'
-        ? Array < checklist_shipping_item_filesGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? Checklist_shipping_itemsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :
+        P extends 'checklist_port_items' ? checklist_port_itemsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :
+        P extends 'checklist_shipping_item_commentaries' ? Array < checklist_shipping_item_commentariesGetPayload<S['include'][P]>>  :
+        P extends 'checklist_shipping_item_files' ? Array < checklist_shipping_item_filesGetPayload<S['include'][P]>>  :
+        P extends '_count' ? Checklist_shipping_itemsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof checklist_shipping_items ?checklist_shipping_items [P]
-  : 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null :
-        P extends 'checklist_port_items'
-        ? checklist_port_itemsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null :
-        P extends 'checklist_shipping_item_commentaries'
-        ? Array < checklist_shipping_item_commentariesGetPayload<S['select'][P]>>  :
-        P extends 'checklist_shipping_item_files'
-        ? Array < checklist_shipping_item_filesGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? Checklist_shipping_itemsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :
+        P extends 'checklist_port_items' ? checklist_port_itemsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :
+        P extends 'checklist_shipping_item_commentaries' ? Array < checklist_shipping_item_commentariesGetPayload<S['select'][P]>>  :
+        P extends 'checklist_shipping_item_files' ? Array < checklist_shipping_item_filesGetPayload<S['select'][P]>>  :
+        P extends '_count' ? Checklist_shipping_itemsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof checklist_shipping_items ? checklist_shipping_items[P] : never
   } 
     : checklist_shipping_items
   : checklist_shipping_items
@@ -9625,7 +9665,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Checklist_shipping_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_itemsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Checklist_shipping_itemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChecklist_shipping_itemsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -9852,6 +9892,10 @@ export namespace Prisma {
    * checklist_shipping_items createMany
    */
   export type checklist_shipping_itemsCreateManyArgs = {
+    /**
+     * The data used to create many checklist_shipping_items.
+     * 
+    **/
     data: Enumerable<checklist_shipping_itemsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -9888,7 +9932,15 @@ export namespace Prisma {
    * checklist_shipping_items updateMany
    */
   export type checklist_shipping_itemsUpdateManyArgs = {
+    /**
+     * The data used to update checklist_shipping_items.
+     * 
+    **/
     data: XOR<checklist_shipping_itemsUpdateManyMutationInput, checklist_shipping_itemsUncheckedUpdateManyInput>
+    /**
+     * Filter which checklist_shipping_items to update
+     * 
+    **/
     where?: checklist_shipping_itemsWhereInput
   }
 
@@ -9951,6 +10003,10 @@ export namespace Prisma {
    * checklist_shipping_items deleteMany
    */
   export type checklist_shipping_itemsDeleteManyArgs = {
+    /**
+     * Filter which checklist_shipping_items to delete
+     * 
+    **/
     where?: checklist_shipping_itemsWhereInput
   }
 
@@ -10165,7 +10221,7 @@ export namespace Prisma {
     _max: CountriesMaxAggregateOutputType | null
   }
 
-  type GetCountriesGroupByPayload<T extends CountriesGroupByArgs> = Promise<
+  type GetCountriesGroupByPayload<T extends CountriesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<CountriesGroupByOutputType, T['by']> &
         {
@@ -10207,24 +10263,17 @@ export namespace Prisma {
     : S extends countriesArgs | countriesFindManyArgs
     ?'include' extends U
     ? countries  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'ports'
-        ? Array < portsGetPayload<S['include'][P]>>  :
-        P extends 'vessels'
-        ? Array < vesselsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? CountriesCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'ports' ? Array < portsGetPayload<S['include'][P]>>  :
+        P extends 'vessels' ? Array < vesselsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? CountriesCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof countries ?countries [P]
-  : 
-          P extends 'ports'
-        ? Array < portsGetPayload<S['select'][P]>>  :
-        P extends 'vessels'
-        ? Array < vesselsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? CountriesCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'ports' ? Array < portsGetPayload<S['select'][P]>>  :
+        P extends 'vessels' ? Array < vesselsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? CountriesCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof countries ? countries[P] : never
   } 
     : countries
   : countries
@@ -10538,7 +10587,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, CountriesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCountriesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, CountriesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCountriesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -10759,6 +10808,10 @@ export namespace Prisma {
    * countries createMany
    */
   export type countriesCreateManyArgs = {
+    /**
+     * The data used to create many countries.
+     * 
+    **/
     data: Enumerable<countriesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -10795,7 +10848,15 @@ export namespace Prisma {
    * countries updateMany
    */
   export type countriesUpdateManyArgs = {
+    /**
+     * The data used to update countries.
+     * 
+    **/
     data: XOR<countriesUpdateManyMutationInput, countriesUncheckedUpdateManyInput>
+    /**
+     * Filter which countries to update
+     * 
+    **/
     where?: countriesWhereInput
   }
 
@@ -10858,6 +10919,10 @@ export namespace Prisma {
    * countries deleteMany
    */
   export type countriesDeleteManyArgs = {
+    /**
+     * Filter which countries to delete
+     * 
+    **/
     where?: countriesWhereInput
   }
 
@@ -11055,7 +11120,7 @@ export namespace Prisma {
     _max: MigrationsMaxAggregateOutputType | null
   }
 
-  type GetMigrationsGroupByPayload<T extends MigrationsGroupByArgs> = Promise<
+  type GetMigrationsGroupByPayload<T extends MigrationsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<MigrationsGroupByOutputType, T['by']> &
         {
@@ -11087,9 +11152,8 @@ export namespace Prisma {
     ? migrations 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof migrations ?migrations [P]
-  : 
-     never
+    [P in TrueKeys<S['select']>]:
+    P extends keyof migrations ? migrations[P] : never
   } 
     : migrations
   : migrations
@@ -11403,7 +11467,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, MigrationsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMigrationsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, MigrationsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMigrationsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -11601,6 +11665,10 @@ export namespace Prisma {
    * migrations createMany
    */
   export type migrationsCreateManyArgs = {
+    /**
+     * The data used to create many migrations.
+     * 
+    **/
     data: Enumerable<migrationsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -11632,7 +11700,15 @@ export namespace Prisma {
    * migrations updateMany
    */
   export type migrationsUpdateManyArgs = {
+    /**
+     * The data used to update migrations.
+     * 
+    **/
     data: XOR<migrationsUpdateManyMutationInput, migrationsUncheckedUpdateManyInput>
+    /**
+     * Filter which migrations to update
+     * 
+    **/
     where?: migrationsWhereInput
   }
 
@@ -11685,6 +11761,10 @@ export namespace Prisma {
    * migrations deleteMany
    */
   export type migrationsDeleteManyArgs = {
+    /**
+     * Filter which migrations to delete
+     * 
+    **/
     where?: migrationsWhereInput
   }
 
@@ -11912,7 +11992,7 @@ export namespace Prisma {
     _max: Port_filesMaxAggregateOutputType | null
   }
 
-  type GetPort_filesGroupByPayload<T extends Port_filesGroupByArgs> = Promise<
+  type GetPort_filesGroupByPayload<T extends Port_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Port_filesGroupByOutputType, T['by']> &
         {
@@ -11952,16 +12032,13 @@ export namespace Prisma {
     : S extends port_filesArgs | port_filesFindManyArgs
     ?'include' extends U
     ? port_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'ports'
-        ? portsGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'ports' ? portsGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof port_files ?port_files [P]
-  : 
-          P extends 'ports'
-        ? portsGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'ports' ? portsGetPayload<S['select'][P]> | null :  P extends keyof port_files ? port_files[P] : never
   } 
     : port_files
   : port_files
@@ -12275,7 +12352,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Port_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPort_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Port_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPort_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -12494,6 +12571,10 @@ export namespace Prisma {
    * port_files createMany
    */
   export type port_filesCreateManyArgs = {
+    /**
+     * The data used to create many port_files.
+     * 
+    **/
     data: Enumerable<port_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -12530,7 +12611,15 @@ export namespace Prisma {
    * port_files updateMany
    */
   export type port_filesUpdateManyArgs = {
+    /**
+     * The data used to update port_files.
+     * 
+    **/
     data: XOR<port_filesUpdateManyMutationInput, port_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which port_files to update
+     * 
+    **/
     where?: port_filesWhereInput
   }
 
@@ -12593,6 +12682,10 @@ export namespace Prisma {
    * port_files deleteMany
    */
   export type port_filesDeleteManyArgs = {
+    /**
+     * Filter which port_files to delete
+     * 
+    **/
     where?: port_filesWhereInput
   }
 
@@ -12818,7 +12911,7 @@ export namespace Prisma {
     _max: PortsMaxAggregateOutputType | null
   }
 
-  type GetPortsGroupByPayload<T extends PortsGroupByArgs> = Promise<
+  type GetPortsGroupByPayload<T extends PortsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<PortsGroupByOutputType, T['by']> &
         {
@@ -12867,36 +12960,23 @@ export namespace Prisma {
     : S extends portsArgs | portsFindManyArgs
     ?'include' extends U
     ? ports  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'countries'
-        ? countriesGetPayload<S['include'][P]> | null :
-        P extends 'berths'
-        ? Array < berthsGetPayload<S['include'][P]>>  :
-        P extends 'checklist_port_items'
-        ? Array < checklist_port_itemsGetPayload<S['include'][P]>>  :
-        P extends 'port_files'
-        ? Array < port_filesGetPayload<S['include'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? PortsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'countries' ? countriesGetPayload<S['include'][P]> | null :
+        P extends 'berths' ? Array < berthsGetPayload<S['include'][P]>>  :
+        P extends 'checklist_port_items' ? Array < checklist_port_itemsGetPayload<S['include'][P]>>  :
+        P extends 'port_files' ? Array < port_filesGetPayload<S['include'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? PortsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ports ?ports [P]
-  : 
-          P extends 'countries'
-        ? countriesGetPayload<S['select'][P]> | null :
-        P extends 'berths'
-        ? Array < berthsGetPayload<S['select'][P]>>  :
-        P extends 'checklist_port_items'
-        ? Array < checklist_port_itemsGetPayload<S['select'][P]>>  :
-        P extends 'port_files'
-        ? Array < port_filesGetPayload<S['select'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? PortsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'countries' ? countriesGetPayload<S['select'][P]> | null :
+        P extends 'berths' ? Array < berthsGetPayload<S['select'][P]>>  :
+        P extends 'checklist_port_items' ? Array < checklist_port_itemsGetPayload<S['select'][P]>>  :
+        P extends 'port_files' ? Array < port_filesGetPayload<S['select'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? PortsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof ports ? ports[P] : never
   } 
     : ports
   : ports
@@ -13210,7 +13290,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, PortsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPortsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, PortsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPortsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -13437,6 +13517,10 @@ export namespace Prisma {
    * ports createMany
    */
   export type portsCreateManyArgs = {
+    /**
+     * The data used to create many ports.
+     * 
+    **/
     data: Enumerable<portsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -13473,7 +13557,15 @@ export namespace Prisma {
    * ports updateMany
    */
   export type portsUpdateManyArgs = {
+    /**
+     * The data used to update ports.
+     * 
+    **/
     data: XOR<portsUpdateManyMutationInput, portsUncheckedUpdateManyInput>
+    /**
+     * Filter which ports to update
+     * 
+    **/
     where?: portsWhereInput
   }
 
@@ -13536,6 +13628,10 @@ export namespace Prisma {
    * ports deleteMany
    */
   export type portsDeleteManyArgs = {
+    /**
+     * Filter which ports to delete
+     * 
+    **/
     where?: portsWhereInput
   }
 
@@ -13750,7 +13846,7 @@ export namespace Prisma {
     _max: ProductsMaxAggregateOutputType | null
   }
 
-  type GetProductsGroupByPayload<T extends ProductsGroupByArgs> = Promise<
+  type GetProductsGroupByPayload<T extends ProductsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<ProductsGroupByOutputType, T['by']> &
         {
@@ -13792,24 +13888,17 @@ export namespace Prisma {
     : S extends productsArgs | productsFindManyArgs
     ?'include' extends U
     ? products  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'berth_products'
-        ? Array < berth_productsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? ProductsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'berth_products' ? Array < berth_productsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_products' ? Array < shipping_productsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ProductsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof products ?products [P]
-  : 
-          P extends 'berth_products'
-        ? Array < berth_productsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? ProductsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'berth_products' ? Array < berth_productsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_products' ? Array < shipping_productsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ProductsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof products ? products[P] : never
   } 
     : products
   : products
@@ -14123,7 +14212,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ProductsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ProductsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -14344,6 +14433,10 @@ export namespace Prisma {
    * products createMany
    */
   export type productsCreateManyArgs = {
+    /**
+     * The data used to create many products.
+     * 
+    **/
     data: Enumerable<productsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -14380,7 +14473,15 @@ export namespace Prisma {
    * products updateMany
    */
   export type productsUpdateManyArgs = {
+    /**
+     * The data used to update products.
+     * 
+    **/
     data: XOR<productsUpdateManyMutationInput, productsUncheckedUpdateManyInput>
+    /**
+     * Filter which products to update
+     * 
+    **/
     where?: productsWhereInput
   }
 
@@ -14443,6 +14544,10 @@ export namespace Prisma {
    * products deleteMany
    */
   export type productsDeleteManyArgs = {
+    /**
+     * Filter which products to delete
+     * 
+    **/
     where?: productsWhereInput
   }
 
@@ -14675,7 +14780,7 @@ export namespace Prisma {
     _max: Proforma_filesMaxAggregateOutputType | null
   }
 
-  type GetProforma_filesGroupByPayload<T extends Proforma_filesGroupByArgs> = Promise<
+  type GetProforma_filesGroupByPayload<T extends Proforma_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Proforma_filesGroupByOutputType, T['by']> &
         {
@@ -14715,16 +14820,13 @@ export namespace Prisma {
     : S extends proforma_filesArgs | proforma_filesFindManyArgs
     ?'include' extends U
     ? proforma_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'proformas'
-        ? proformasGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'proformas' ? proformasGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof proforma_files ?proforma_files [P]
-  : 
-          P extends 'proformas'
-        ? proformasGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'proformas' ? proformasGetPayload<S['select'][P]> | null :  P extends keyof proforma_files ? proforma_files[P] : never
   } 
     : proforma_files
   : proforma_files
@@ -15038,7 +15140,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Proforma_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProforma_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Proforma_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProforma_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -15257,6 +15359,10 @@ export namespace Prisma {
    * proforma_files createMany
    */
   export type proforma_filesCreateManyArgs = {
+    /**
+     * The data used to create many proforma_files.
+     * 
+    **/
     data: Enumerable<proforma_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -15293,7 +15399,15 @@ export namespace Prisma {
    * proforma_files updateMany
    */
   export type proforma_filesUpdateManyArgs = {
+    /**
+     * The data used to update proforma_files.
+     * 
+    **/
     data: XOR<proforma_filesUpdateManyMutationInput, proforma_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which proforma_files to update
+     * 
+    **/
     where?: proforma_filesWhereInput
   }
 
@@ -15356,6 +15470,10 @@ export namespace Prisma {
    * proforma_files deleteMany
    */
   export type proforma_filesDeleteManyArgs = {
+    /**
+     * Filter which proforma_files to delete
+     * 
+    **/
     where?: proforma_filesWhereInput
   }
 
@@ -15768,7 +15886,7 @@ export namespace Prisma {
     _max: ProformasMaxAggregateOutputType | null
   }
 
-  type GetProformasGroupByPayload<T extends ProformasGroupByArgs> = Promise<
+  type GetProformasGroupByPayload<T extends ProformasGroupByArgs> = PrismaPromise<
     Array<
       PickArray<ProformasGroupByOutputType, T['by']> &
         {
@@ -15832,24 +15950,17 @@ export namespace Prisma {
     : S extends proformasArgs | proformasFindManyArgs
     ?'include' extends U
     ? proformas  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'berth_products'
-        ? berth_productsGetPayload<S['include'][P]> :
-        P extends 'proforma_files'
-        ? Array < proforma_filesGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? ProformasCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'berth_products' ? berth_productsGetPayload<S['include'][P]> :
+        P extends 'proforma_files' ? Array < proforma_filesGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ProformasCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof proformas ?proformas [P]
-  : 
-          P extends 'berth_products'
-        ? berth_productsGetPayload<S['select'][P]> :
-        P extends 'proforma_files'
-        ? Array < proforma_filesGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? ProformasCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'berth_products' ? berth_productsGetPayload<S['select'][P]> :
+        P extends 'proforma_files' ? Array < proforma_filesGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ProformasCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof proformas ? proformas[P] : never
   } 
     : proformas
   : proformas
@@ -16163,7 +16274,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ProformasGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProformasGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ProformasGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProformasGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -16384,6 +16495,10 @@ export namespace Prisma {
    * proformas createMany
    */
   export type proformasCreateManyArgs = {
+    /**
+     * The data used to create many proformas.
+     * 
+    **/
     data: Enumerable<proformasCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -16420,7 +16535,15 @@ export namespace Prisma {
    * proformas updateMany
    */
   export type proformasUpdateManyArgs = {
+    /**
+     * The data used to update proformas.
+     * 
+    **/
     data: XOR<proformasUpdateManyMutationInput, proformasUncheckedUpdateManyInput>
+    /**
+     * Filter which proformas to update
+     * 
+    **/
     where?: proformasWhereInput
   }
 
@@ -16483,6 +16606,10 @@ export namespace Prisma {
    * proformas deleteMany
    */
   export type proformasDeleteManyArgs = {
+    /**
+     * Filter which proformas to delete
+     * 
+    **/
     where?: proformasWhereInput
   }
 
@@ -16868,7 +16995,7 @@ export namespace Prisma {
     _max: Shipping_documentsMaxAggregateOutputType | null
   }
 
-  type GetShipping_documentsGroupByPayload<T extends Shipping_documentsGroupByArgs> = Promise<
+  type GetShipping_documentsGroupByPayload<T extends Shipping_documentsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Shipping_documentsGroupByOutputType, T['by']> &
         {
@@ -16935,32 +17062,21 @@ export namespace Prisma {
     : S extends shipping_documentsArgs | shipping_documentsFindManyArgs
     ?'include' extends U
     ? shipping_documents  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null :
-        P extends 'shipping_documents'
-        ? shipping_documentsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null :
-        P extends 'other_shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? Shipping_documentsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :
+        P extends 'shipping_documents' ? shipping_documentsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :
+        P extends 'other_shipping_documents' ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? Shipping_documentsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_documents ?shipping_documents [P]
-  : 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null :
-        P extends 'shipping_documents'
-        ? shipping_documentsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null :
-        P extends 'other_shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? Shipping_documentsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :
+        P extends 'shipping_documents' ? shipping_documentsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :
+        P extends 'other_shipping_documents' ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? Shipping_documentsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof shipping_documents ? shipping_documents[P] : never
   } 
     : shipping_documents
   : shipping_documents
@@ -17274,7 +17390,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_documentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_documentsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Shipping_documentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_documentsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -17499,6 +17615,10 @@ export namespace Prisma {
    * shipping_documents createMany
    */
   export type shipping_documentsCreateManyArgs = {
+    /**
+     * The data used to create many shipping_documents.
+     * 
+    **/
     data: Enumerable<shipping_documentsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -17535,7 +17655,15 @@ export namespace Prisma {
    * shipping_documents updateMany
    */
   export type shipping_documentsUpdateManyArgs = {
+    /**
+     * The data used to update shipping_documents.
+     * 
+    **/
     data: XOR<shipping_documentsUpdateManyMutationInput, shipping_documentsUncheckedUpdateManyInput>
+    /**
+     * Filter which shipping_documents to update
+     * 
+    **/
     where?: shipping_documentsWhereInput
   }
 
@@ -17598,6 +17726,10 @@ export namespace Prisma {
    * shipping_documents deleteMany
    */
   export type shipping_documentsDeleteManyArgs = {
+    /**
+     * Filter which shipping_documents to delete
+     * 
+    **/
     where?: shipping_documentsWhereInput
   }
 
@@ -17841,7 +17973,7 @@ export namespace Prisma {
     _max: Shipping_filesMaxAggregateOutputType | null
   }
 
-  type GetShipping_filesGroupByPayload<T extends Shipping_filesGroupByArgs> = Promise<
+  type GetShipping_filesGroupByPayload<T extends Shipping_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Shipping_filesGroupByOutputType, T['by']> &
         {
@@ -17884,20 +18016,15 @@ export namespace Prisma {
     : S extends shipping_filesArgs | shipping_filesFindManyArgs
     ?'include' extends U
     ? shipping_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_files ?shipping_files [P]
-  : 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :  P extends keyof shipping_files ? shipping_files[P] : never
   } 
     : shipping_files
   : shipping_files
@@ -18211,7 +18338,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Shipping_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -18432,6 +18559,10 @@ export namespace Prisma {
    * shipping_files createMany
    */
   export type shipping_filesCreateManyArgs = {
+    /**
+     * The data used to create many shipping_files.
+     * 
+    **/
     data: Enumerable<shipping_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -18468,7 +18599,15 @@ export namespace Prisma {
    * shipping_files updateMany
    */
   export type shipping_filesUpdateManyArgs = {
+    /**
+     * The data used to update shipping_files.
+     * 
+    **/
     data: XOR<shipping_filesUpdateManyMutationInput, shipping_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which shipping_files to update
+     * 
+    **/
     where?: shipping_filesWhereInput
   }
 
@@ -18531,6 +18670,10 @@ export namespace Prisma {
    * shipping_files deleteMany
    */
   export type shipping_filesDeleteManyArgs = {
+    /**
+     * Filter which shipping_files to delete
+     * 
+    **/
     where?: shipping_filesWhereInput
   }
 
@@ -18806,7 +18949,7 @@ export namespace Prisma {
     _max: Shipping_portsMaxAggregateOutputType | null
   }
 
-  type GetShipping_portsGroupByPayload<T extends Shipping_portsGroupByArgs> = Promise<
+  type GetShipping_portsGroupByPayload<T extends Shipping_portsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Shipping_portsGroupByOutputType, T['by']> &
         {
@@ -18855,24 +18998,17 @@ export namespace Prisma {
     : S extends shipping_portsArgs | shipping_portsFindManyArgs
     ?'include' extends U
     ? shipping_ports  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'berths'
-        ? berthsGetPayload<S['include'][P]> | null :
-        P extends 'ports'
-        ? portsGetPayload<S['include'][P]> | null :
-        P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'berths' ? berthsGetPayload<S['include'][P]> | null :
+        P extends 'ports' ? portsGetPayload<S['include'][P]> | null :
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_ports ?shipping_ports [P]
-  : 
-          P extends 'berths'
-        ? berthsGetPayload<S['select'][P]> | null :
-        P extends 'ports'
-        ? portsGetPayload<S['select'][P]> | null :
-        P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'berths' ? berthsGetPayload<S['select'][P]> | null :
+        P extends 'ports' ? portsGetPayload<S['select'][P]> | null :
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :  P extends keyof shipping_ports ? shipping_ports[P] : never
   } 
     : shipping_ports
   : shipping_ports
@@ -19186,7 +19322,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_portsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_portsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Shipping_portsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_portsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -19409,6 +19545,10 @@ export namespace Prisma {
    * shipping_ports createMany
    */
   export type shipping_portsCreateManyArgs = {
+    /**
+     * The data used to create many shipping_ports.
+     * 
+    **/
     data: Enumerable<shipping_portsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -19445,7 +19585,15 @@ export namespace Prisma {
    * shipping_ports updateMany
    */
   export type shipping_portsUpdateManyArgs = {
+    /**
+     * The data used to update shipping_ports.
+     * 
+    **/
     data: XOR<shipping_portsUpdateManyMutationInput, shipping_portsUncheckedUpdateManyInput>
+    /**
+     * Filter which shipping_ports to update
+     * 
+    **/
     where?: shipping_portsWhereInput
   }
 
@@ -19508,6 +19656,10 @@ export namespace Prisma {
    * shipping_ports deleteMany
    */
   export type shipping_portsDeleteManyArgs = {
+    /**
+     * Filter which shipping_ports to delete
+     * 
+    **/
     where?: shipping_portsWhereInput
   }
 
@@ -19741,7 +19893,7 @@ export namespace Prisma {
     _max: Shipping_productsMaxAggregateOutputType | null
   }
 
-  type GetShipping_productsGroupByPayload<T extends Shipping_productsGroupByArgs> = Promise<
+  type GetShipping_productsGroupByPayload<T extends Shipping_productsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Shipping_productsGroupByOutputType, T['by']> &
         {
@@ -19782,20 +19934,15 @@ export namespace Prisma {
     : S extends shipping_productsArgs | shipping_productsFindManyArgs
     ?'include' extends U
     ? shipping_products  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'products'
-        ? productsGetPayload<S['include'][P]> | null :
-        P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'products' ? productsGetPayload<S['include'][P]> | null :
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_products ?shipping_products [P]
-  : 
-          P extends 'products'
-        ? productsGetPayload<S['select'][P]> | null :
-        P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'products' ? productsGetPayload<S['select'][P]> | null :
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :  P extends keyof shipping_products ? shipping_products[P] : never
   } 
     : shipping_products
   : shipping_products
@@ -20109,7 +20256,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_productsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_productsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Shipping_productsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_productsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -20330,6 +20477,10 @@ export namespace Prisma {
    * shipping_products createMany
    */
   export type shipping_productsCreateManyArgs = {
+    /**
+     * The data used to create many shipping_products.
+     * 
+    **/
     data: Enumerable<shipping_productsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -20366,7 +20517,15 @@ export namespace Prisma {
    * shipping_products updateMany
    */
   export type shipping_productsUpdateManyArgs = {
+    /**
+     * The data used to update shipping_products.
+     * 
+    **/
     data: XOR<shipping_productsUpdateManyMutationInput, shipping_productsUncheckedUpdateManyInput>
+    /**
+     * Filter which shipping_products to update
+     * 
+    **/
     where?: shipping_productsWhereInput
   }
 
@@ -20429,6 +20588,10 @@ export namespace Prisma {
    * shipping_products deleteMany
    */
   export type shipping_productsDeleteManyArgs = {
+    /**
+     * Filter which shipping_products to delete
+     * 
+    **/
     where?: shipping_productsWhereInput
   }
 
@@ -20813,7 +20976,7 @@ export namespace Prisma {
     _max: ShippingsMaxAggregateOutputType | null
   }
 
-  type GetShippingsGroupByPayload<T extends ShippingsGroupByArgs> = Promise<
+  type GetShippingsGroupByPayload<T extends ShippingsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<ShippingsGroupByOutputType, T['by']> &
         {
@@ -20891,52 +21054,31 @@ export namespace Prisma {
     : S extends shippingsArgs | shippingsFindManyArgs
     ?'include' extends U
     ? shippings  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null :
-        P extends 'vessels'
-        ? vesselsGetPayload<S['include'][P]> | null :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_files'
-        ? Array < shipping_filesGetPayload<S['include'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['include'][P]>>  :
-        P extends 'subsets'
-        ? Array < subsetsGetPayload<S['include'][P]>>  :
-        P extends 'inquires'
-        ? Array < inquiresGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? ShippingsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :
+        P extends 'vessels' ? vesselsGetPayload<S['include'][P]> | null :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_documents' ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_files' ? Array < shipping_filesGetPayload<S['include'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_products' ? Array < shipping_productsGetPayload<S['include'][P]>>  :
+        P extends 'subsets' ? Array < subsetsGetPayload<S['include'][P]>>  :
+        P extends 'inquires' ? Array < inquiresGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ShippingsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shippings ?shippings [P]
-  : 
-          P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null :
-        P extends 'vessels'
-        ? vesselsGetPayload<S['select'][P]> | null :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_files'
-        ? Array < shipping_filesGetPayload<S['select'][P]>>  :
-        P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['select'][P]>>  :
-        P extends 'subsets'
-        ? Array < subsetsGetPayload<S['select'][P]>>  :
-        P extends 'inquires'
-        ? Array < inquiresGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? ShippingsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :
+        P extends 'vessels' ? vesselsGetPayload<S['select'][P]> | null :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_documents' ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_files' ? Array < shipping_filesGetPayload<S['select'][P]>>  :
+        P extends 'shipping_ports' ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_products' ? Array < shipping_productsGetPayload<S['select'][P]>>  :
+        P extends 'subsets' ? Array < subsetsGetPayload<S['select'][P]>>  :
+        P extends 'inquires' ? Array < inquiresGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ShippingsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof shippings ? shippings[P] : never
   } 
     : shippings
   : shippings
@@ -21250,7 +21392,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ShippingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ShippingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -21485,6 +21627,10 @@ export namespace Prisma {
    * shippings createMany
    */
   export type shippingsCreateManyArgs = {
+    /**
+     * The data used to create many shippings.
+     * 
+    **/
     data: Enumerable<shippingsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -21521,7 +21667,15 @@ export namespace Prisma {
    * shippings updateMany
    */
   export type shippingsUpdateManyArgs = {
+    /**
+     * The data used to update shippings.
+     * 
+    **/
     data: XOR<shippingsUpdateManyMutationInput, shippingsUncheckedUpdateManyInput>
+    /**
+     * Filter which shippings to update
+     * 
+    **/
     where?: shippingsWhereInput
   }
 
@@ -21584,6 +21738,10 @@ export namespace Prisma {
    * shippings deleteMany
    */
   export type shippingsDeleteManyArgs = {
+    /**
+     * Filter which shippings to delete
+     * 
+    **/
     where?: shippingsWhereInput
   }
 
@@ -21802,7 +21960,7 @@ export namespace Prisma {
     _max: SubsetsMaxAggregateOutputType | null
   }
 
-  type GetSubsetsGroupByPayload<T extends SubsetsGroupByArgs> = Promise<
+  type GetSubsetsGroupByPayload<T extends SubsetsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<SubsetsGroupByOutputType, T['by']> &
         {
@@ -21840,16 +21998,13 @@ export namespace Prisma {
     : S extends subsetsArgs | subsetsFindManyArgs
     ?'include' extends U
     ? subsets  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof subsets ?subsets [P]
-  : 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :  P extends keyof subsets ? subsets[P] : never
   } 
     : subsets
   : subsets
@@ -22163,7 +22318,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, SubsetsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubsetsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, SubsetsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubsetsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -22382,6 +22537,10 @@ export namespace Prisma {
    * subsets createMany
    */
   export type subsetsCreateManyArgs = {
+    /**
+     * The data used to create many subsets.
+     * 
+    **/
     data: Enumerable<subsetsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -22418,7 +22577,15 @@ export namespace Prisma {
    * subsets updateMany
    */
   export type subsetsUpdateManyArgs = {
+    /**
+     * The data used to update subsets.
+     * 
+    **/
     data: XOR<subsetsUpdateManyMutationInput, subsetsUncheckedUpdateManyInput>
+    /**
+     * Filter which subsets to update
+     * 
+    **/
     where?: subsetsWhereInput
   }
 
@@ -22481,6 +22648,10 @@ export namespace Prisma {
    * subsets deleteMany
    */
   export type subsetsDeleteManyArgs = {
+    /**
+     * Filter which subsets to delete
+     * 
+    **/
     where?: subsetsWhereInput
   }
 
@@ -22713,7 +22884,7 @@ export namespace Prisma {
     _max: User_filesMaxAggregateOutputType | null
   }
 
-  type GetUser_filesGroupByPayload<T extends User_filesGroupByArgs> = Promise<
+  type GetUser_filesGroupByPayload<T extends User_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<User_filesGroupByOutputType, T['by']> &
         {
@@ -22753,16 +22924,13 @@ export namespace Prisma {
     : S extends user_filesArgs | user_filesFindManyArgs
     ?'include' extends U
     ? user_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof user_files ?user_files [P]
-  : 
-          P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :  P extends keyof user_files ? user_files[P] : never
   } 
     : user_files
   : user_files
@@ -23076,7 +23244,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, User_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, User_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -23295,6 +23463,10 @@ export namespace Prisma {
    * user_files createMany
    */
   export type user_filesCreateManyArgs = {
+    /**
+     * The data used to create many user_files.
+     * 
+    **/
     data: Enumerable<user_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -23331,7 +23503,15 @@ export namespace Prisma {
    * user_files updateMany
    */
   export type user_filesUpdateManyArgs = {
+    /**
+     * The data used to update user_files.
+     * 
+    **/
     data: XOR<user_filesUpdateManyMutationInput, user_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which user_files to update
+     * 
+    **/
     where?: user_filesWhereInput
   }
 
@@ -23394,6 +23574,10 @@ export namespace Prisma {
    * user_files deleteMany
    */
   export type user_filesDeleteManyArgs = {
+    /**
+     * Filter which user_files to delete
+     * 
+    **/
     where?: user_filesWhereInput
   }
 
@@ -23615,7 +23799,7 @@ export namespace Prisma {
     _max: UsersMaxAggregateOutputType | null
   }
 
-  type GetUsersGroupByPayload<T extends UsersGroupByArgs> = Promise<
+  type GetUsersGroupByPayload<T extends UsersGroupByArgs> = PrismaPromise<
     Array<
       PickArray<UsersGroupByOutputType, T['by']> &
         {
@@ -23672,52 +23856,31 @@ export namespace Prisma {
     : S extends usersArgs | usersFindManyArgs
     ?'include' extends U
     ? users  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'checklist_shipping_item_commentaries'
-        ? Array < checklist_shipping_item_commentariesGetPayload<S['include'][P]>>  :
-        P extends 'checklist_shipping_item_files'
-        ? Array < checklist_shipping_item_filesGetPayload<S['include'][P]>>  :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
-        P extends 'shipping_files'
-        ? Array < shipping_filesGetPayload<S['include'][P]>>  :
-        P extends 'shippings'
-        ? Array < shippingsGetPayload<S['include'][P]>>  :
-        P extends 'user_files'
-        ? Array < user_filesGetPayload<S['include'][P]>>  :
-        P extends 'inquires'
-        ? Array < inquiresGetPayload<S['include'][P]>>  :
-        P extends 'inquires_comments'
-        ? Array < inquires_commentsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? UsersCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'checklist_shipping_item_commentaries' ? Array < checklist_shipping_item_commentariesGetPayload<S['include'][P]>>  :
+        P extends 'checklist_shipping_item_files' ? Array < checklist_shipping_item_filesGetPayload<S['include'][P]>>  :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_documents' ? Array < shipping_documentsGetPayload<S['include'][P]>>  :
+        P extends 'shipping_files' ? Array < shipping_filesGetPayload<S['include'][P]>>  :
+        P extends 'shippings' ? Array < shippingsGetPayload<S['include'][P]>>  :
+        P extends 'user_files' ? Array < user_filesGetPayload<S['include'][P]>>  :
+        P extends 'inquires' ? Array < inquiresGetPayload<S['include'][P]>>  :
+        P extends 'inquires_comments' ? Array < inquires_commentsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? UsersCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof users ?users [P]
-  : 
-          P extends 'checklist_shipping_item_commentaries'
-        ? Array < checklist_shipping_item_commentariesGetPayload<S['select'][P]>>  :
-        P extends 'checklist_shipping_item_files'
-        ? Array < checklist_shipping_item_filesGetPayload<S['select'][P]>>  :
-        P extends 'checklist_shipping_items'
-        ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_documents'
-        ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
-        P extends 'shipping_files'
-        ? Array < shipping_filesGetPayload<S['select'][P]>>  :
-        P extends 'shippings'
-        ? Array < shippingsGetPayload<S['select'][P]>>  :
-        P extends 'user_files'
-        ? Array < user_filesGetPayload<S['select'][P]>>  :
-        P extends 'inquires'
-        ? Array < inquiresGetPayload<S['select'][P]>>  :
-        P extends 'inquires_comments'
-        ? Array < inquires_commentsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? UsersCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'checklist_shipping_item_commentaries' ? Array < checklist_shipping_item_commentariesGetPayload<S['select'][P]>>  :
+        P extends 'checklist_shipping_item_files' ? Array < checklist_shipping_item_filesGetPayload<S['select'][P]>>  :
+        P extends 'checklist_shipping_items' ? Array < checklist_shipping_itemsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_documents' ? Array < shipping_documentsGetPayload<S['select'][P]>>  :
+        P extends 'shipping_files' ? Array < shipping_filesGetPayload<S['select'][P]>>  :
+        P extends 'shippings' ? Array < shippingsGetPayload<S['select'][P]>>  :
+        P extends 'user_files' ? Array < user_filesGetPayload<S['select'][P]>>  :
+        P extends 'inquires' ? Array < inquiresGetPayload<S['select'][P]>>  :
+        P extends 'inquires_comments' ? Array < inquires_commentsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? UsersCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof users ? users[P] : never
   } 
     : users
   : users
@@ -24031,7 +24194,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, UsersGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUsersGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, UsersGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUsersGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -24266,6 +24429,10 @@ export namespace Prisma {
    * users createMany
    */
   export type usersCreateManyArgs = {
+    /**
+     * The data used to create many users.
+     * 
+    **/
     data: Enumerable<usersCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -24302,7 +24469,15 @@ export namespace Prisma {
    * users updateMany
    */
   export type usersUpdateManyArgs = {
+    /**
+     * The data used to update users.
+     * 
+    **/
     data: XOR<usersUpdateManyMutationInput, usersUncheckedUpdateManyInput>
+    /**
+     * Filter which users to update
+     * 
+    **/
     where?: usersWhereInput
   }
 
@@ -24365,6 +24540,10 @@ export namespace Prisma {
    * users deleteMany
    */
   export type usersDeleteManyArgs = {
+    /**
+     * Filter which users to delete
+     * 
+    **/
     where?: usersWhereInput
   }
 
@@ -24597,7 +24776,7 @@ export namespace Prisma {
     _max: Vessel_filesMaxAggregateOutputType | null
   }
 
-  type GetVessel_filesGroupByPayload<T extends Vessel_filesGroupByArgs> = Promise<
+  type GetVessel_filesGroupByPayload<T extends Vessel_filesGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Vessel_filesGroupByOutputType, T['by']> &
         {
@@ -24637,16 +24816,13 @@ export namespace Prisma {
     : S extends vessel_filesArgs | vessel_filesFindManyArgs
     ?'include' extends U
     ? vessel_files  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'vessels'
-        ? vesselsGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'vessels' ? vesselsGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof vessel_files ?vessel_files [P]
-  : 
-          P extends 'vessels'
-        ? vesselsGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'vessels' ? vesselsGetPayload<S['select'][P]> | null :  P extends keyof vessel_files ? vessel_files[P] : never
   } 
     : vessel_files
   : vessel_files
@@ -24960,7 +25136,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Vessel_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVessel_filesGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Vessel_filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVessel_filesGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -25179,6 +25355,10 @@ export namespace Prisma {
    * vessel_files createMany
    */
   export type vessel_filesCreateManyArgs = {
+    /**
+     * The data used to create many vessel_files.
+     * 
+    **/
     data: Enumerable<vessel_filesCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -25215,7 +25395,15 @@ export namespace Prisma {
    * vessel_files updateMany
    */
   export type vessel_filesUpdateManyArgs = {
+    /**
+     * The data used to update vessel_files.
+     * 
+    **/
     data: XOR<vessel_filesUpdateManyMutationInput, vessel_filesUncheckedUpdateManyInput>
+    /**
+     * Filter which vessel_files to update
+     * 
+    **/
     where?: vessel_filesWhereInput
   }
 
@@ -25278,6 +25466,10 @@ export namespace Prisma {
    * vessel_files deleteMany
    */
   export type vessel_filesDeleteManyArgs = {
+    /**
+     * Filter which vessel_files to delete
+     * 
+    **/
     where?: vessel_filesWhereInput
   }
 
@@ -25714,7 +25906,7 @@ export namespace Prisma {
     _max: VesselsMaxAggregateOutputType | null
   }
 
-  type GetVesselsGroupByPayload<T extends VesselsGroupByArgs> = Promise<
+  type GetVesselsGroupByPayload<T extends VesselsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<VesselsGroupByOutputType, T['by']> &
         {
@@ -25780,28 +25972,19 @@ export namespace Prisma {
     : S extends vesselsArgs | vesselsFindManyArgs
     ?'include' extends U
     ? vessels  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'countries'
-        ? countriesGetPayload<S['include'][P]> | null :
-        P extends 'shippings'
-        ? Array < shippingsGetPayload<S['include'][P]>>  :
-        P extends 'vessel_files'
-        ? Array < vessel_filesGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? VesselsCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'countries' ? countriesGetPayload<S['include'][P]> | null :
+        P extends 'shippings' ? Array < shippingsGetPayload<S['include'][P]>>  :
+        P extends 'vessel_files' ? Array < vessel_filesGetPayload<S['include'][P]>>  :
+        P extends '_count' ? VesselsCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof vessels ?vessels [P]
-  : 
-          P extends 'countries'
-        ? countriesGetPayload<S['select'][P]> | null :
-        P extends 'shippings'
-        ? Array < shippingsGetPayload<S['select'][P]>>  :
-        P extends 'vessel_files'
-        ? Array < vessel_filesGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? VesselsCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'countries' ? countriesGetPayload<S['select'][P]> | null :
+        P extends 'shippings' ? Array < shippingsGetPayload<S['select'][P]>>  :
+        P extends 'vessel_files' ? Array < vessel_filesGetPayload<S['select'][P]>>  :
+        P extends '_count' ? VesselsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof vessels ? vessels[P] : never
   } 
     : vessels
   : vessels
@@ -26115,7 +26298,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, VesselsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVesselsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, VesselsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVesselsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -26338,6 +26521,10 @@ export namespace Prisma {
    * vessels createMany
    */
   export type vesselsCreateManyArgs = {
+    /**
+     * The data used to create many vessels.
+     * 
+    **/
     data: Enumerable<vesselsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -26374,7 +26561,15 @@ export namespace Prisma {
    * vessels updateMany
    */
   export type vesselsUpdateManyArgs = {
+    /**
+     * The data used to update vessels.
+     * 
+    **/
     data: XOR<vesselsUpdateManyMutationInput, vesselsUncheckedUpdateManyInput>
+    /**
+     * Filter which vessels to update
+     * 
+    **/
     where?: vesselsWhereInput
   }
 
@@ -26437,6 +26632,10 @@ export namespace Prisma {
    * vessels deleteMany
    */
   export type vesselsDeleteManyArgs = {
+    /**
+     * Filter which vessels to delete
+     * 
+    **/
     where?: vesselsWhereInput
   }
 
@@ -26652,7 +26851,7 @@ export namespace Prisma {
     _max: InquiresMaxAggregateOutputType | null
   }
 
-  type GetInquiresGroupByPayload<T extends InquiresGroupByArgs> = Promise<
+  type GetInquiresGroupByPayload<T extends InquiresGroupByArgs> = PrismaPromise<
     Array<
       PickArray<InquiresGroupByOutputType, T['by']> &
         {
@@ -26695,28 +26894,19 @@ export namespace Prisma {
     : S extends inquiresArgs | inquiresFindManyArgs
     ?'include' extends U
     ? inquires  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null :
-        P extends 'inquires_comments'
-        ? Array < inquires_commentsGetPayload<S['include'][P]>>  :
-        P extends '_count'
-        ? InquiresCountOutputTypeGetPayload<S['include'][P]> : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :
+        P extends 'inquires_comments' ? Array < inquires_commentsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? InquiresCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof inquires ?inquires [P]
-  : 
-          P extends 'shippings'
-        ? shippingsGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null :
-        P extends 'inquires_comments'
-        ? Array < inquires_commentsGetPayload<S['select'][P]>>  :
-        P extends '_count'
-        ? InquiresCountOutputTypeGetPayload<S['select'][P]> : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'shippings' ? shippingsGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :
+        P extends 'inquires_comments' ? Array < inquires_commentsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? InquiresCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof inquires ? inquires[P] : never
   } 
     : inquires
   : inquires
@@ -27030,7 +27220,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, InquiresGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInquiresGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, InquiresGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInquiresGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -27253,6 +27443,10 @@ export namespace Prisma {
    * inquires createMany
    */
   export type inquiresCreateManyArgs = {
+    /**
+     * The data used to create many inquires.
+     * 
+    **/
     data: Enumerable<inquiresCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -27289,7 +27483,15 @@ export namespace Prisma {
    * inquires updateMany
    */
   export type inquiresUpdateManyArgs = {
+    /**
+     * The data used to update inquires.
+     * 
+    **/
     data: XOR<inquiresUpdateManyMutationInput, inquiresUncheckedUpdateManyInput>
+    /**
+     * Filter which inquires to update
+     * 
+    **/
     where?: inquiresWhereInput
   }
 
@@ -27352,6 +27554,10 @@ export namespace Prisma {
    * inquires deleteMany
    */
   export type inquiresDeleteManyArgs = {
+    /**
+     * Filter which inquires to delete
+     * 
+    **/
     where?: inquiresWhereInput
   }
 
@@ -27567,7 +27773,7 @@ export namespace Prisma {
     _max: Inquires_commentsMaxAggregateOutputType | null
   }
 
-  type GetInquires_commentsGroupByPayload<T extends Inquires_commentsGroupByArgs> = Promise<
+  type GetInquires_commentsGroupByPayload<T extends Inquires_commentsGroupByArgs> = PrismaPromise<
     Array<
       PickArray<Inquires_commentsGroupByOutputType, T['by']> &
         {
@@ -27606,20 +27812,15 @@ export namespace Prisma {
     : S extends inquires_commentsArgs | inquires_commentsFindManyArgs
     ?'include' extends U
     ? inquires_comments  & {
-    [P in TrueKeys<S['include']>]: 
-          P extends 'inquires'
-        ? inquiresGetPayload<S['include'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['include'][P]> | null : never
+    [P in TrueKeys<S['include']>]:
+        P extends 'inquires' ? inquiresGetPayload<S['include'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['include'][P]> | null :  never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof inquires_comments ?inquires_comments [P]
-  : 
-          P extends 'inquires'
-        ? inquiresGetPayload<S['select'][P]> | null :
-        P extends 'users'
-        ? usersGetPayload<S['select'][P]> | null : never
+    [P in TrueKeys<S['select']>]:
+        P extends 'inquires' ? inquiresGetPayload<S['select'][P]> | null :
+        P extends 'users' ? usersGetPayload<S['select'][P]> | null :  P extends keyof inquires_comments ? inquires_comments[P] : never
   } 
     : inquires_comments
   : inquires_comments
@@ -27933,7 +28134,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Inquires_commentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInquires_commentsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, Inquires_commentsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInquires_commentsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
@@ -28154,6 +28355,10 @@ export namespace Prisma {
    * inquires_comments createMany
    */
   export type inquires_commentsCreateManyArgs = {
+    /**
+     * The data used to create many inquires_comments.
+     * 
+    **/
     data: Enumerable<inquires_commentsCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -28190,7 +28395,15 @@ export namespace Prisma {
    * inquires_comments updateMany
    */
   export type inquires_commentsUpdateManyArgs = {
+    /**
+     * The data used to update inquires_comments.
+     * 
+    **/
     data: XOR<inquires_commentsUpdateManyMutationInput, inquires_commentsUncheckedUpdateManyInput>
+    /**
+     * Filter which inquires_comments to update
+     * 
+    **/
     where?: inquires_commentsWhereInput
   }
 
@@ -28253,6 +28466,10 @@ export namespace Prisma {
    * inquires_comments deleteMany
    */
   export type inquires_commentsDeleteManyArgs = {
+    /**
+     * Filter which inquires_comments to delete
+     * 
+    **/
     where?: inquires_commentsWhereInput
   }
 
