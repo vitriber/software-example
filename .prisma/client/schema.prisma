@@ -38,7 +38,7 @@ model berths {
     waterDensity         Float?
     ports                ports?           @relation(fields: [portId], references: [id], map: "BerthToPort")
     berth_products       berth_products[]
-    shipping_ports       shipping_ports[]
+    shipping_ports       ShippingPort[]
 }
 
 model ChecklistTemplate {
@@ -72,14 +72,14 @@ model ShippingChecklistItem {
     name               String
     description        String?
     type               String
-    deadline_date      String?
+    deadline_date      DateTime?
     commentary         String?
     is_done            Boolean
     shipping_id        Int
     updated_by_user_id Int?
-    createdAt          DateTime  @default(now()) @db.Timestamp(6)
-    updatedAt          DateTime  @default(now()) @db.Timestamp(6)
-    deletedAt          DateTime? @db.Timestamp(6)
+    created_at         DateTime  @default(now()) @db.Timestamp(6)
+    updated_ut         DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at         DateTime? @db.Timestamp(6)
     shipping           Shipping? @relation(fields: [shipping_id], references: [id], map: "ChecklistShippingItemToShipping")
     user               users?    @relation(fields: [updated_by_user_id], references: [id], map: "ChecklistShippingItemToUser")
 
@@ -120,28 +120,28 @@ model port_files {
 }
 
 model ports {
-    id             Int              @id(map: "PK_291c9f372b1ce97c885e96f5ff4") @default(autoincrement())
+    id             Int            @id(map: "PK_291c9f372b1ce97c885e96f5ff4") @default(autoincrement())
     name           String?
     countryId      Int?
-    createdAt      DateTime         @default(now()) @db.Timestamp(6)
-    updatedAt      DateTime         @default(now()) @db.Timestamp(6)
-    deletedAt      DateTime?        @db.Timestamp(6)
+    createdAt      DateTime       @default(now()) @db.Timestamp(6)
+    updatedAt      DateTime       @default(now()) @db.Timestamp(6)
+    deletedAt      DateTime?      @db.Timestamp(6)
     slug           String?
-    country        Country?         @relation(fields: [countryId], references: [id], map: "PortToCountry")
+    country        Country?       @relation(fields: [countryId], references: [id], map: "PortToCountry")
     berths         berths[]
     port_files     port_files[]
-    shipping_ports shipping_ports[]
+    shipping_ports ShippingPort[]
 }
 
 model products {
-    id                Int                 @id(map: "PK_0806c755e0aca124e67c0cf6d7d") @default(autoincrement())
+    id                Int               @id(map: "PK_0806c755e0aca124e67c0cf6d7d") @default(autoincrement())
     name              String?
     description       String?
-    createdAt         DateTime            @default(now()) @db.Timestamp(6)
-    updatedAt         DateTime            @default(now()) @db.Timestamp(6)
-    deletedAt         DateTime?           @db.Timestamp(6)
+    createdAt         DateTime          @default(now()) @db.Timestamp(6)
+    updatedAt         DateTime          @default(now()) @db.Timestamp(6)
+    deletedAt         DateTime?         @db.Timestamp(6)
     berth_products    berth_products[]
-    shipping_products shipping_products[]
+    shipping_products ShippingProduct[]
 }
 
 model proforma_files {
@@ -237,35 +237,39 @@ model shipping_files {
     users        users?    @relation(fields: [userId], references: [id], map: "ShippingFileToUser")
 }
 
-model shipping_ports {
-    id                      Int       @id(map: "PK_bd4755ceda68fe38ab8247078a6") @default(autoincrement())
-    estimatedTimeOfArrival  DateTime? @db.Timestamp(6)
-    estimatedTimeOfBerthing DateTime? @db.Timestamp(6)
-    estimatedTimeOfSailing  DateTime? @db.Timestamp(6)
-    timeOfArrival           DateTime? @db.Timestamp(6)
-    timeOfBerthing          DateTime? @db.Timestamp(6)
-    timeOfSailing           DateTime? @db.Timestamp(6)
-    shippingId              Int?
-    portId                  Int?
-    berthId                 Int?
-    createdAt               DateTime  @default(now()) @db.Timestamp(6)
-    updatedAt               DateTime  @default(now()) @db.Timestamp(6)
-    deletedAt               DateTime? @db.Timestamp(6)
-    berths                  berths?   @relation(fields: [berthId], references: [id], map: "ShippingPortToBerth")
-    ports                   ports?    @relation(fields: [portId], references: [id], map: "ShippingPortToPort")
-    shippings               Shipping? @relation(fields: [shippingId], references: [id], map: "ShippingPortToShipping")
+model ShippingPort {
+    id                         Int       @id(map: "PK_bd4755ceda68fe38ab8247078a6") @default(autoincrement())
+    estimated_time_of_arrival  DateTime? @db.Timestamp(6)
+    estimated_time_of_berthing DateTime? @db.Timestamp(6)
+    estimated_time_of_sailing  DateTime? @db.Timestamp(6)
+    time_of_arrival            DateTime? @db.Timestamp(6)
+    time_of_berthing           DateTime? @db.Timestamp(6)
+    time_of_sailing            DateTime? @db.Timestamp(6)
+    shipping_id                Int?
+    port_id                    Int?
+    berth_id                   Int?
+    created_at                 DateTime  @default(now()) @db.Timestamp(6)
+    updated_at                 DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at                 DateTime? @db.Timestamp(6)
+    berths                     berths?   @relation(fields: [berth_id], references: [id], map: "ShippingPortToBerth")
+    ports                      ports?    @relation(fields: [port_id], references: [id], map: "ShippingPortToPort")
+    shippings                  Shipping? @relation(fields: [shipping_id], references: [id], map: "ShippingPortToShipping")
+
+    @@map("shipping_ports")
 }
 
-model shipping_products {
-    id         Int       @id(map: "PK_7479fa04dcbdfcbff3cfc522734") @default(autoincrement())
-    weight     Float?
-    shippingId Int?
-    productId  Int?
-    createdAt  DateTime  @default(now()) @db.Timestamp(6)
-    updatedAt  DateTime  @default(now()) @db.Timestamp(6)
-    deletedAt  DateTime? @db.Timestamp(6)
-    products   products? @relation(fields: [productId], references: [id], map: "ShippingProductToProduct")
-    shippings  Shipping? @relation(fields: [shippingId], references: [id], map: "ShippingProductToShipping")
+model ShippingProduct {
+    id          Int       @id(map: "PK_7479fa04dcbdfcbff3cfc522734") @default(autoincrement())
+    weight      Float?
+    shipping_id Int?
+    product_id  Int?
+    created_at  DateTime  @default(now()) @db.Timestamp(6)
+    updated_at  DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at  DateTime? @db.Timestamp(6)
+    product     products? @relation(fields: [product_id], references: [id], map: "ShippingProductToProduct")
+    shipping    Shipping? @relation(fields: [shipping_id], references: [id], map: "ShippingProductToShipping")
+
+    @@map("shipping_products")
 }
 
 model Shipping {
@@ -320,8 +324,8 @@ model Shipping {
     vessel                          Vessel?                 @relation(fields: [vessel_id], references: [id], map: "ShippingToVessel")
     shipping_documents              shipping_documents[]
     shipping_files                  shipping_files[]
-    shipping_ports                  shipping_ports[]
-    shipping_products               shipping_products[]
+    shipping_ports                  ShippingPort[]
+    shipping_products               ShippingProduct[]
     subsets                         subsets[]
     inquires                        inquires[]
     ShippingChecklistItem           ShippingChecklistItem[]

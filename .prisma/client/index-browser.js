@@ -133,9 +133,9 @@ exports.Prisma.ShippingChecklistItemScalarFieldEnum = makeEnum({
   is_done: 'is_done',
   shipping_id: 'shipping_id',
   updated_by_user_id: 'updated_by_user_id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  created_at: 'created_at',
+  updated_ut: 'updated_ut',
+  deleted_at: 'deleted_at'
 });
 
 exports.Prisma.CountryScalarFieldEnum = makeEnum({
@@ -268,30 +268,30 @@ exports.Prisma.Shipping_filesScalarFieldEnum = makeEnum({
   userId: 'userId'
 });
 
-exports.Prisma.Shipping_portsScalarFieldEnum = makeEnum({
+exports.Prisma.ShippingPortScalarFieldEnum = makeEnum({
   id: 'id',
-  estimatedTimeOfArrival: 'estimatedTimeOfArrival',
-  estimatedTimeOfBerthing: 'estimatedTimeOfBerthing',
-  estimatedTimeOfSailing: 'estimatedTimeOfSailing',
-  timeOfArrival: 'timeOfArrival',
-  timeOfBerthing: 'timeOfBerthing',
-  timeOfSailing: 'timeOfSailing',
-  shippingId: 'shippingId',
-  portId: 'portId',
-  berthId: 'berthId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  estimated_time_of_arrival: 'estimated_time_of_arrival',
+  estimated_time_of_berthing: 'estimated_time_of_berthing',
+  estimated_time_of_sailing: 'estimated_time_of_sailing',
+  time_of_arrival: 'time_of_arrival',
+  time_of_berthing: 'time_of_berthing',
+  time_of_sailing: 'time_of_sailing',
+  shipping_id: 'shipping_id',
+  port_id: 'port_id',
+  berth_id: 'berth_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
 });
 
-exports.Prisma.Shipping_productsScalarFieldEnum = makeEnum({
+exports.Prisma.ShippingProductScalarFieldEnum = makeEnum({
   id: 'id',
   weight: 'weight',
-  shippingId: 'shippingId',
-  productId: 'productId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  shipping_id: 'shipping_id',
+  product_id: 'product_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
 });
 
 exports.Prisma.ShippingScalarFieldEnum = makeEnum({
@@ -469,8 +469,8 @@ exports.Prisma.ModelName = makeEnum({
   proformas: 'proformas',
   shipping_documents: 'shipping_documents',
   shipping_files: 'shipping_files',
-  shipping_ports: 'shipping_ports',
-  shipping_products: 'shipping_products',
+  ShippingPort: 'ShippingPort',
+  ShippingProduct: 'ShippingProduct',
   Shipping: 'Shipping',
   subsets: 'subsets',
   user_files: 'user_files',

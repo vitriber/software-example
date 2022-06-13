@@ -84,14 +84,14 @@ export type ShippingChecklistItem = {
   name: string
   description: string | null
   type: string
-  deadline_date: string | null
+  deadline_date: Date | null
   commentary: string | null
   is_done: boolean
   shipping_id: number
   updated_by_user_id: number | null
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date | null
+  created_at: Date
+  updated_ut: Date
+  deleted_at: Date | null
 }
 
 /**
@@ -261,37 +261,37 @@ export type shipping_files = {
 }
 
 /**
- * Model shipping_ports
+ * Model ShippingPort
  * 
  */
-export type shipping_ports = {
+export type ShippingPort = {
   id: number
-  estimatedTimeOfArrival: Date | null
-  estimatedTimeOfBerthing: Date | null
-  estimatedTimeOfSailing: Date | null
-  timeOfArrival: Date | null
-  timeOfBerthing: Date | null
-  timeOfSailing: Date | null
-  shippingId: number | null
-  portId: number | null
-  berthId: number | null
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date | null
+  estimated_time_of_arrival: Date | null
+  estimated_time_of_berthing: Date | null
+  estimated_time_of_sailing: Date | null
+  time_of_arrival: Date | null
+  time_of_berthing: Date | null
+  time_of_sailing: Date | null
+  shipping_id: number | null
+  port_id: number | null
+  berth_id: number | null
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
 }
 
 /**
- * Model shipping_products
+ * Model ShippingProduct
  * 
  */
-export type shipping_products = {
+export type ShippingProduct = {
   id: number
   weight: number | null
-  shippingId: number | null
-  productId: number | null
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date | null
+  shipping_id: number | null
+  product_id: number | null
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
 }
 
 /**
@@ -762,24 +762,24 @@ export class PrismaClient<
   get shipping_files(): Prisma.shipping_filesDelegate<GlobalReject>;
 
   /**
-   * `prisma.shipping_ports`: Exposes CRUD operations for the **shipping_ports** model.
+   * `prisma.shippingPort`: Exposes CRUD operations for the **ShippingPort** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Shipping_ports
-    * const shipping_ports = await prisma.shipping_ports.findMany()
+    * // Fetch zero or more ShippingPorts
+    * const shippingPorts = await prisma.shippingPort.findMany()
     * ```
     */
-  get shipping_ports(): Prisma.shipping_portsDelegate<GlobalReject>;
+  get shippingPort(): Prisma.ShippingPortDelegate<GlobalReject>;
 
   /**
-   * `prisma.shipping_products`: Exposes CRUD operations for the **shipping_products** model.
+   * `prisma.shippingProduct`: Exposes CRUD operations for the **ShippingProduct** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Shipping_products
-    * const shipping_products = await prisma.shipping_products.findMany()
+    * // Fetch zero or more ShippingProducts
+    * const shippingProducts = await prisma.shippingProduct.findMany()
     * ```
     */
-  get shipping_products(): Prisma.shipping_productsDelegate<GlobalReject>;
+  get shippingProduct(): Prisma.ShippingProductDelegate<GlobalReject>;
 
   /**
    * `prisma.shipping`: Exposes CRUD operations for the **Shipping** model.
@@ -1294,8 +1294,8 @@ export namespace Prisma {
     proformas: 'proformas',
     shipping_documents: 'shipping_documents',
     shipping_files: 'shipping_files',
-    shipping_ports: 'shipping_ports',
-    shipping_products: 'shipping_products',
+    ShippingPort: 'ShippingPort',
+    ShippingProduct: 'ShippingProduct',
     Shipping: 'Shipping',
     subsets: 'subsets',
     user_files: 'user_files',
@@ -3353,14 +3353,14 @@ export namespace Prisma {
     waterDensity?: boolean
     ports?: boolean | portsArgs
     berth_products?: boolean | berth_productsFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
     _count?: boolean | BerthsCountOutputTypeArgs
   }
 
   export type berthsInclude = {
     ports?: boolean | portsArgs
     berth_products?: boolean | berth_productsFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
     _count?: boolean | BerthsCountOutputTypeArgs
   }
 
@@ -3380,7 +3380,7 @@ export namespace Prisma {
         P extends 'berth_products'
         ? Array < berth_productsGetPayload<S['include'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? BerthsCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -3393,7 +3393,7 @@ export namespace Prisma {
         P extends 'berth_products'
         ? Array < berth_productsGetPayload<S['select'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? BerthsCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -3739,7 +3739,7 @@ export namespace Prisma {
 
     berth_products<T extends berth_productsFindManyArgs = {}>(args?: Subset<T, berth_productsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<berth_products>>, PrismaPromise<Array<berth_productsGetPayload<T>>>>;
 
-    shipping_ports<T extends shipping_portsFindManyArgs = {}>(args?: Subset<T, shipping_portsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_ports>>, PrismaPromise<Array<shipping_portsGetPayload<T>>>>;
+    shipping_ports<T extends ShippingPortFindManyArgs = {}>(args?: Subset<T, ShippingPortFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ShippingPort>>, PrismaPromise<Array<ShippingPortGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -5899,14 +5899,14 @@ export namespace Prisma {
     name: string | null
     description: string | null
     type: string | null
-    deadline_date: string | null
+    deadline_date: Date | null
     commentary: string | null
     is_done: boolean | null
     shipping_id: number | null
     updated_by_user_id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    created_at: Date | null
+    updated_ut: Date | null
+    deleted_at: Date | null
   }
 
   export type ShippingChecklistItemMaxAggregateOutputType = {
@@ -5914,14 +5914,14 @@ export namespace Prisma {
     name: string | null
     description: string | null
     type: string | null
-    deadline_date: string | null
+    deadline_date: Date | null
     commentary: string | null
     is_done: boolean | null
     shipping_id: number | null
     updated_by_user_id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    created_at: Date | null
+    updated_ut: Date | null
+    deleted_at: Date | null
   }
 
   export type ShippingChecklistItemCountAggregateOutputType = {
@@ -5934,9 +5934,9 @@ export namespace Prisma {
     is_done: number
     shipping_id: number
     updated_by_user_id: number
-    createdAt: number
-    updatedAt: number
-    deletedAt: number
+    created_at: number
+    updated_ut: number
+    deleted_at: number
     _all: number
   }
 
@@ -5963,9 +5963,9 @@ export namespace Prisma {
     is_done?: true
     shipping_id?: true
     updated_by_user_id?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    created_at?: true
+    updated_ut?: true
+    deleted_at?: true
   }
 
   export type ShippingChecklistItemMaxAggregateInputType = {
@@ -5978,9 +5978,9 @@ export namespace Prisma {
     is_done?: true
     shipping_id?: true
     updated_by_user_id?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    created_at?: true
+    updated_ut?: true
+    deleted_at?: true
   }
 
   export type ShippingChecklistItemCountAggregateInputType = {
@@ -5993,9 +5993,9 @@ export namespace Prisma {
     is_done?: true
     shipping_id?: true
     updated_by_user_id?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    created_at?: true
+    updated_ut?: true
+    deleted_at?: true
     _all?: true
   }
 
@@ -6096,14 +6096,14 @@ export namespace Prisma {
     name: string
     description: string | null
     type: string
-    deadline_date: string | null
+    deadline_date: Date | null
     commentary: string | null
     is_done: boolean
     shipping_id: number
     updated_by_user_id: number | null
-    createdAt: Date
-    updatedAt: Date
-    deletedAt: Date | null
+    created_at: Date
+    updated_ut: Date
+    deleted_at: Date | null
     _count: ShippingChecklistItemCountAggregateOutputType | null
     _avg: ShippingChecklistItemAvgAggregateOutputType | null
     _sum: ShippingChecklistItemSumAggregateOutputType | null
@@ -6135,9 +6135,9 @@ export namespace Prisma {
     is_done?: boolean
     shipping_id?: boolean
     updated_by_user_id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    deletedAt?: boolean
+    created_at?: boolean
+    updated_ut?: boolean
+    deleted_at?: boolean
     shipping?: boolean | ShippingArgs
     user?: boolean | usersArgs
   }
@@ -9716,7 +9716,7 @@ export namespace Prisma {
     country?: boolean | CountryArgs
     berths?: boolean | berthsFindManyArgs
     port_files?: boolean | port_filesFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
     _count?: boolean | PortsCountOutputTypeArgs
   }
 
@@ -9724,7 +9724,7 @@ export namespace Prisma {
     country?: boolean | CountryArgs
     berths?: boolean | berthsFindManyArgs
     port_files?: boolean | port_filesFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
     _count?: boolean | PortsCountOutputTypeArgs
   }
 
@@ -9746,7 +9746,7 @@ export namespace Prisma {
         P extends 'port_files'
         ? Array < port_filesGetPayload<S['include'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? PortsCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -9761,7 +9761,7 @@ export namespace Prisma {
         P extends 'port_files'
         ? Array < port_filesGetPayload<S['select'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? PortsCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -10109,7 +10109,7 @@ export namespace Prisma {
 
     port_files<T extends port_filesFindManyArgs = {}>(args?: Subset<T, port_filesFindManyArgs>): CheckSelect<T, PrismaPromise<Array<port_files>>, PrismaPromise<Array<port_filesGetPayload<T>>>>;
 
-    shipping_ports<T extends shipping_portsFindManyArgs = {}>(args?: Subset<T, shipping_portsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_ports>>, PrismaPromise<Array<shipping_portsGetPayload<T>>>>;
+    shipping_ports<T extends ShippingPortFindManyArgs = {}>(args?: Subset<T, ShippingPortFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ShippingPort>>, PrismaPromise<Array<ShippingPortGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -10637,13 +10637,13 @@ export namespace Prisma {
     updatedAt?: boolean
     deletedAt?: boolean
     berth_products?: boolean | berth_productsFindManyArgs
-    shipping_products?: boolean | shipping_productsFindManyArgs
+    shipping_products?: boolean | ShippingProductFindManyArgs
     _count?: boolean | ProductsCountOutputTypeArgs
   }
 
   export type productsInclude = {
     berth_products?: boolean | berth_productsFindManyArgs
-    shipping_products?: boolean | shipping_productsFindManyArgs
+    shipping_products?: boolean | ShippingProductFindManyArgs
     _count?: boolean | ProductsCountOutputTypeArgs
   }
 
@@ -10661,7 +10661,7 @@ export namespace Prisma {
           P extends 'berth_products'
         ? Array < berth_productsGetPayload<S['include'][P]>>  :
         P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['include'][P]>>  :
+        ? Array < ShippingProductGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? ProductsCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -10672,7 +10672,7 @@ export namespace Prisma {
           P extends 'berth_products'
         ? Array < berth_productsGetPayload<S['select'][P]>>  :
         P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['select'][P]>>  :
+        ? Array < ShippingProductGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? ProductsCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -11016,7 +11016,7 @@ export namespace Prisma {
 
     berth_products<T extends berth_productsFindManyArgs = {}>(args?: Subset<T, berth_productsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<berth_products>>, PrismaPromise<Array<berth_productsGetPayload<T>>>>;
 
-    shipping_products<T extends shipping_productsFindManyArgs = {}>(args?: Subset<T, shipping_productsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_products>>, PrismaPromise<Array<shipping_productsGetPayload<T>>>>;
+    shipping_products<T extends ShippingProductFindManyArgs = {}>(args?: Subset<T, ShippingProductFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ShippingProduct>>, PrismaPromise<Array<ShippingProductGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -15419,307 +15419,307 @@ export namespace Prisma {
 
 
   /**
-   * Model shipping_ports
+   * Model ShippingPort
    */
 
 
-  export type AggregateShipping_ports = {
-    _count: Shipping_portsCountAggregateOutputType | null
-    _avg: Shipping_portsAvgAggregateOutputType | null
-    _sum: Shipping_portsSumAggregateOutputType | null
-    _min: Shipping_portsMinAggregateOutputType | null
-    _max: Shipping_portsMaxAggregateOutputType | null
+  export type AggregateShippingPort = {
+    _count: ShippingPortCountAggregateOutputType | null
+    _avg: ShippingPortAvgAggregateOutputType | null
+    _sum: ShippingPortSumAggregateOutputType | null
+    _min: ShippingPortMinAggregateOutputType | null
+    _max: ShippingPortMaxAggregateOutputType | null
   }
 
-  export type Shipping_portsAvgAggregateOutputType = {
+  export type ShippingPortAvgAggregateOutputType = {
     id: number | null
-    shippingId: number | null
-    portId: number | null
-    berthId: number | null
+    shipping_id: number | null
+    port_id: number | null
+    berth_id: number | null
   }
 
-  export type Shipping_portsSumAggregateOutputType = {
+  export type ShippingPortSumAggregateOutputType = {
     id: number | null
-    shippingId: number | null
-    portId: number | null
-    berthId: number | null
+    shipping_id: number | null
+    port_id: number | null
+    berth_id: number | null
   }
 
-  export type Shipping_portsMinAggregateOutputType = {
+  export type ShippingPortMinAggregateOutputType = {
     id: number | null
-    estimatedTimeOfArrival: Date | null
-    estimatedTimeOfBerthing: Date | null
-    estimatedTimeOfSailing: Date | null
-    timeOfArrival: Date | null
-    timeOfBerthing: Date | null
-    timeOfSailing: Date | null
-    shippingId: number | null
-    portId: number | null
-    berthId: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    estimated_time_of_arrival: Date | null
+    estimated_time_of_berthing: Date | null
+    estimated_time_of_sailing: Date | null
+    time_of_arrival: Date | null
+    time_of_berthing: Date | null
+    time_of_sailing: Date | null
+    shipping_id: number | null
+    port_id: number | null
+    berth_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
+    deleted_at: Date | null
   }
 
-  export type Shipping_portsMaxAggregateOutputType = {
+  export type ShippingPortMaxAggregateOutputType = {
     id: number | null
-    estimatedTimeOfArrival: Date | null
-    estimatedTimeOfBerthing: Date | null
-    estimatedTimeOfSailing: Date | null
-    timeOfArrival: Date | null
-    timeOfBerthing: Date | null
-    timeOfSailing: Date | null
-    shippingId: number | null
-    portId: number | null
-    berthId: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    estimated_time_of_arrival: Date | null
+    estimated_time_of_berthing: Date | null
+    estimated_time_of_sailing: Date | null
+    time_of_arrival: Date | null
+    time_of_berthing: Date | null
+    time_of_sailing: Date | null
+    shipping_id: number | null
+    port_id: number | null
+    berth_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
+    deleted_at: Date | null
   }
 
-  export type Shipping_portsCountAggregateOutputType = {
+  export type ShippingPortCountAggregateOutputType = {
     id: number
-    estimatedTimeOfArrival: number
-    estimatedTimeOfBerthing: number
-    estimatedTimeOfSailing: number
-    timeOfArrival: number
-    timeOfBerthing: number
-    timeOfSailing: number
-    shippingId: number
-    portId: number
-    berthId: number
-    createdAt: number
-    updatedAt: number
-    deletedAt: number
+    estimated_time_of_arrival: number
+    estimated_time_of_berthing: number
+    estimated_time_of_sailing: number
+    time_of_arrival: number
+    time_of_berthing: number
+    time_of_sailing: number
+    shipping_id: number
+    port_id: number
+    berth_id: number
+    created_at: number
+    updated_at: number
+    deleted_at: number
     _all: number
   }
 
 
-  export type Shipping_portsAvgAggregateInputType = {
+  export type ShippingPortAvgAggregateInputType = {
     id?: true
-    shippingId?: true
-    portId?: true
-    berthId?: true
+    shipping_id?: true
+    port_id?: true
+    berth_id?: true
   }
 
-  export type Shipping_portsSumAggregateInputType = {
+  export type ShippingPortSumAggregateInputType = {
     id?: true
-    shippingId?: true
-    portId?: true
-    berthId?: true
+    shipping_id?: true
+    port_id?: true
+    berth_id?: true
   }
 
-  export type Shipping_portsMinAggregateInputType = {
+  export type ShippingPortMinAggregateInputType = {
     id?: true
-    estimatedTimeOfArrival?: true
-    estimatedTimeOfBerthing?: true
-    estimatedTimeOfSailing?: true
-    timeOfArrival?: true
-    timeOfBerthing?: true
-    timeOfSailing?: true
-    shippingId?: true
-    portId?: true
-    berthId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    estimated_time_of_arrival?: true
+    estimated_time_of_berthing?: true
+    estimated_time_of_sailing?: true
+    time_of_arrival?: true
+    time_of_berthing?: true
+    time_of_sailing?: true
+    shipping_id?: true
+    port_id?: true
+    berth_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
   }
 
-  export type Shipping_portsMaxAggregateInputType = {
+  export type ShippingPortMaxAggregateInputType = {
     id?: true
-    estimatedTimeOfArrival?: true
-    estimatedTimeOfBerthing?: true
-    estimatedTimeOfSailing?: true
-    timeOfArrival?: true
-    timeOfBerthing?: true
-    timeOfSailing?: true
-    shippingId?: true
-    portId?: true
-    berthId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    estimated_time_of_arrival?: true
+    estimated_time_of_berthing?: true
+    estimated_time_of_sailing?: true
+    time_of_arrival?: true
+    time_of_berthing?: true
+    time_of_sailing?: true
+    shipping_id?: true
+    port_id?: true
+    berth_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
   }
 
-  export type Shipping_portsCountAggregateInputType = {
+  export type ShippingPortCountAggregateInputType = {
     id?: true
-    estimatedTimeOfArrival?: true
-    estimatedTimeOfBerthing?: true
-    estimatedTimeOfSailing?: true
-    timeOfArrival?: true
-    timeOfBerthing?: true
-    timeOfSailing?: true
-    shippingId?: true
-    portId?: true
-    berthId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    estimated_time_of_arrival?: true
+    estimated_time_of_berthing?: true
+    estimated_time_of_sailing?: true
+    time_of_arrival?: true
+    time_of_berthing?: true
+    time_of_sailing?: true
+    shipping_id?: true
+    port_id?: true
+    berth_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
     _all?: true
   }
 
-  export type Shipping_portsAggregateArgs = {
+  export type ShippingPortAggregateArgs = {
     /**
-     * Filter which shipping_ports to aggregate.
+     * Filter which ShippingPort to aggregate.
      * 
     **/
-    where?: shipping_portsWhereInput
+    where?: ShippingPortWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_ports to fetch.
+     * Determine the order of ShippingPorts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_portsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingPortOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: shipping_portsWhereUniqueInput
+    cursor?: ShippingPortWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_ports from the position of the cursor.
+     * Take `±n` ShippingPorts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_ports.
+     * Skip the first `n` ShippingPorts.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned shipping_ports
+     * Count returned ShippingPorts
     **/
-    _count?: true | Shipping_portsCountAggregateInputType
+    _count?: true | ShippingPortCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: Shipping_portsAvgAggregateInputType
+    _avg?: ShippingPortAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: Shipping_portsSumAggregateInputType
+    _sum?: ShippingPortSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: Shipping_portsMinAggregateInputType
+    _min?: ShippingPortMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: Shipping_portsMaxAggregateInputType
+    _max?: ShippingPortMaxAggregateInputType
   }
 
-  export type GetShipping_portsAggregateType<T extends Shipping_portsAggregateArgs> = {
-        [P in keyof T & keyof AggregateShipping_ports]: P extends '_count' | 'count'
+  export type GetShippingPortAggregateType<T extends ShippingPortAggregateArgs> = {
+        [P in keyof T & keyof AggregateShippingPort]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateShipping_ports[P]>
-      : GetScalarType<T[P], AggregateShipping_ports[P]>
+        : GetScalarType<T[P], AggregateShippingPort[P]>
+      : GetScalarType<T[P], AggregateShippingPort[P]>
   }
 
 
 
 
-  export type Shipping_portsGroupByArgs = {
-    where?: shipping_portsWhereInput
-    orderBy?: Enumerable<shipping_portsOrderByWithAggregationInput>
-    by: Array<Shipping_portsScalarFieldEnum>
-    having?: shipping_portsScalarWhereWithAggregatesInput
+  export type ShippingPortGroupByArgs = {
+    where?: ShippingPortWhereInput
+    orderBy?: Enumerable<ShippingPortOrderByWithAggregationInput>
+    by: Array<ShippingPortScalarFieldEnum>
+    having?: ShippingPortScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: Shipping_portsCountAggregateInputType | true
-    _avg?: Shipping_portsAvgAggregateInputType
-    _sum?: Shipping_portsSumAggregateInputType
-    _min?: Shipping_portsMinAggregateInputType
-    _max?: Shipping_portsMaxAggregateInputType
+    _count?: ShippingPortCountAggregateInputType | true
+    _avg?: ShippingPortAvgAggregateInputType
+    _sum?: ShippingPortSumAggregateInputType
+    _min?: ShippingPortMinAggregateInputType
+    _max?: ShippingPortMaxAggregateInputType
   }
 
 
-  export type Shipping_portsGroupByOutputType = {
+  export type ShippingPortGroupByOutputType = {
     id: number
-    estimatedTimeOfArrival: Date | null
-    estimatedTimeOfBerthing: Date | null
-    estimatedTimeOfSailing: Date | null
-    timeOfArrival: Date | null
-    timeOfBerthing: Date | null
-    timeOfSailing: Date | null
-    shippingId: number | null
-    portId: number | null
-    berthId: number | null
-    createdAt: Date
-    updatedAt: Date
-    deletedAt: Date | null
-    _count: Shipping_portsCountAggregateOutputType | null
-    _avg: Shipping_portsAvgAggregateOutputType | null
-    _sum: Shipping_portsSumAggregateOutputType | null
-    _min: Shipping_portsMinAggregateOutputType | null
-    _max: Shipping_portsMaxAggregateOutputType | null
+    estimated_time_of_arrival: Date | null
+    estimated_time_of_berthing: Date | null
+    estimated_time_of_sailing: Date | null
+    time_of_arrival: Date | null
+    time_of_berthing: Date | null
+    time_of_sailing: Date | null
+    shipping_id: number | null
+    port_id: number | null
+    berth_id: number | null
+    created_at: Date
+    updated_at: Date
+    deleted_at: Date | null
+    _count: ShippingPortCountAggregateOutputType | null
+    _avg: ShippingPortAvgAggregateOutputType | null
+    _sum: ShippingPortSumAggregateOutputType | null
+    _min: ShippingPortMinAggregateOutputType | null
+    _max: ShippingPortMaxAggregateOutputType | null
   }
 
-  type GetShipping_portsGroupByPayload<T extends Shipping_portsGroupByArgs> = Promise<
+  type GetShippingPortGroupByPayload<T extends ShippingPortGroupByArgs> = Promise<
     Array<
-      PickArray<Shipping_portsGroupByOutputType, T['by']> &
+      PickArray<ShippingPortGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof Shipping_portsGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ShippingPortGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], Shipping_portsGroupByOutputType[P]>
-            : GetScalarType<T[P], Shipping_portsGroupByOutputType[P]>
+              : GetScalarType<T[P], ShippingPortGroupByOutputType[P]>
+            : GetScalarType<T[P], ShippingPortGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type shipping_portsSelect = {
+  export type ShippingPortSelect = {
     id?: boolean
-    estimatedTimeOfArrival?: boolean
-    estimatedTimeOfBerthing?: boolean
-    estimatedTimeOfSailing?: boolean
-    timeOfArrival?: boolean
-    timeOfBerthing?: boolean
-    timeOfSailing?: boolean
-    shippingId?: boolean
-    portId?: boolean
-    berthId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    deletedAt?: boolean
+    estimated_time_of_arrival?: boolean
+    estimated_time_of_berthing?: boolean
+    estimated_time_of_sailing?: boolean
+    time_of_arrival?: boolean
+    time_of_berthing?: boolean
+    time_of_sailing?: boolean
+    shipping_id?: boolean
+    port_id?: boolean
+    berth_id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    deleted_at?: boolean
     berths?: boolean | berthsArgs
     ports?: boolean | portsArgs
     shippings?: boolean | ShippingArgs
   }
 
-  export type shipping_portsInclude = {
+  export type ShippingPortInclude = {
     berths?: boolean | berthsArgs
     ports?: boolean | portsArgs
     shippings?: boolean | ShippingArgs
   }
 
-  export type shipping_portsGetPayload<
-    S extends boolean | null | undefined | shipping_portsArgs,
+  export type ShippingPortGetPayload<
+    S extends boolean | null | undefined | ShippingPortArgs,
     U = keyof S
       > = S extends true
-        ? shipping_ports
+        ? ShippingPort
     : S extends undefined
     ? never
-    : S extends shipping_portsArgs | shipping_portsFindManyArgs
+    : S extends ShippingPortArgs | ShippingPortFindManyArgs
     ?'include' extends U
-    ? shipping_ports  & {
+    ? ShippingPort  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'berths'
         ? berthsGetPayload<S['include'][P]> | null :
@@ -15730,7 +15730,7 @@ export namespace Prisma {
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_ports ?shipping_ports [P]
+    [P in TrueKeys<S['select']>]: P extends keyof ShippingPort ?ShippingPort [P]
   : 
           P extends 'berths'
         ? berthsGetPayload<S['select'][P]> | null :
@@ -15739,123 +15739,123 @@ export namespace Prisma {
         P extends 'shippings'
         ? ShippingGetPayload<S['select'][P]> | null : never
   } 
-    : shipping_ports
-  : shipping_ports
+    : ShippingPort
+  : ShippingPort
 
 
-  type shipping_portsCountArgs = Merge<
-    Omit<shipping_portsFindManyArgs, 'select' | 'include'> & {
-      select?: Shipping_portsCountAggregateInputType | true
+  type ShippingPortCountArgs = Merge<
+    Omit<ShippingPortFindManyArgs, 'select' | 'include'> & {
+      select?: ShippingPortCountAggregateInputType | true
     }
   >
 
-  export interface shipping_portsDelegate<GlobalRejectSettings> {
+  export interface ShippingPortDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one Shipping_ports that matches the filter.
-     * @param {shipping_portsFindUniqueArgs} args - Arguments to find a Shipping_ports
+     * Find zero or one ShippingPort that matches the filter.
+     * @param {ShippingPortFindUniqueArgs} args - Arguments to find a ShippingPort
      * @example
-     * // Get one Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.findUnique({
+     * // Get one ShippingPort
+     * const shippingPort = await prisma.shippingPort.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends shipping_portsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, shipping_portsFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'shipping_ports'> extends True ? CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>> : CheckSelect<T, Prisma__shipping_portsClient<shipping_ports | null >, Prisma__shipping_portsClient<shipping_portsGetPayload<T> | null >>
+    findUnique<T extends ShippingPortFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ShippingPortFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ShippingPort'> extends True ? CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>> : CheckSelect<T, Prisma__ShippingPortClient<ShippingPort | null >, Prisma__ShippingPortClient<ShippingPortGetPayload<T> | null >>
 
     /**
-     * Find the first Shipping_ports that matches the filter.
+     * Find the first ShippingPort that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_portsFindFirstArgs} args - Arguments to find a Shipping_ports
+     * @param {ShippingPortFindFirstArgs} args - Arguments to find a ShippingPort
      * @example
-     * // Get one Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.findFirst({
+     * // Get one ShippingPort
+     * const shippingPort = await prisma.shippingPort.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends shipping_portsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, shipping_portsFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'shipping_ports'> extends True ? CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>> : CheckSelect<T, Prisma__shipping_portsClient<shipping_ports | null >, Prisma__shipping_portsClient<shipping_portsGetPayload<T> | null >>
+    findFirst<T extends ShippingPortFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ShippingPortFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ShippingPort'> extends True ? CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>> : CheckSelect<T, Prisma__ShippingPortClient<ShippingPort | null >, Prisma__ShippingPortClient<ShippingPortGetPayload<T> | null >>
 
     /**
-     * Find zero or more Shipping_ports that matches the filter.
+     * Find zero or more ShippingPorts that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_portsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {ShippingPortFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.findMany()
+     * // Get all ShippingPorts
+     * const shippingPorts = await prisma.shippingPort.findMany()
      * 
-     * // Get first 10 Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.findMany({ take: 10 })
+     * // Get first 10 ShippingPorts
+     * const shippingPorts = await prisma.shippingPort.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const shipping_portsWithIdOnly = await prisma.shipping_ports.findMany({ select: { id: true } })
+     * const shippingPortWithIdOnly = await prisma.shippingPort.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends shipping_portsFindManyArgs>(
-      args?: SelectSubset<T, shipping_portsFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<shipping_ports>>, PrismaPromise<Array<shipping_portsGetPayload<T>>>>
+    findMany<T extends ShippingPortFindManyArgs>(
+      args?: SelectSubset<T, ShippingPortFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<ShippingPort>>, PrismaPromise<Array<ShippingPortGetPayload<T>>>>
 
     /**
-     * Create a Shipping_ports.
-     * @param {shipping_portsCreateArgs} args - Arguments to create a Shipping_ports.
+     * Create a ShippingPort.
+     * @param {ShippingPortCreateArgs} args - Arguments to create a ShippingPort.
      * @example
-     * // Create one Shipping_ports
-     * const Shipping_ports = await prisma.shipping_ports.create({
+     * // Create one ShippingPort
+     * const ShippingPort = await prisma.shippingPort.create({
      *   data: {
-     *     // ... data to create a Shipping_ports
+     *     // ... data to create a ShippingPort
      *   }
      * })
      * 
     **/
-    create<T extends shipping_portsCreateArgs>(
-      args: SelectSubset<T, shipping_portsCreateArgs>
-    ): CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>>
+    create<T extends ShippingPortCreateArgs>(
+      args: SelectSubset<T, ShippingPortCreateArgs>
+    ): CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>>
 
     /**
-     * Create many Shipping_ports.
-     *     @param {shipping_portsCreateManyArgs} args - Arguments to create many Shipping_ports.
+     * Create many ShippingPorts.
+     *     @param {ShippingPortCreateManyArgs} args - Arguments to create many ShippingPorts.
      *     @example
-     *     // Create many Shipping_ports
-     *     const shipping_ports = await prisma.shipping_ports.createMany({
+     *     // Create many ShippingPorts
+     *     const shippingPort = await prisma.shippingPort.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends shipping_portsCreateManyArgs>(
-      args?: SelectSubset<T, shipping_portsCreateManyArgs>
+    createMany<T extends ShippingPortCreateManyArgs>(
+      args?: SelectSubset<T, ShippingPortCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Shipping_ports.
-     * @param {shipping_portsDeleteArgs} args - Arguments to delete one Shipping_ports.
+     * Delete a ShippingPort.
+     * @param {ShippingPortDeleteArgs} args - Arguments to delete one ShippingPort.
      * @example
-     * // Delete one Shipping_ports
-     * const Shipping_ports = await prisma.shipping_ports.delete({
+     * // Delete one ShippingPort
+     * const ShippingPort = await prisma.shippingPort.delete({
      *   where: {
-     *     // ... filter to delete one Shipping_ports
+     *     // ... filter to delete one ShippingPort
      *   }
      * })
      * 
     **/
-    delete<T extends shipping_portsDeleteArgs>(
-      args: SelectSubset<T, shipping_portsDeleteArgs>
-    ): CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>>
+    delete<T extends ShippingPortDeleteArgs>(
+      args: SelectSubset<T, ShippingPortDeleteArgs>
+    ): CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>>
 
     /**
-     * Update one Shipping_ports.
-     * @param {shipping_portsUpdateArgs} args - Arguments to update one Shipping_ports.
+     * Update one ShippingPort.
+     * @param {ShippingPortUpdateArgs} args - Arguments to update one ShippingPort.
      * @example
-     * // Update one Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.update({
+     * // Update one ShippingPort
+     * const shippingPort = await prisma.shippingPort.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -15865,34 +15865,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends shipping_portsUpdateArgs>(
-      args: SelectSubset<T, shipping_portsUpdateArgs>
-    ): CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>>
+    update<T extends ShippingPortUpdateArgs>(
+      args: SelectSubset<T, ShippingPortUpdateArgs>
+    ): CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>>
 
     /**
-     * Delete zero or more Shipping_ports.
-     * @param {shipping_portsDeleteManyArgs} args - Arguments to filter Shipping_ports to delete.
+     * Delete zero or more ShippingPorts.
+     * @param {ShippingPortDeleteManyArgs} args - Arguments to filter ShippingPorts to delete.
      * @example
-     * // Delete a few Shipping_ports
-     * const { count } = await prisma.shipping_ports.deleteMany({
+     * // Delete a few ShippingPorts
+     * const { count } = await prisma.shippingPort.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends shipping_portsDeleteManyArgs>(
-      args?: SelectSubset<T, shipping_portsDeleteManyArgs>
+    deleteMany<T extends ShippingPortDeleteManyArgs>(
+      args?: SelectSubset<T, ShippingPortDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Shipping_ports.
+     * Update zero or more ShippingPorts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_portsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ShippingPortUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.updateMany({
+     * // Update many ShippingPorts
+     * const shippingPort = await prisma.shippingPort.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -15902,59 +15902,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends shipping_portsUpdateManyArgs>(
-      args: SelectSubset<T, shipping_portsUpdateManyArgs>
+    updateMany<T extends ShippingPortUpdateManyArgs>(
+      args: SelectSubset<T, ShippingPortUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Shipping_ports.
-     * @param {shipping_portsUpsertArgs} args - Arguments to update or create a Shipping_ports.
+     * Create or update one ShippingPort.
+     * @param {ShippingPortUpsertArgs} args - Arguments to update or create a ShippingPort.
      * @example
-     * // Update or create a Shipping_ports
-     * const shipping_ports = await prisma.shipping_ports.upsert({
+     * // Update or create a ShippingPort
+     * const shippingPort = await prisma.shippingPort.upsert({
      *   create: {
-     *     // ... data to create a Shipping_ports
+     *     // ... data to create a ShippingPort
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Shipping_ports we want to update
+     *     // ... the filter for the ShippingPort we want to update
      *   }
      * })
     **/
-    upsert<T extends shipping_portsUpsertArgs>(
-      args: SelectSubset<T, shipping_portsUpsertArgs>
-    ): CheckSelect<T, Prisma__shipping_portsClient<shipping_ports>, Prisma__shipping_portsClient<shipping_portsGetPayload<T>>>
+    upsert<T extends ShippingPortUpsertArgs>(
+      args: SelectSubset<T, ShippingPortUpsertArgs>
+    ): CheckSelect<T, Prisma__ShippingPortClient<ShippingPort>, Prisma__ShippingPortClient<ShippingPortGetPayload<T>>>
 
     /**
-     * Count the number of Shipping_ports.
+     * Count the number of ShippingPorts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_portsCountArgs} args - Arguments to filter Shipping_ports to count.
+     * @param {ShippingPortCountArgs} args - Arguments to filter ShippingPorts to count.
      * @example
-     * // Count the number of Shipping_ports
-     * const count = await prisma.shipping_ports.count({
+     * // Count the number of ShippingPorts
+     * const count = await prisma.shippingPort.count({
      *   where: {
-     *     // ... the filter for the Shipping_ports we want to count
+     *     // ... the filter for the ShippingPorts we want to count
      *   }
      * })
     **/
-    count<T extends shipping_portsCountArgs>(
-      args?: Subset<T, shipping_portsCountArgs>,
+    count<T extends ShippingPortCountArgs>(
+      args?: Subset<T, ShippingPortCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], Shipping_portsCountAggregateOutputType>
+          : GetScalarType<T['select'], ShippingPortCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Shipping_ports.
+     * Allows you to perform aggregations operations on a ShippingPort.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {Shipping_portsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ShippingPortAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -15974,13 +15974,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends Shipping_portsAggregateArgs>(args: Subset<T, Shipping_portsAggregateArgs>): PrismaPromise<GetShipping_portsAggregateType<T>>
+    aggregate<T extends ShippingPortAggregateArgs>(args: Subset<T, ShippingPortAggregateArgs>): PrismaPromise<GetShippingPortAggregateType<T>>
 
     /**
-     * Group by Shipping_ports.
+     * Group by ShippingPort.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {Shipping_portsGroupByArgs} args - Group by arguments.
+     * @param {ShippingPortGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -15995,14 +15995,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends Shipping_portsGroupByArgs,
+      T extends ShippingPortGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Shipping_portsGroupByArgs['orderBy'] }
-        : { orderBy?: Shipping_portsGroupByArgs['orderBy'] },
+        ? { orderBy: ShippingPortGroupByArgs['orderBy'] }
+        : { orderBy?: ShippingPortGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -16051,16 +16051,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_portsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_portsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ShippingPortGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingPortGroupByPayload<T> : Promise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for shipping_ports.
+   * The delegate class that acts as a "Promise-like" for ShippingPort.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__shipping_portsClient<T> implements PrismaPromise<T> {
+  export class Prisma__ShippingPortClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -16109,676 +16109,676 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * shipping_ports findUnique
+   * ShippingPort findUnique
    */
-  export type shipping_portsFindUniqueArgs = {
+  export type ShippingPortFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * Throw an Error if a shipping_ports can't be found
+     * Throw an Error if a ShippingPort can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which shipping_ports to fetch.
+     * Filter, which ShippingPort to fetch.
      * 
     **/
-    where: shipping_portsWhereUniqueInput
+    where: ShippingPortWhereUniqueInput
   }
 
 
   /**
-   * shipping_ports findFirst
+   * ShippingPort findFirst
    */
-  export type shipping_portsFindFirstArgs = {
+  export type ShippingPortFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * Throw an Error if a shipping_ports can't be found
+     * Throw an Error if a ShippingPort can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which shipping_ports to fetch.
+     * Filter, which ShippingPort to fetch.
      * 
     **/
-    where?: shipping_portsWhereInput
+    where?: ShippingPortWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_ports to fetch.
+     * Determine the order of ShippingPorts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_portsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingPortOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for shipping_ports.
+     * Sets the position for searching for ShippingPorts.
      * 
     **/
-    cursor?: shipping_portsWhereUniqueInput
+    cursor?: ShippingPortWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_ports from the position of the cursor.
+     * Take `±n` ShippingPorts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_ports.
+     * Skip the first `n` ShippingPorts.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of shipping_ports.
+     * Filter by unique combinations of ShippingPorts.
      * 
     **/
-    distinct?: Enumerable<Shipping_portsScalarFieldEnum>
+    distinct?: Enumerable<ShippingPortScalarFieldEnum>
   }
 
 
   /**
-   * shipping_ports findMany
+   * ShippingPort findMany
    */
-  export type shipping_portsFindManyArgs = {
+  export type ShippingPortFindManyArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * Filter, which shipping_ports to fetch.
+     * Filter, which ShippingPorts to fetch.
      * 
     **/
-    where?: shipping_portsWhereInput
+    where?: ShippingPortWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_ports to fetch.
+     * Determine the order of ShippingPorts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_portsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingPortOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing shipping_ports.
+     * Sets the position for listing ShippingPorts.
      * 
     **/
-    cursor?: shipping_portsWhereUniqueInput
+    cursor?: ShippingPortWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_ports from the position of the cursor.
+     * Take `±n` ShippingPorts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_ports.
+     * Skip the first `n` ShippingPorts.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<Shipping_portsScalarFieldEnum>
+    distinct?: Enumerable<ShippingPortScalarFieldEnum>
   }
 
 
   /**
-   * shipping_ports create
+   * ShippingPort create
    */
-  export type shipping_portsCreateArgs = {
+  export type ShippingPortCreateArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * The data needed to create a shipping_ports.
+     * The data needed to create a ShippingPort.
      * 
     **/
-    data: XOR<shipping_portsCreateInput, shipping_portsUncheckedCreateInput>
+    data: XOR<ShippingPortCreateInput, ShippingPortUncheckedCreateInput>
   }
 
 
   /**
-   * shipping_ports createMany
+   * ShippingPort createMany
    */
-  export type shipping_portsCreateManyArgs = {
-    data: Enumerable<shipping_portsCreateManyInput>
+  export type ShippingPortCreateManyArgs = {
+    data: Enumerable<ShippingPortCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * shipping_ports update
+   * ShippingPort update
    */
-  export type shipping_portsUpdateArgs = {
+  export type ShippingPortUpdateArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * The data needed to update a shipping_ports.
+     * The data needed to update a ShippingPort.
      * 
     **/
-    data: XOR<shipping_portsUpdateInput, shipping_portsUncheckedUpdateInput>
+    data: XOR<ShippingPortUpdateInput, ShippingPortUncheckedUpdateInput>
     /**
-     * Choose, which shipping_ports to update.
+     * Choose, which ShippingPort to update.
      * 
     **/
-    where: shipping_portsWhereUniqueInput
+    where: ShippingPortWhereUniqueInput
   }
 
 
   /**
-   * shipping_ports updateMany
+   * ShippingPort updateMany
    */
-  export type shipping_portsUpdateManyArgs = {
-    data: XOR<shipping_portsUpdateManyMutationInput, shipping_portsUncheckedUpdateManyInput>
-    where?: shipping_portsWhereInput
+  export type ShippingPortUpdateManyArgs = {
+    data: XOR<ShippingPortUpdateManyMutationInput, ShippingPortUncheckedUpdateManyInput>
+    where?: ShippingPortWhereInput
   }
 
 
   /**
-   * shipping_ports upsert
+   * ShippingPort upsert
    */
-  export type shipping_portsUpsertArgs = {
+  export type ShippingPortUpsertArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * The filter to search for the shipping_ports to update in case it exists.
+     * The filter to search for the ShippingPort to update in case it exists.
      * 
     **/
-    where: shipping_portsWhereUniqueInput
+    where: ShippingPortWhereUniqueInput
     /**
-     * In case the shipping_ports found by the `where` argument doesn't exist, create a new shipping_ports with this data.
+     * In case the ShippingPort found by the `where` argument doesn't exist, create a new ShippingPort with this data.
      * 
     **/
-    create: XOR<shipping_portsCreateInput, shipping_portsUncheckedCreateInput>
+    create: XOR<ShippingPortCreateInput, ShippingPortUncheckedCreateInput>
     /**
-     * In case the shipping_ports was found with the provided `where` argument, update it with this data.
+     * In case the ShippingPort was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<shipping_portsUpdateInput, shipping_portsUncheckedUpdateInput>
+    update: XOR<ShippingPortUpdateInput, ShippingPortUncheckedUpdateInput>
   }
 
 
   /**
-   * shipping_ports delete
+   * ShippingPort delete
    */
-  export type shipping_portsDeleteArgs = {
+  export type ShippingPortDeleteArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
     /**
-     * Filter which shipping_ports to delete.
+     * Filter which ShippingPort to delete.
      * 
     **/
-    where: shipping_portsWhereUniqueInput
+    where: ShippingPortWhereUniqueInput
   }
 
 
   /**
-   * shipping_ports deleteMany
+   * ShippingPort deleteMany
    */
-  export type shipping_portsDeleteManyArgs = {
-    where?: shipping_portsWhereInput
+  export type ShippingPortDeleteManyArgs = {
+    where?: ShippingPortWhereInput
   }
 
 
   /**
-   * shipping_ports without action
+   * ShippingPort without action
    */
-  export type shipping_portsArgs = {
+  export type ShippingPortArgs = {
     /**
-     * Select specific fields to fetch from the shipping_ports
+     * Select specific fields to fetch from the ShippingPort
      * 
     **/
-    select?: shipping_portsSelect | null
+    select?: ShippingPortSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_portsInclude | null
+    include?: ShippingPortInclude | null
   }
 
 
 
   /**
-   * Model shipping_products
+   * Model ShippingProduct
    */
 
 
-  export type AggregateShipping_products = {
-    _count: Shipping_productsCountAggregateOutputType | null
-    _avg: Shipping_productsAvgAggregateOutputType | null
-    _sum: Shipping_productsSumAggregateOutputType | null
-    _min: Shipping_productsMinAggregateOutputType | null
-    _max: Shipping_productsMaxAggregateOutputType | null
+  export type AggregateShippingProduct = {
+    _count: ShippingProductCountAggregateOutputType | null
+    _avg: ShippingProductAvgAggregateOutputType | null
+    _sum: ShippingProductSumAggregateOutputType | null
+    _min: ShippingProductMinAggregateOutputType | null
+    _max: ShippingProductMaxAggregateOutputType | null
   }
 
-  export type Shipping_productsAvgAggregateOutputType = {
+  export type ShippingProductAvgAggregateOutputType = {
     id: number | null
     weight: number | null
-    shippingId: number | null
-    productId: number | null
+    shipping_id: number | null
+    product_id: number | null
   }
 
-  export type Shipping_productsSumAggregateOutputType = {
+  export type ShippingProductSumAggregateOutputType = {
     id: number | null
     weight: number | null
-    shippingId: number | null
-    productId: number | null
+    shipping_id: number | null
+    product_id: number | null
   }
 
-  export type Shipping_productsMinAggregateOutputType = {
+  export type ShippingProductMinAggregateOutputType = {
     id: number | null
     weight: number | null
-    shippingId: number | null
-    productId: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    shipping_id: number | null
+    product_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
+    deleted_at: Date | null
   }
 
-  export type Shipping_productsMaxAggregateOutputType = {
+  export type ShippingProductMaxAggregateOutputType = {
     id: number | null
     weight: number | null
-    shippingId: number | null
-    productId: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    deletedAt: Date | null
+    shipping_id: number | null
+    product_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
+    deleted_at: Date | null
   }
 
-  export type Shipping_productsCountAggregateOutputType = {
+  export type ShippingProductCountAggregateOutputType = {
     id: number
     weight: number
-    shippingId: number
-    productId: number
-    createdAt: number
-    updatedAt: number
-    deletedAt: number
+    shipping_id: number
+    product_id: number
+    created_at: number
+    updated_at: number
+    deleted_at: number
     _all: number
   }
 
 
-  export type Shipping_productsAvgAggregateInputType = {
+  export type ShippingProductAvgAggregateInputType = {
     id?: true
     weight?: true
-    shippingId?: true
-    productId?: true
+    shipping_id?: true
+    product_id?: true
   }
 
-  export type Shipping_productsSumAggregateInputType = {
+  export type ShippingProductSumAggregateInputType = {
     id?: true
     weight?: true
-    shippingId?: true
-    productId?: true
+    shipping_id?: true
+    product_id?: true
   }
 
-  export type Shipping_productsMinAggregateInputType = {
+  export type ShippingProductMinAggregateInputType = {
     id?: true
     weight?: true
-    shippingId?: true
-    productId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    shipping_id?: true
+    product_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
   }
 
-  export type Shipping_productsMaxAggregateInputType = {
+  export type ShippingProductMaxAggregateInputType = {
     id?: true
     weight?: true
-    shippingId?: true
-    productId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    shipping_id?: true
+    product_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
   }
 
-  export type Shipping_productsCountAggregateInputType = {
+  export type ShippingProductCountAggregateInputType = {
     id?: true
     weight?: true
-    shippingId?: true
-    productId?: true
-    createdAt?: true
-    updatedAt?: true
-    deletedAt?: true
+    shipping_id?: true
+    product_id?: true
+    created_at?: true
+    updated_at?: true
+    deleted_at?: true
     _all?: true
   }
 
-  export type Shipping_productsAggregateArgs = {
+  export type ShippingProductAggregateArgs = {
     /**
-     * Filter which shipping_products to aggregate.
+     * Filter which ShippingProduct to aggregate.
      * 
     **/
-    where?: shipping_productsWhereInput
+    where?: ShippingProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_products to fetch.
+     * Determine the order of ShippingProducts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_productsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingProductOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: shipping_productsWhereUniqueInput
+    cursor?: ShippingProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_products from the position of the cursor.
+     * Take `±n` ShippingProducts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_products.
+     * Skip the first `n` ShippingProducts.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned shipping_products
+     * Count returned ShippingProducts
     **/
-    _count?: true | Shipping_productsCountAggregateInputType
+    _count?: true | ShippingProductCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: Shipping_productsAvgAggregateInputType
+    _avg?: ShippingProductAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: Shipping_productsSumAggregateInputType
+    _sum?: ShippingProductSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: Shipping_productsMinAggregateInputType
+    _min?: ShippingProductMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: Shipping_productsMaxAggregateInputType
+    _max?: ShippingProductMaxAggregateInputType
   }
 
-  export type GetShipping_productsAggregateType<T extends Shipping_productsAggregateArgs> = {
-        [P in keyof T & keyof AggregateShipping_products]: P extends '_count' | 'count'
+  export type GetShippingProductAggregateType<T extends ShippingProductAggregateArgs> = {
+        [P in keyof T & keyof AggregateShippingProduct]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateShipping_products[P]>
-      : GetScalarType<T[P], AggregateShipping_products[P]>
+        : GetScalarType<T[P], AggregateShippingProduct[P]>
+      : GetScalarType<T[P], AggregateShippingProduct[P]>
   }
 
 
 
 
-  export type Shipping_productsGroupByArgs = {
-    where?: shipping_productsWhereInput
-    orderBy?: Enumerable<shipping_productsOrderByWithAggregationInput>
-    by: Array<Shipping_productsScalarFieldEnum>
-    having?: shipping_productsScalarWhereWithAggregatesInput
+  export type ShippingProductGroupByArgs = {
+    where?: ShippingProductWhereInput
+    orderBy?: Enumerable<ShippingProductOrderByWithAggregationInput>
+    by: Array<ShippingProductScalarFieldEnum>
+    having?: ShippingProductScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: Shipping_productsCountAggregateInputType | true
-    _avg?: Shipping_productsAvgAggregateInputType
-    _sum?: Shipping_productsSumAggregateInputType
-    _min?: Shipping_productsMinAggregateInputType
-    _max?: Shipping_productsMaxAggregateInputType
+    _count?: ShippingProductCountAggregateInputType | true
+    _avg?: ShippingProductAvgAggregateInputType
+    _sum?: ShippingProductSumAggregateInputType
+    _min?: ShippingProductMinAggregateInputType
+    _max?: ShippingProductMaxAggregateInputType
   }
 
 
-  export type Shipping_productsGroupByOutputType = {
+  export type ShippingProductGroupByOutputType = {
     id: number
     weight: number | null
-    shippingId: number | null
-    productId: number | null
-    createdAt: Date
-    updatedAt: Date
-    deletedAt: Date | null
-    _count: Shipping_productsCountAggregateOutputType | null
-    _avg: Shipping_productsAvgAggregateOutputType | null
-    _sum: Shipping_productsSumAggregateOutputType | null
-    _min: Shipping_productsMinAggregateOutputType | null
-    _max: Shipping_productsMaxAggregateOutputType | null
+    shipping_id: number | null
+    product_id: number | null
+    created_at: Date
+    updated_at: Date
+    deleted_at: Date | null
+    _count: ShippingProductCountAggregateOutputType | null
+    _avg: ShippingProductAvgAggregateOutputType | null
+    _sum: ShippingProductSumAggregateOutputType | null
+    _min: ShippingProductMinAggregateOutputType | null
+    _max: ShippingProductMaxAggregateOutputType | null
   }
 
-  type GetShipping_productsGroupByPayload<T extends Shipping_productsGroupByArgs> = Promise<
+  type GetShippingProductGroupByPayload<T extends ShippingProductGroupByArgs> = Promise<
     Array<
-      PickArray<Shipping_productsGroupByOutputType, T['by']> &
+      PickArray<ShippingProductGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof Shipping_productsGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ShippingProductGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], Shipping_productsGroupByOutputType[P]>
-            : GetScalarType<T[P], Shipping_productsGroupByOutputType[P]>
+              : GetScalarType<T[P], ShippingProductGroupByOutputType[P]>
+            : GetScalarType<T[P], ShippingProductGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type shipping_productsSelect = {
+  export type ShippingProductSelect = {
     id?: boolean
     weight?: boolean
-    shippingId?: boolean
-    productId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    deletedAt?: boolean
-    products?: boolean | productsArgs
-    shippings?: boolean | ShippingArgs
+    shipping_id?: boolean
+    product_id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    deleted_at?: boolean
+    product?: boolean | productsArgs
+    shipping?: boolean | ShippingArgs
   }
 
-  export type shipping_productsInclude = {
-    products?: boolean | productsArgs
-    shippings?: boolean | ShippingArgs
+  export type ShippingProductInclude = {
+    product?: boolean | productsArgs
+    shipping?: boolean | ShippingArgs
   }
 
-  export type shipping_productsGetPayload<
-    S extends boolean | null | undefined | shipping_productsArgs,
+  export type ShippingProductGetPayload<
+    S extends boolean | null | undefined | ShippingProductArgs,
     U = keyof S
       > = S extends true
-        ? shipping_products
+        ? ShippingProduct
     : S extends undefined
     ? never
-    : S extends shipping_productsArgs | shipping_productsFindManyArgs
+    : S extends ShippingProductArgs | ShippingProductFindManyArgs
     ?'include' extends U
-    ? shipping_products  & {
+    ? ShippingProduct  & {
     [P in TrueKeys<S['include']>]: 
-          P extends 'products'
+          P extends 'product'
         ? productsGetPayload<S['include'][P]> | null :
-        P extends 'shippings'
+        P extends 'shipping'
         ? ShippingGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof shipping_products ?shipping_products [P]
+    [P in TrueKeys<S['select']>]: P extends keyof ShippingProduct ?ShippingProduct [P]
   : 
-          P extends 'products'
+          P extends 'product'
         ? productsGetPayload<S['select'][P]> | null :
-        P extends 'shippings'
+        P extends 'shipping'
         ? ShippingGetPayload<S['select'][P]> | null : never
   } 
-    : shipping_products
-  : shipping_products
+    : ShippingProduct
+  : ShippingProduct
 
 
-  type shipping_productsCountArgs = Merge<
-    Omit<shipping_productsFindManyArgs, 'select' | 'include'> & {
-      select?: Shipping_productsCountAggregateInputType | true
+  type ShippingProductCountArgs = Merge<
+    Omit<ShippingProductFindManyArgs, 'select' | 'include'> & {
+      select?: ShippingProductCountAggregateInputType | true
     }
   >
 
-  export interface shipping_productsDelegate<GlobalRejectSettings> {
+  export interface ShippingProductDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one Shipping_products that matches the filter.
-     * @param {shipping_productsFindUniqueArgs} args - Arguments to find a Shipping_products
+     * Find zero or one ShippingProduct that matches the filter.
+     * @param {ShippingProductFindUniqueArgs} args - Arguments to find a ShippingProduct
      * @example
-     * // Get one Shipping_products
-     * const shipping_products = await prisma.shipping_products.findUnique({
+     * // Get one ShippingProduct
+     * const shippingProduct = await prisma.shippingProduct.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends shipping_productsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, shipping_productsFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'shipping_products'> extends True ? CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>> : CheckSelect<T, Prisma__shipping_productsClient<shipping_products | null >, Prisma__shipping_productsClient<shipping_productsGetPayload<T> | null >>
+    findUnique<T extends ShippingProductFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ShippingProductFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ShippingProduct'> extends True ? CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>> : CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct | null >, Prisma__ShippingProductClient<ShippingProductGetPayload<T> | null >>
 
     /**
-     * Find the first Shipping_products that matches the filter.
+     * Find the first ShippingProduct that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_productsFindFirstArgs} args - Arguments to find a Shipping_products
+     * @param {ShippingProductFindFirstArgs} args - Arguments to find a ShippingProduct
      * @example
-     * // Get one Shipping_products
-     * const shipping_products = await prisma.shipping_products.findFirst({
+     * // Get one ShippingProduct
+     * const shippingProduct = await prisma.shippingProduct.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends shipping_productsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, shipping_productsFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'shipping_products'> extends True ? CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>> : CheckSelect<T, Prisma__shipping_productsClient<shipping_products | null >, Prisma__shipping_productsClient<shipping_productsGetPayload<T> | null >>
+    findFirst<T extends ShippingProductFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ShippingProductFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ShippingProduct'> extends True ? CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>> : CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct | null >, Prisma__ShippingProductClient<ShippingProductGetPayload<T> | null >>
 
     /**
-     * Find zero or more Shipping_products that matches the filter.
+     * Find zero or more ShippingProducts that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_productsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {ShippingProductFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Shipping_products
-     * const shipping_products = await prisma.shipping_products.findMany()
+     * // Get all ShippingProducts
+     * const shippingProducts = await prisma.shippingProduct.findMany()
      * 
-     * // Get first 10 Shipping_products
-     * const shipping_products = await prisma.shipping_products.findMany({ take: 10 })
+     * // Get first 10 ShippingProducts
+     * const shippingProducts = await prisma.shippingProduct.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const shipping_productsWithIdOnly = await prisma.shipping_products.findMany({ select: { id: true } })
+     * const shippingProductWithIdOnly = await prisma.shippingProduct.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends shipping_productsFindManyArgs>(
-      args?: SelectSubset<T, shipping_productsFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<shipping_products>>, PrismaPromise<Array<shipping_productsGetPayload<T>>>>
+    findMany<T extends ShippingProductFindManyArgs>(
+      args?: SelectSubset<T, ShippingProductFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<ShippingProduct>>, PrismaPromise<Array<ShippingProductGetPayload<T>>>>
 
     /**
-     * Create a Shipping_products.
-     * @param {shipping_productsCreateArgs} args - Arguments to create a Shipping_products.
+     * Create a ShippingProduct.
+     * @param {ShippingProductCreateArgs} args - Arguments to create a ShippingProduct.
      * @example
-     * // Create one Shipping_products
-     * const Shipping_products = await prisma.shipping_products.create({
+     * // Create one ShippingProduct
+     * const ShippingProduct = await prisma.shippingProduct.create({
      *   data: {
-     *     // ... data to create a Shipping_products
+     *     // ... data to create a ShippingProduct
      *   }
      * })
      * 
     **/
-    create<T extends shipping_productsCreateArgs>(
-      args: SelectSubset<T, shipping_productsCreateArgs>
-    ): CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>>
+    create<T extends ShippingProductCreateArgs>(
+      args: SelectSubset<T, ShippingProductCreateArgs>
+    ): CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>>
 
     /**
-     * Create many Shipping_products.
-     *     @param {shipping_productsCreateManyArgs} args - Arguments to create many Shipping_products.
+     * Create many ShippingProducts.
+     *     @param {ShippingProductCreateManyArgs} args - Arguments to create many ShippingProducts.
      *     @example
-     *     // Create many Shipping_products
-     *     const shipping_products = await prisma.shipping_products.createMany({
+     *     // Create many ShippingProducts
+     *     const shippingProduct = await prisma.shippingProduct.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends shipping_productsCreateManyArgs>(
-      args?: SelectSubset<T, shipping_productsCreateManyArgs>
+    createMany<T extends ShippingProductCreateManyArgs>(
+      args?: SelectSubset<T, ShippingProductCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Shipping_products.
-     * @param {shipping_productsDeleteArgs} args - Arguments to delete one Shipping_products.
+     * Delete a ShippingProduct.
+     * @param {ShippingProductDeleteArgs} args - Arguments to delete one ShippingProduct.
      * @example
-     * // Delete one Shipping_products
-     * const Shipping_products = await prisma.shipping_products.delete({
+     * // Delete one ShippingProduct
+     * const ShippingProduct = await prisma.shippingProduct.delete({
      *   where: {
-     *     // ... filter to delete one Shipping_products
+     *     // ... filter to delete one ShippingProduct
      *   }
      * })
      * 
     **/
-    delete<T extends shipping_productsDeleteArgs>(
-      args: SelectSubset<T, shipping_productsDeleteArgs>
-    ): CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>>
+    delete<T extends ShippingProductDeleteArgs>(
+      args: SelectSubset<T, ShippingProductDeleteArgs>
+    ): CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>>
 
     /**
-     * Update one Shipping_products.
-     * @param {shipping_productsUpdateArgs} args - Arguments to update one Shipping_products.
+     * Update one ShippingProduct.
+     * @param {ShippingProductUpdateArgs} args - Arguments to update one ShippingProduct.
      * @example
-     * // Update one Shipping_products
-     * const shipping_products = await prisma.shipping_products.update({
+     * // Update one ShippingProduct
+     * const shippingProduct = await prisma.shippingProduct.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -16788,34 +16788,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends shipping_productsUpdateArgs>(
-      args: SelectSubset<T, shipping_productsUpdateArgs>
-    ): CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>>
+    update<T extends ShippingProductUpdateArgs>(
+      args: SelectSubset<T, ShippingProductUpdateArgs>
+    ): CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>>
 
     /**
-     * Delete zero or more Shipping_products.
-     * @param {shipping_productsDeleteManyArgs} args - Arguments to filter Shipping_products to delete.
+     * Delete zero or more ShippingProducts.
+     * @param {ShippingProductDeleteManyArgs} args - Arguments to filter ShippingProducts to delete.
      * @example
-     * // Delete a few Shipping_products
-     * const { count } = await prisma.shipping_products.deleteMany({
+     * // Delete a few ShippingProducts
+     * const { count } = await prisma.shippingProduct.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends shipping_productsDeleteManyArgs>(
-      args?: SelectSubset<T, shipping_productsDeleteManyArgs>
+    deleteMany<T extends ShippingProductDeleteManyArgs>(
+      args?: SelectSubset<T, ShippingProductDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Shipping_products.
+     * Update zero or more ShippingProducts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_productsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ShippingProductUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Shipping_products
-     * const shipping_products = await prisma.shipping_products.updateMany({
+     * // Update many ShippingProducts
+     * const shippingProduct = await prisma.shippingProduct.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -16825,59 +16825,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends shipping_productsUpdateManyArgs>(
-      args: SelectSubset<T, shipping_productsUpdateManyArgs>
+    updateMany<T extends ShippingProductUpdateManyArgs>(
+      args: SelectSubset<T, ShippingProductUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Shipping_products.
-     * @param {shipping_productsUpsertArgs} args - Arguments to update or create a Shipping_products.
+     * Create or update one ShippingProduct.
+     * @param {ShippingProductUpsertArgs} args - Arguments to update or create a ShippingProduct.
      * @example
-     * // Update or create a Shipping_products
-     * const shipping_products = await prisma.shipping_products.upsert({
+     * // Update or create a ShippingProduct
+     * const shippingProduct = await prisma.shippingProduct.upsert({
      *   create: {
-     *     // ... data to create a Shipping_products
+     *     // ... data to create a ShippingProduct
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Shipping_products we want to update
+     *     // ... the filter for the ShippingProduct we want to update
      *   }
      * })
     **/
-    upsert<T extends shipping_productsUpsertArgs>(
-      args: SelectSubset<T, shipping_productsUpsertArgs>
-    ): CheckSelect<T, Prisma__shipping_productsClient<shipping_products>, Prisma__shipping_productsClient<shipping_productsGetPayload<T>>>
+    upsert<T extends ShippingProductUpsertArgs>(
+      args: SelectSubset<T, ShippingProductUpsertArgs>
+    ): CheckSelect<T, Prisma__ShippingProductClient<ShippingProduct>, Prisma__ShippingProductClient<ShippingProductGetPayload<T>>>
 
     /**
-     * Count the number of Shipping_products.
+     * Count the number of ShippingProducts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {shipping_productsCountArgs} args - Arguments to filter Shipping_products to count.
+     * @param {ShippingProductCountArgs} args - Arguments to filter ShippingProducts to count.
      * @example
-     * // Count the number of Shipping_products
-     * const count = await prisma.shipping_products.count({
+     * // Count the number of ShippingProducts
+     * const count = await prisma.shippingProduct.count({
      *   where: {
-     *     // ... the filter for the Shipping_products we want to count
+     *     // ... the filter for the ShippingProducts we want to count
      *   }
      * })
     **/
-    count<T extends shipping_productsCountArgs>(
-      args?: Subset<T, shipping_productsCountArgs>,
+    count<T extends ShippingProductCountArgs>(
+      args?: Subset<T, ShippingProductCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], Shipping_productsCountAggregateOutputType>
+          : GetScalarType<T['select'], ShippingProductCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Shipping_products.
+     * Allows you to perform aggregations operations on a ShippingProduct.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {Shipping_productsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ShippingProductAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -16897,13 +16897,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends Shipping_productsAggregateArgs>(args: Subset<T, Shipping_productsAggregateArgs>): PrismaPromise<GetShipping_productsAggregateType<T>>
+    aggregate<T extends ShippingProductAggregateArgs>(args: Subset<T, ShippingProductAggregateArgs>): PrismaPromise<GetShippingProductAggregateType<T>>
 
     /**
-     * Group by Shipping_products.
+     * Group by ShippingProduct.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {Shipping_productsGroupByArgs} args - Group by arguments.
+     * @param {ShippingProductGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -16918,14 +16918,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends Shipping_productsGroupByArgs,
+      T extends ShippingProductGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Shipping_productsGroupByArgs['orderBy'] }
-        : { orderBy?: Shipping_productsGroupByArgs['orderBy'] },
+        ? { orderBy: ShippingProductGroupByArgs['orderBy'] }
+        : { orderBy?: ShippingProductGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -16974,16 +16974,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, Shipping_productsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShipping_productsGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ShippingProductGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingProductGroupByPayload<T> : Promise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for shipping_products.
+   * The delegate class that acts as a "Promise-like" for ShippingProduct.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__shipping_productsClient<T> implements PrismaPromise<T> {
+  export class Prisma__ShippingProductClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -17000,9 +17000,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    products<T extends productsArgs = {}>(args?: Subset<T, productsArgs>): CheckSelect<T, Prisma__productsClient<products | null >, Prisma__productsClient<productsGetPayload<T> | null >>;
+    product<T extends productsArgs = {}>(args?: Subset<T, productsArgs>): CheckSelect<T, Prisma__productsClient<products | null >, Prisma__productsClient<productsGetPayload<T> | null >>;
 
-    shippings<T extends ShippingArgs = {}>(args?: Subset<T, ShippingArgs>): CheckSelect<T, Prisma__ShippingClient<Shipping | null >, Prisma__ShippingClient<ShippingGetPayload<T> | null >>;
+    shipping<T extends ShippingArgs = {}>(args?: Subset<T, ShippingArgs>): CheckSelect<T, Prisma__ShippingClient<Shipping | null >, Prisma__ShippingClient<ShippingGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -17030,288 +17030,288 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * shipping_products findUnique
+   * ShippingProduct findUnique
    */
-  export type shipping_productsFindUniqueArgs = {
+  export type ShippingProductFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * Throw an Error if a shipping_products can't be found
+     * Throw an Error if a ShippingProduct can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which shipping_products to fetch.
+     * Filter, which ShippingProduct to fetch.
      * 
     **/
-    where: shipping_productsWhereUniqueInput
+    where: ShippingProductWhereUniqueInput
   }
 
 
   /**
-   * shipping_products findFirst
+   * ShippingProduct findFirst
    */
-  export type shipping_productsFindFirstArgs = {
+  export type ShippingProductFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * Throw an Error if a shipping_products can't be found
+     * Throw an Error if a ShippingProduct can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which shipping_products to fetch.
+     * Filter, which ShippingProduct to fetch.
      * 
     **/
-    where?: shipping_productsWhereInput
+    where?: ShippingProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_products to fetch.
+     * Determine the order of ShippingProducts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_productsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingProductOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for shipping_products.
+     * Sets the position for searching for ShippingProducts.
      * 
     **/
-    cursor?: shipping_productsWhereUniqueInput
+    cursor?: ShippingProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_products from the position of the cursor.
+     * Take `±n` ShippingProducts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_products.
+     * Skip the first `n` ShippingProducts.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of shipping_products.
+     * Filter by unique combinations of ShippingProducts.
      * 
     **/
-    distinct?: Enumerable<Shipping_productsScalarFieldEnum>
+    distinct?: Enumerable<ShippingProductScalarFieldEnum>
   }
 
 
   /**
-   * shipping_products findMany
+   * ShippingProduct findMany
    */
-  export type shipping_productsFindManyArgs = {
+  export type ShippingProductFindManyArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * Filter, which shipping_products to fetch.
+     * Filter, which ShippingProducts to fetch.
      * 
     **/
-    where?: shipping_productsWhereInput
+    where?: ShippingProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of shipping_products to fetch.
+     * Determine the order of ShippingProducts to fetch.
      * 
     **/
-    orderBy?: Enumerable<shipping_productsOrderByWithRelationInput>
+    orderBy?: Enumerable<ShippingProductOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing shipping_products.
+     * Sets the position for listing ShippingProducts.
      * 
     **/
-    cursor?: shipping_productsWhereUniqueInput
+    cursor?: ShippingProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` shipping_products from the position of the cursor.
+     * Take `±n` ShippingProducts from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` shipping_products.
+     * Skip the first `n` ShippingProducts.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<Shipping_productsScalarFieldEnum>
+    distinct?: Enumerable<ShippingProductScalarFieldEnum>
   }
 
 
   /**
-   * shipping_products create
+   * ShippingProduct create
    */
-  export type shipping_productsCreateArgs = {
+  export type ShippingProductCreateArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * The data needed to create a shipping_products.
+     * The data needed to create a ShippingProduct.
      * 
     **/
-    data: XOR<shipping_productsCreateInput, shipping_productsUncheckedCreateInput>
+    data: XOR<ShippingProductCreateInput, ShippingProductUncheckedCreateInput>
   }
 
 
   /**
-   * shipping_products createMany
+   * ShippingProduct createMany
    */
-  export type shipping_productsCreateManyArgs = {
-    data: Enumerable<shipping_productsCreateManyInput>
+  export type ShippingProductCreateManyArgs = {
+    data: Enumerable<ShippingProductCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * shipping_products update
+   * ShippingProduct update
    */
-  export type shipping_productsUpdateArgs = {
+  export type ShippingProductUpdateArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * The data needed to update a shipping_products.
+     * The data needed to update a ShippingProduct.
      * 
     **/
-    data: XOR<shipping_productsUpdateInput, shipping_productsUncheckedUpdateInput>
+    data: XOR<ShippingProductUpdateInput, ShippingProductUncheckedUpdateInput>
     /**
-     * Choose, which shipping_products to update.
+     * Choose, which ShippingProduct to update.
      * 
     **/
-    where: shipping_productsWhereUniqueInput
+    where: ShippingProductWhereUniqueInput
   }
 
 
   /**
-   * shipping_products updateMany
+   * ShippingProduct updateMany
    */
-  export type shipping_productsUpdateManyArgs = {
-    data: XOR<shipping_productsUpdateManyMutationInput, shipping_productsUncheckedUpdateManyInput>
-    where?: shipping_productsWhereInput
+  export type ShippingProductUpdateManyArgs = {
+    data: XOR<ShippingProductUpdateManyMutationInput, ShippingProductUncheckedUpdateManyInput>
+    where?: ShippingProductWhereInput
   }
 
 
   /**
-   * shipping_products upsert
+   * ShippingProduct upsert
    */
-  export type shipping_productsUpsertArgs = {
+  export type ShippingProductUpsertArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * The filter to search for the shipping_products to update in case it exists.
+     * The filter to search for the ShippingProduct to update in case it exists.
      * 
     **/
-    where: shipping_productsWhereUniqueInput
+    where: ShippingProductWhereUniqueInput
     /**
-     * In case the shipping_products found by the `where` argument doesn't exist, create a new shipping_products with this data.
+     * In case the ShippingProduct found by the `where` argument doesn't exist, create a new ShippingProduct with this data.
      * 
     **/
-    create: XOR<shipping_productsCreateInput, shipping_productsUncheckedCreateInput>
+    create: XOR<ShippingProductCreateInput, ShippingProductUncheckedCreateInput>
     /**
-     * In case the shipping_products was found with the provided `where` argument, update it with this data.
+     * In case the ShippingProduct was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<shipping_productsUpdateInput, shipping_productsUncheckedUpdateInput>
+    update: XOR<ShippingProductUpdateInput, ShippingProductUncheckedUpdateInput>
   }
 
 
   /**
-   * shipping_products delete
+   * ShippingProduct delete
    */
-  export type shipping_productsDeleteArgs = {
+  export type ShippingProductDeleteArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
     /**
-     * Filter which shipping_products to delete.
+     * Filter which ShippingProduct to delete.
      * 
     **/
-    where: shipping_productsWhereUniqueInput
+    where: ShippingProductWhereUniqueInput
   }
 
 
   /**
-   * shipping_products deleteMany
+   * ShippingProduct deleteMany
    */
-  export type shipping_productsDeleteManyArgs = {
-    where?: shipping_productsWhereInput
+  export type ShippingProductDeleteManyArgs = {
+    where?: ShippingProductWhereInput
   }
 
 
   /**
-   * shipping_products without action
+   * ShippingProduct without action
    */
-  export type shipping_productsArgs = {
+  export type ShippingProductArgs = {
     /**
-     * Select specific fields to fetch from the shipping_products
+     * Select specific fields to fetch from the ShippingProduct
      * 
     **/
-    select?: shipping_productsSelect | null
+    select?: ShippingProductSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: shipping_productsInclude | null
+    include?: ShippingProductInclude | null
   }
 
 
@@ -17885,8 +17885,8 @@ export namespace Prisma {
     vessel?: boolean | VesselArgs
     shipping_documents?: boolean | shipping_documentsFindManyArgs
     shipping_files?: boolean | shipping_filesFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
-    shipping_products?: boolean | shipping_productsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
+    shipping_products?: boolean | ShippingProductFindManyArgs
     subsets?: boolean | subsetsFindManyArgs
     inquires?: boolean | inquiresFindManyArgs
     ShippingChecklistItem?: boolean | ShippingChecklistItemFindManyArgs
@@ -17898,8 +17898,8 @@ export namespace Prisma {
     vessel?: boolean | VesselArgs
     shipping_documents?: boolean | shipping_documentsFindManyArgs
     shipping_files?: boolean | shipping_filesFindManyArgs
-    shipping_ports?: boolean | shipping_portsFindManyArgs
-    shipping_products?: boolean | shipping_productsFindManyArgs
+    shipping_ports?: boolean | ShippingPortFindManyArgs
+    shipping_products?: boolean | ShippingProductFindManyArgs
     subsets?: boolean | subsetsFindManyArgs
     inquires?: boolean | inquiresFindManyArgs
     ShippingChecklistItem?: boolean | ShippingChecklistItemFindManyArgs
@@ -17926,9 +17926,9 @@ export namespace Prisma {
         P extends 'shipping_files'
         ? Array < shipping_filesGetPayload<S['include'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['include'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['include'][P]>>  :
         P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['include'][P]>>  :
+        ? Array < ShippingProductGetPayload<S['include'][P]>>  :
         P extends 'subsets'
         ? Array < subsetsGetPayload<S['include'][P]>>  :
         P extends 'inquires'
@@ -17951,9 +17951,9 @@ export namespace Prisma {
         P extends 'shipping_files'
         ? Array < shipping_filesGetPayload<S['select'][P]>>  :
         P extends 'shipping_ports'
-        ? Array < shipping_portsGetPayload<S['select'][P]>>  :
+        ? Array < ShippingPortGetPayload<S['select'][P]>>  :
         P extends 'shipping_products'
-        ? Array < shipping_productsGetPayload<S['select'][P]>>  :
+        ? Array < ShippingProductGetPayload<S['select'][P]>>  :
         P extends 'subsets'
         ? Array < subsetsGetPayload<S['select'][P]>>  :
         P extends 'inquires'
@@ -18309,9 +18309,9 @@ export namespace Prisma {
 
     shipping_files<T extends shipping_filesFindManyArgs = {}>(args?: Subset<T, shipping_filesFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_files>>, PrismaPromise<Array<shipping_filesGetPayload<T>>>>;
 
-    shipping_ports<T extends shipping_portsFindManyArgs = {}>(args?: Subset<T, shipping_portsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_ports>>, PrismaPromise<Array<shipping_portsGetPayload<T>>>>;
+    shipping_ports<T extends ShippingPortFindManyArgs = {}>(args?: Subset<T, ShippingPortFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ShippingPort>>, PrismaPromise<Array<ShippingPortGetPayload<T>>>>;
 
-    shipping_products<T extends shipping_productsFindManyArgs = {}>(args?: Subset<T, shipping_productsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<shipping_products>>, PrismaPromise<Array<shipping_productsGetPayload<T>>>>;
+    shipping_products<T extends ShippingProductFindManyArgs = {}>(args?: Subset<T, ShippingProductFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ShippingProduct>>, PrismaPromise<Array<ShippingProductGetPayload<T>>>>;
 
     subsets<T extends subsetsFindManyArgs = {}>(args?: Subset<T, subsetsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<subsets>>, PrismaPromise<Array<subsetsGetPayload<T>>>>;
 
@@ -26329,9 +26329,9 @@ export namespace Prisma {
     is_done: 'is_done',
     shipping_id: 'shipping_id',
     updated_by_user_id: 'updated_by_user_id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    created_at: 'created_at',
+    updated_ut: 'updated_ut',
+    deleted_at: 'deleted_at'
   };
 
   export type ShippingChecklistItemScalarFieldEnum = (typeof ShippingChecklistItemScalarFieldEnum)[keyof typeof ShippingChecklistItemScalarFieldEnum]
@@ -26494,36 +26494,36 @@ export namespace Prisma {
   export type Shipping_filesScalarFieldEnum = (typeof Shipping_filesScalarFieldEnum)[keyof typeof Shipping_filesScalarFieldEnum]
 
 
-  export const Shipping_portsScalarFieldEnum: {
+  export const ShippingPortScalarFieldEnum: {
     id: 'id',
-    estimatedTimeOfArrival: 'estimatedTimeOfArrival',
-    estimatedTimeOfBerthing: 'estimatedTimeOfBerthing',
-    estimatedTimeOfSailing: 'estimatedTimeOfSailing',
-    timeOfArrival: 'timeOfArrival',
-    timeOfBerthing: 'timeOfBerthing',
-    timeOfSailing: 'timeOfSailing',
-    shippingId: 'shippingId',
-    portId: 'portId',
-    berthId: 'berthId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    estimated_time_of_arrival: 'estimated_time_of_arrival',
+    estimated_time_of_berthing: 'estimated_time_of_berthing',
+    estimated_time_of_sailing: 'estimated_time_of_sailing',
+    time_of_arrival: 'time_of_arrival',
+    time_of_berthing: 'time_of_berthing',
+    time_of_sailing: 'time_of_sailing',
+    shipping_id: 'shipping_id',
+    port_id: 'port_id',
+    berth_id: 'berth_id',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    deleted_at: 'deleted_at'
   };
 
-  export type Shipping_portsScalarFieldEnum = (typeof Shipping_portsScalarFieldEnum)[keyof typeof Shipping_portsScalarFieldEnum]
+  export type ShippingPortScalarFieldEnum = (typeof ShippingPortScalarFieldEnum)[keyof typeof ShippingPortScalarFieldEnum]
 
 
-  export const Shipping_productsScalarFieldEnum: {
+  export const ShippingProductScalarFieldEnum: {
     id: 'id',
     weight: 'weight',
-    shippingId: 'shippingId',
-    productId: 'productId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    shipping_id: 'shipping_id',
+    product_id: 'product_id',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    deleted_at: 'deleted_at'
   };
 
-  export type Shipping_productsScalarFieldEnum = (typeof Shipping_productsScalarFieldEnum)[keyof typeof Shipping_productsScalarFieldEnum]
+  export type ShippingProductScalarFieldEnum = (typeof ShippingProductScalarFieldEnum)[keyof typeof ShippingProductScalarFieldEnum]
 
 
   export const ShippingScalarFieldEnum: {
@@ -26807,7 +26807,7 @@ export namespace Prisma {
     waterDensity?: FloatNullableFilter | number | null
     ports?: XOR<PortsRelationFilter, portsWhereInput> | null
     berth_products?: Berth_productsListRelationFilter
-    shipping_ports?: Shipping_portsListRelationFilter
+    shipping_ports?: ShippingPortListRelationFilter
   }
 
   export type berthsOrderByWithRelationInput = {
@@ -26826,7 +26826,7 @@ export namespace Prisma {
     waterDensity?: SortOrder
     ports?: portsOrderByWithRelationInput
     berth_products?: berth_productsOrderByRelationAggregateInput
-    shipping_ports?: shipping_portsOrderByRelationAggregateInput
+    shipping_ports?: ShippingPortOrderByRelationAggregateInput
   }
 
   export type berthsWhereUniqueInput = {
@@ -26995,14 +26995,14 @@ export namespace Prisma {
     name?: StringFilter | string
     description?: StringNullableFilter | string | null
     type?: StringFilter | string
-    deadline_date?: StringNullableFilter | string | null
+    deadline_date?: DateTimeNullableFilter | Date | string | null
     commentary?: StringNullableFilter | string | null
     is_done?: BoolFilter | boolean
     shipping_id?: IntFilter | number
     updated_by_user_id?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
+    created_at?: DateTimeFilter | Date | string
+    updated_ut?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
     shipping?: XOR<ShippingRelationFilter, ShippingWhereInput> | null
     user?: XOR<UsersRelationFilter, usersWhereInput> | null
   }
@@ -27017,9 +27017,9 @@ export namespace Prisma {
     is_done?: SortOrder
     shipping_id?: SortOrder
     updated_by_user_id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    created_at?: SortOrder
+    updated_ut?: SortOrder
+    deleted_at?: SortOrder
     shipping?: ShippingOrderByWithRelationInput
     user?: usersOrderByWithRelationInput
   }
@@ -27038,9 +27038,9 @@ export namespace Prisma {
     is_done?: SortOrder
     shipping_id?: SortOrder
     updated_by_user_id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    created_at?: SortOrder
+    updated_ut?: SortOrder
+    deleted_at?: SortOrder
     _count?: ShippingChecklistItemCountOrderByAggregateInput
     _avg?: ShippingChecklistItemAvgOrderByAggregateInput
     _max?: ShippingChecklistItemMaxOrderByAggregateInput
@@ -27056,14 +27056,14 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter | string
     description?: StringNullableWithAggregatesFilter | string | null
     type?: StringWithAggregatesFilter | string
-    deadline_date?: StringNullableWithAggregatesFilter | string | null
+    deadline_date?: DateTimeNullableWithAggregatesFilter | Date | string | null
     commentary?: StringNullableWithAggregatesFilter | string | null
     is_done?: BoolWithAggregatesFilter | boolean
     shipping_id?: IntWithAggregatesFilter | number
     updated_by_user_id?: IntNullableWithAggregatesFilter | number | null
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    deletedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    created_at?: DateTimeWithAggregatesFilter | Date | string
+    updated_ut?: DateTimeWithAggregatesFilter | Date | string
+    deleted_at?: DateTimeNullableWithAggregatesFilter | Date | string | null
   }
 
   export type CountryWhereInput = {
@@ -27241,7 +27241,7 @@ export namespace Prisma {
     country?: XOR<CountryRelationFilter, CountryWhereInput> | null
     berths?: BerthsListRelationFilter
     port_files?: Port_filesListRelationFilter
-    shipping_ports?: Shipping_portsListRelationFilter
+    shipping_ports?: ShippingPortListRelationFilter
   }
 
   export type portsOrderByWithRelationInput = {
@@ -27255,7 +27255,7 @@ export namespace Prisma {
     country?: CountryOrderByWithRelationInput
     berths?: berthsOrderByRelationAggregateInput
     port_files?: port_filesOrderByRelationAggregateInput
-    shipping_ports?: shipping_portsOrderByRelationAggregateInput
+    shipping_ports?: ShippingPortOrderByRelationAggregateInput
   }
 
   export type portsWhereUniqueInput = {
@@ -27301,7 +27301,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     deletedAt?: DateTimeNullableFilter | Date | string | null
     berth_products?: Berth_productsListRelationFilter
-    shipping_products?: Shipping_productsListRelationFilter
+    shipping_products?: ShippingProductListRelationFilter
   }
 
   export type productsOrderByWithRelationInput = {
@@ -27312,7 +27312,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     deletedAt?: SortOrder
     berth_products?: berth_productsOrderByRelationAggregateInput
-    shipping_products?: shipping_productsOrderByRelationAggregateInput
+    shipping_products?: ShippingProductOrderByRelationAggregateInput
   }
 
   export type productsWhereUniqueInput = {
@@ -27759,148 +27759,148 @@ export namespace Prisma {
     userId?: IntNullableWithAggregatesFilter | number | null
   }
 
-  export type shipping_portsWhereInput = {
-    AND?: Enumerable<shipping_portsWhereInput>
-    OR?: Enumerable<shipping_portsWhereInput>
-    NOT?: Enumerable<shipping_portsWhereInput>
+  export type ShippingPortWhereInput = {
+    AND?: Enumerable<ShippingPortWhereInput>
+    OR?: Enumerable<ShippingPortWhereInput>
+    NOT?: Enumerable<ShippingPortWhereInput>
     id?: IntFilter | number
-    estimatedTimeOfArrival?: DateTimeNullableFilter | Date | string | null
-    estimatedTimeOfBerthing?: DateTimeNullableFilter | Date | string | null
-    estimatedTimeOfSailing?: DateTimeNullableFilter | Date | string | null
-    timeOfArrival?: DateTimeNullableFilter | Date | string | null
-    timeOfBerthing?: DateTimeNullableFilter | Date | string | null
-    timeOfSailing?: DateTimeNullableFilter | Date | string | null
-    shippingId?: IntNullableFilter | number | null
-    portId?: IntNullableFilter | number | null
-    berthId?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_arrival?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_berthing?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_sailing?: DateTimeNullableFilter | Date | string | null
+    time_of_arrival?: DateTimeNullableFilter | Date | string | null
+    time_of_berthing?: DateTimeNullableFilter | Date | string | null
+    time_of_sailing?: DateTimeNullableFilter | Date | string | null
+    shipping_id?: IntNullableFilter | number | null
+    port_id?: IntNullableFilter | number | null
+    berth_id?: IntNullableFilter | number | null
+    created_at?: DateTimeFilter | Date | string
+    updated_at?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
     berths?: XOR<BerthsRelationFilter, berthsWhereInput> | null
     ports?: XOR<PortsRelationFilter, portsWhereInput> | null
     shippings?: XOR<ShippingRelationFilter, ShippingWhereInput> | null
   }
 
-  export type shipping_portsOrderByWithRelationInput = {
+  export type ShippingPortOrderByWithRelationInput = {
     id?: SortOrder
-    estimatedTimeOfArrival?: SortOrder
-    estimatedTimeOfBerthing?: SortOrder
-    estimatedTimeOfSailing?: SortOrder
-    timeOfArrival?: SortOrder
-    timeOfBerthing?: SortOrder
-    timeOfSailing?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    estimated_time_of_arrival?: SortOrder
+    estimated_time_of_berthing?: SortOrder
+    estimated_time_of_sailing?: SortOrder
+    time_of_arrival?: SortOrder
+    time_of_berthing?: SortOrder
+    time_of_sailing?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
     berths?: berthsOrderByWithRelationInput
     ports?: portsOrderByWithRelationInput
     shippings?: ShippingOrderByWithRelationInput
   }
 
-  export type shipping_portsWhereUniqueInput = {
+  export type ShippingPortWhereUniqueInput = {
     id?: number
   }
 
-  export type shipping_portsOrderByWithAggregationInput = {
+  export type ShippingPortOrderByWithAggregationInput = {
     id?: SortOrder
-    estimatedTimeOfArrival?: SortOrder
-    estimatedTimeOfBerthing?: SortOrder
-    estimatedTimeOfSailing?: SortOrder
-    timeOfArrival?: SortOrder
-    timeOfBerthing?: SortOrder
-    timeOfSailing?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-    _count?: shipping_portsCountOrderByAggregateInput
-    _avg?: shipping_portsAvgOrderByAggregateInput
-    _max?: shipping_portsMaxOrderByAggregateInput
-    _min?: shipping_portsMinOrderByAggregateInput
-    _sum?: shipping_portsSumOrderByAggregateInput
+    estimated_time_of_arrival?: SortOrder
+    estimated_time_of_berthing?: SortOrder
+    estimated_time_of_sailing?: SortOrder
+    time_of_arrival?: SortOrder
+    time_of_berthing?: SortOrder
+    time_of_sailing?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
+    _count?: ShippingPortCountOrderByAggregateInput
+    _avg?: ShippingPortAvgOrderByAggregateInput
+    _max?: ShippingPortMaxOrderByAggregateInput
+    _min?: ShippingPortMinOrderByAggregateInput
+    _sum?: ShippingPortSumOrderByAggregateInput
   }
 
-  export type shipping_portsScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<shipping_portsScalarWhereWithAggregatesInput>
-    OR?: Enumerable<shipping_portsScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<shipping_portsScalarWhereWithAggregatesInput>
+  export type ShippingPortScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ShippingPortScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ShippingPortScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ShippingPortScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    estimatedTimeOfArrival?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    estimatedTimeOfBerthing?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    estimatedTimeOfSailing?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    timeOfArrival?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    timeOfBerthing?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    timeOfSailing?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    shippingId?: IntNullableWithAggregatesFilter | number | null
-    portId?: IntNullableWithAggregatesFilter | number | null
-    berthId?: IntNullableWithAggregatesFilter | number | null
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    deletedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    estimated_time_of_arrival?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    estimated_time_of_berthing?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    estimated_time_of_sailing?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    time_of_arrival?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    time_of_berthing?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    time_of_sailing?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    shipping_id?: IntNullableWithAggregatesFilter | number | null
+    port_id?: IntNullableWithAggregatesFilter | number | null
+    berth_id?: IntNullableWithAggregatesFilter | number | null
+    created_at?: DateTimeWithAggregatesFilter | Date | string
+    updated_at?: DateTimeWithAggregatesFilter | Date | string
+    deleted_at?: DateTimeNullableWithAggregatesFilter | Date | string | null
   }
 
-  export type shipping_productsWhereInput = {
-    AND?: Enumerable<shipping_productsWhereInput>
-    OR?: Enumerable<shipping_productsWhereInput>
-    NOT?: Enumerable<shipping_productsWhereInput>
+  export type ShippingProductWhereInput = {
+    AND?: Enumerable<ShippingProductWhereInput>
+    OR?: Enumerable<ShippingProductWhereInput>
+    NOT?: Enumerable<ShippingProductWhereInput>
     id?: IntFilter | number
     weight?: FloatNullableFilter | number | null
-    shippingId?: IntNullableFilter | number | null
-    productId?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
-    products?: XOR<ProductsRelationFilter, productsWhereInput> | null
-    shippings?: XOR<ShippingRelationFilter, ShippingWhereInput> | null
+    shipping_id?: IntNullableFilter | number | null
+    product_id?: IntNullableFilter | number | null
+    created_at?: DateTimeFilter | Date | string
+    updated_at?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
+    product?: XOR<ProductsRelationFilter, productsWhereInput> | null
+    shipping?: XOR<ShippingRelationFilter, ShippingWhereInput> | null
   }
 
-  export type shipping_productsOrderByWithRelationInput = {
+  export type ShippingProductOrderByWithRelationInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-    products?: productsOrderByWithRelationInput
-    shippings?: ShippingOrderByWithRelationInput
+    shipping_id?: SortOrder
+    product_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
+    product?: productsOrderByWithRelationInput
+    shipping?: ShippingOrderByWithRelationInput
   }
 
-  export type shipping_productsWhereUniqueInput = {
+  export type ShippingProductWhereUniqueInput = {
     id?: number
   }
 
-  export type shipping_productsOrderByWithAggregationInput = {
+  export type ShippingProductOrderByWithAggregationInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-    _count?: shipping_productsCountOrderByAggregateInput
-    _avg?: shipping_productsAvgOrderByAggregateInput
-    _max?: shipping_productsMaxOrderByAggregateInput
-    _min?: shipping_productsMinOrderByAggregateInput
-    _sum?: shipping_productsSumOrderByAggregateInput
+    shipping_id?: SortOrder
+    product_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
+    _count?: ShippingProductCountOrderByAggregateInput
+    _avg?: ShippingProductAvgOrderByAggregateInput
+    _max?: ShippingProductMaxOrderByAggregateInput
+    _min?: ShippingProductMinOrderByAggregateInput
+    _sum?: ShippingProductSumOrderByAggregateInput
   }
 
-  export type shipping_productsScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<shipping_productsScalarWhereWithAggregatesInput>
-    OR?: Enumerable<shipping_productsScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<shipping_productsScalarWhereWithAggregatesInput>
+  export type ShippingProductScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ShippingProductScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ShippingProductScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ShippingProductScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
     weight?: FloatNullableWithAggregatesFilter | number | null
-    shippingId?: IntNullableWithAggregatesFilter | number | null
-    productId?: IntNullableWithAggregatesFilter | number | null
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    deletedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    shipping_id?: IntNullableWithAggregatesFilter | number | null
+    product_id?: IntNullableWithAggregatesFilter | number | null
+    created_at?: DateTimeWithAggregatesFilter | Date | string
+    updated_at?: DateTimeWithAggregatesFilter | Date | string
+    deleted_at?: DateTimeNullableWithAggregatesFilter | Date | string | null
   }
 
   export type ShippingWhereInput = {
@@ -27958,8 +27958,8 @@ export namespace Prisma {
     vessel?: XOR<VesselRelationFilter, VesselWhereInput> | null
     shipping_documents?: Shipping_documentsListRelationFilter
     shipping_files?: Shipping_filesListRelationFilter
-    shipping_ports?: Shipping_portsListRelationFilter
-    shipping_products?: Shipping_productsListRelationFilter
+    shipping_ports?: ShippingPortListRelationFilter
+    shipping_products?: ShippingProductListRelationFilter
     subsets?: SubsetsListRelationFilter
     inquires?: InquiresListRelationFilter
     ShippingChecklistItem?: ShippingChecklistItemListRelationFilter
@@ -28017,8 +28017,8 @@ export namespace Prisma {
     vessel?: VesselOrderByWithRelationInput
     shipping_documents?: shipping_documentsOrderByRelationAggregateInput
     shipping_files?: shipping_filesOrderByRelationAggregateInput
-    shipping_ports?: shipping_portsOrderByRelationAggregateInput
-    shipping_products?: shipping_productsOrderByRelationAggregateInput
+    shipping_ports?: ShippingPortOrderByRelationAggregateInput
+    shipping_products?: ShippingProductOrderByRelationAggregateInput
     subsets?: subsetsOrderByRelationAggregateInput
     inquires?: inquiresOrderByRelationAggregateInput
     ShippingChecklistItem?: ShippingChecklistItemOrderByRelationAggregateInput
@@ -28793,7 +28793,7 @@ export namespace Prisma {
     waterDensity?: number | null
     ports?: portsCreateNestedOneWithoutBerthsInput
     berth_products?: berth_productsCreateNestedManyWithoutBerthsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsUncheckedCreateInput = {
@@ -28811,7 +28811,7 @@ export namespace Prisma {
     maxBeam?: number | null
     waterDensity?: number | null
     berth_products?: berth_productsUncheckedCreateNestedManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsUpdateInput = {
@@ -28828,7 +28828,7 @@ export namespace Prisma {
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
     ports?: portsUpdateOneWithoutBerthsInput
     berth_products?: berth_productsUpdateManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutBerthsInput
   }
 
   export type berthsUncheckedUpdateInput = {
@@ -28846,7 +28846,7 @@ export namespace Prisma {
     maxBeam?: NullableFloatFieldUpdateOperationsInput | number | null
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
     berth_products?: berth_productsUncheckedUpdateManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutBerthsInput
   }
 
   export type berthsCreateManyInput = {
@@ -29036,12 +29036,12 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
     shipping?: ShippingCreateNestedOneWithoutShippingChecklistItemInput
     user?: usersCreateNestedOneWithoutShippingChecklistItemInput
   }
@@ -29051,26 +29051,26 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     shipping_id: number
     updated_by_user_id?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type ShippingChecklistItemUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shipping?: ShippingUpdateOneWithoutShippingChecklistItemInput
     user?: usersUpdateOneWithoutShippingChecklistItemInput
   }
@@ -29080,14 +29080,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
     shipping_id?: IntFieldUpdateOperationsInput | number
     updated_by_user_id?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ShippingChecklistItemCreateManyInput = {
@@ -29095,26 +29095,26 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     shipping_id: number
     updated_by_user_id?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type ShippingChecklistItemUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ShippingChecklistItemUncheckedUpdateManyInput = {
@@ -29122,14 +29122,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
     shipping_id?: IntFieldUpdateOperationsInput | number
     updated_by_user_id?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CountryCreateInput = {
@@ -29327,7 +29327,7 @@ export namespace Prisma {
     country?: CountryCreateNestedOneWithoutPortsInput
     berths?: berthsCreateNestedManyWithoutPortsInput
     port_files?: port_filesCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutPortsInput
   }
 
   export type portsUncheckedCreateInput = {
@@ -29340,7 +29340,7 @@ export namespace Prisma {
     slug?: string | null
     berths?: berthsUncheckedCreateNestedManyWithoutPortsInput
     port_files?: port_filesUncheckedCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutPortsInput
   }
 
   export type portsUpdateInput = {
@@ -29352,7 +29352,7 @@ export namespace Prisma {
     country?: CountryUpdateOneWithoutPortsInput
     berths?: berthsUpdateManyWithoutPortsInput
     port_files?: port_filesUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutPortsInput
   }
 
   export type portsUncheckedUpdateInput = {
@@ -29365,7 +29365,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     berths?: berthsUncheckedUpdateManyWithoutPortsInput
     port_files?: port_filesUncheckedUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutPortsInput
   }
 
   export type portsCreateManyInput = {
@@ -29403,7 +29403,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     berth_products?: berth_productsCreateNestedManyWithoutProductsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutProductsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutProductInput
   }
 
   export type productsUncheckedCreateInput = {
@@ -29414,7 +29414,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     berth_products?: berth_productsUncheckedCreateNestedManyWithoutProductsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutProductsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type productsUpdateInput = {
@@ -29424,7 +29424,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     berth_products?: berth_productsUpdateManyWithoutProductsInput
-    shipping_products?: shipping_productsUpdateManyWithoutProductsInput
+    shipping_products?: ShippingProductUpdateManyWithoutProductInput
   }
 
   export type productsUncheckedUpdateInput = {
@@ -29435,7 +29435,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     berth_products?: berth_productsUncheckedUpdateManyWithoutProductsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutProductsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutProductInput
   }
 
   export type productsCreateManyInput = {
@@ -30041,175 +30041,175 @@ export namespace Prisma {
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type shipping_portsCreateInput = {
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+  export type ShippingPortCreateInput = {
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
     berths?: berthsCreateNestedOneWithoutShipping_portsInput
     ports?: portsCreateNestedOneWithoutShipping_portsInput
     shippings?: ShippingCreateNestedOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedCreateInput = {
+  export type ShippingPortUncheckedCreateInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    portId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    port_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_portsUpdateInput = {
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ShippingPortUpdateInput = {
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     berths?: berthsUpdateOneWithoutShipping_portsInput
     ports?: portsUpdateOneWithoutShipping_portsInput
     shippings?: ShippingUpdateOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedUpdateInput = {
+  export type ShippingPortUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    portId?: NullableIntFieldUpdateOperationsInput | number | null
-    berthId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    port_id?: NullableIntFieldUpdateOperationsInput | number | null
+    berth_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_portsCreateManyInput = {
+  export type ShippingPortCreateManyInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    portId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    port_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_portsUpdateManyMutationInput = {
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ShippingPortUpdateManyMutationInput = {
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_portsUncheckedUpdateManyInput = {
+  export type ShippingPortUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    portId?: NullableIntFieldUpdateOperationsInput | number | null
-    berthId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    port_id?: NullableIntFieldUpdateOperationsInput | number | null
+    berth_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_productsCreateInput = {
+  export type ShippingProductCreateInput = {
     weight?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    products?: productsCreateNestedOneWithoutShipping_productsInput
-    shippings?: ShippingCreateNestedOneWithoutShipping_productsInput
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
+    product?: productsCreateNestedOneWithoutShipping_productsInput
+    shipping?: ShippingCreateNestedOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedCreateInput = {
-    id?: number
-    weight?: number | null
-    shippingId?: number | null
-    productId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type shipping_productsUpdateInput = {
-    weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    products?: productsUpdateOneWithoutShipping_productsInput
-    shippings?: ShippingUpdateOneWithoutShipping_productsInput
-  }
-
-  export type shipping_productsUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type shipping_productsCreateManyInput = {
+  export type ShippingProductUncheckedCreateInput = {
     id?: number
     weight?: number | null
-    shippingId?: number | null
-    productId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    shipping_id?: number | null
+    product_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_productsUpdateManyMutationInput = {
+  export type ShippingProductUpdateInput = {
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    product?: productsUpdateOneWithoutShipping_productsInput
+    shipping?: ShippingUpdateOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedUpdateManyInput = {
+  export type ShippingProductUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    product_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ShippingProductCreateManyInput = {
+    id?: number
+    weight?: number | null
+    shipping_id?: number | null
+    product_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
+  }
+
+  export type ShippingProductUpdateManyMutationInput = {
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ShippingProductUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    product_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ShippingCreateInput = {
@@ -30261,8 +30261,8 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -30318,8 +30318,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -30374,8 +30374,8 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -30431,8 +30431,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -31509,17 +31509,17 @@ export namespace Prisma {
     none?: berth_productsWhereInput
   }
 
-  export type Shipping_portsListRelationFilter = {
-    every?: shipping_portsWhereInput
-    some?: shipping_portsWhereInput
-    none?: shipping_portsWhereInput
+  export type ShippingPortListRelationFilter = {
+    every?: ShippingPortWhereInput
+    some?: ShippingPortWhereInput
+    none?: ShippingPortWhereInput
   }
 
   export type berth_productsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type shipping_portsOrderByRelationAggregateInput = {
+  export type ShippingPortOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31780,9 +31780,9 @@ export namespace Prisma {
     is_done?: SortOrder
     shipping_id?: SortOrder
     updated_by_user_id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    created_at?: SortOrder
+    updated_ut?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type ShippingChecklistItemAvgOrderByAggregateInput = {
@@ -31801,9 +31801,9 @@ export namespace Prisma {
     is_done?: SortOrder
     shipping_id?: SortOrder
     updated_by_user_id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    created_at?: SortOrder
+    updated_ut?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type ShippingChecklistItemMinOrderByAggregateInput = {
@@ -31816,9 +31816,9 @@ export namespace Prisma {
     is_done?: SortOrder
     shipping_id?: SortOrder
     updated_by_user_id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    created_at?: SortOrder
+    updated_ut?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type ShippingChecklistItemSumOrderByAggregateInput = {
@@ -32031,13 +32031,13 @@ export namespace Prisma {
     countryId?: SortOrder
   }
 
-  export type Shipping_productsListRelationFilter = {
-    every?: shipping_productsWhereInput
-    some?: shipping_productsWhereInput
-    none?: shipping_productsWhereInput
+  export type ShippingProductListRelationFilter = {
+    every?: ShippingProductWhereInput
+    some?: ShippingProductWhereInput
+    none?: ShippingProductWhereInput
   }
 
-  export type shipping_productsOrderByRelationAggregateInput = {
+  export type ShippingProductOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32448,110 +32448,110 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type shipping_portsCountOrderByAggregateInput = {
+  export type ShippingPortCountOrderByAggregateInput = {
     id?: SortOrder
-    estimatedTimeOfArrival?: SortOrder
-    estimatedTimeOfBerthing?: SortOrder
-    estimatedTimeOfSailing?: SortOrder
-    timeOfArrival?: SortOrder
-    timeOfBerthing?: SortOrder
-    timeOfSailing?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    estimated_time_of_arrival?: SortOrder
+    estimated_time_of_berthing?: SortOrder
+    estimated_time_of_sailing?: SortOrder
+    time_of_arrival?: SortOrder
+    time_of_berthing?: SortOrder
+    time_of_sailing?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_portsAvgOrderByAggregateInput = {
+  export type ShippingPortAvgOrderByAggregateInput = {
     id?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
   }
 
-  export type shipping_portsMaxOrderByAggregateInput = {
+  export type ShippingPortMaxOrderByAggregateInput = {
     id?: SortOrder
-    estimatedTimeOfArrival?: SortOrder
-    estimatedTimeOfBerthing?: SortOrder
-    estimatedTimeOfSailing?: SortOrder
-    timeOfArrival?: SortOrder
-    timeOfBerthing?: SortOrder
-    timeOfSailing?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    estimated_time_of_arrival?: SortOrder
+    estimated_time_of_berthing?: SortOrder
+    estimated_time_of_sailing?: SortOrder
+    time_of_arrival?: SortOrder
+    time_of_berthing?: SortOrder
+    time_of_sailing?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_portsMinOrderByAggregateInput = {
+  export type ShippingPortMinOrderByAggregateInput = {
     id?: SortOrder
-    estimatedTimeOfArrival?: SortOrder
-    estimatedTimeOfBerthing?: SortOrder
-    estimatedTimeOfSailing?: SortOrder
-    timeOfArrival?: SortOrder
-    timeOfBerthing?: SortOrder
-    timeOfSailing?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    estimated_time_of_arrival?: SortOrder
+    estimated_time_of_berthing?: SortOrder
+    estimated_time_of_sailing?: SortOrder
+    time_of_arrival?: SortOrder
+    time_of_berthing?: SortOrder
+    time_of_sailing?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_portsSumOrderByAggregateInput = {
+  export type ShippingPortSumOrderByAggregateInput = {
     id?: SortOrder
-    shippingId?: SortOrder
-    portId?: SortOrder
-    berthId?: SortOrder
+    shipping_id?: SortOrder
+    port_id?: SortOrder
+    berth_id?: SortOrder
   }
 
-  export type shipping_productsCountOrderByAggregateInput = {
+  export type ShippingProductCountOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    shipping_id?: SortOrder
+    product_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_productsAvgOrderByAggregateInput = {
+  export type ShippingProductAvgOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
+    shipping_id?: SortOrder
+    product_id?: SortOrder
   }
 
-  export type shipping_productsMaxOrderByAggregateInput = {
+  export type ShippingProductMaxOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    shipping_id?: SortOrder
+    product_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_productsMinOrderByAggregateInput = {
+  export type ShippingProductMinOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
+    shipping_id?: SortOrder
+    product_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    deleted_at?: SortOrder
   }
 
-  export type shipping_productsSumOrderByAggregateInput = {
+  export type ShippingProductSumOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    shippingId?: SortOrder
-    productId?: SortOrder
+    shipping_id?: SortOrder
+    product_id?: SortOrder
   }
 
   export type VesselRelationFilter = {
@@ -33346,11 +33346,11 @@ export namespace Prisma {
     connect?: Enumerable<berth_productsWhereUniqueInput>
   }
 
-  export type shipping_portsCreateNestedManyWithoutBerthsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutBerthsInput>, Enumerable<shipping_portsUncheckedCreateWithoutBerthsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutBerthsInput>
-    createMany?: shipping_portsCreateManyBerthsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortCreateNestedManyWithoutBerthsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutBerthsInput>, Enumerable<ShippingPortUncheckedCreateWithoutBerthsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutBerthsInput>
+    createMany?: ShippingPortCreateManyBerthsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
   export type berth_productsUncheckedCreateNestedManyWithoutBerthsInput = {
@@ -33360,11 +33360,11 @@ export namespace Prisma {
     connect?: Enumerable<berth_productsWhereUniqueInput>
   }
 
-  export type shipping_portsUncheckedCreateNestedManyWithoutBerthsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutBerthsInput>, Enumerable<shipping_portsUncheckedCreateWithoutBerthsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutBerthsInput>
-    createMany?: shipping_portsCreateManyBerthsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortUncheckedCreateNestedManyWithoutBerthsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutBerthsInput>, Enumerable<ShippingPortUncheckedCreateWithoutBerthsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutBerthsInput>
+    createMany?: ShippingPortCreateManyBerthsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -33395,18 +33395,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<berth_productsScalarWhereInput>
   }
 
-  export type shipping_portsUpdateManyWithoutBerthsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutBerthsInput>, Enumerable<shipping_portsUncheckedCreateWithoutBerthsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutBerthsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutBerthsInput>
-    createMany?: shipping_portsCreateManyBerthsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutBerthsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutBerthsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUpdateManyWithoutBerthsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutBerthsInput>, Enumerable<ShippingPortUncheckedCreateWithoutBerthsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutBerthsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutBerthsInput>
+    createMany?: ShippingPortCreateManyBerthsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutBerthsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutBerthsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -33431,18 +33431,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<berth_productsScalarWhereInput>
   }
 
-  export type shipping_portsUncheckedUpdateManyWithoutBerthsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutBerthsInput>, Enumerable<shipping_portsUncheckedCreateWithoutBerthsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutBerthsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutBerthsInput>
-    createMany?: shipping_portsCreateManyBerthsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutBerthsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutBerthsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUncheckedUpdateManyWithoutBerthsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutBerthsInput>, Enumerable<ShippingPortUncheckedCreateWithoutBerthsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutBerthsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutBerthsInput>
+    createMany?: ShippingPortCreateManyBerthsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutBerthsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutBerthsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
   export type ChecklistTemplateItemCreateNestedManyWithoutChecklistTemplateInput = {
@@ -33679,11 +33679,11 @@ export namespace Prisma {
     connect?: Enumerable<port_filesWhereUniqueInput>
   }
 
-  export type shipping_portsCreateNestedManyWithoutPortsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutPortsInput>, Enumerable<shipping_portsUncheckedCreateWithoutPortsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutPortsInput>
-    createMany?: shipping_portsCreateManyPortsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortCreateNestedManyWithoutPortsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutPortsInput>, Enumerable<ShippingPortUncheckedCreateWithoutPortsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutPortsInput>
+    createMany?: ShippingPortCreateManyPortsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
   export type berthsUncheckedCreateNestedManyWithoutPortsInput = {
@@ -33700,11 +33700,11 @@ export namespace Prisma {
     connect?: Enumerable<port_filesWhereUniqueInput>
   }
 
-  export type shipping_portsUncheckedCreateNestedManyWithoutPortsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutPortsInput>, Enumerable<shipping_portsUncheckedCreateWithoutPortsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutPortsInput>
-    createMany?: shipping_portsCreateManyPortsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortUncheckedCreateNestedManyWithoutPortsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutPortsInput>, Enumerable<ShippingPortUncheckedCreateWithoutPortsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutPortsInput>
+    createMany?: ShippingPortCreateManyPortsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
   export type CountryUpdateOneWithoutPortsInput = {
@@ -33745,18 +33745,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<port_filesScalarWhereInput>
   }
 
-  export type shipping_portsUpdateManyWithoutPortsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutPortsInput>, Enumerable<shipping_portsUncheckedCreateWithoutPortsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutPortsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutPortsInput>
-    createMany?: shipping_portsCreateManyPortsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutPortsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutPortsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUpdateManyWithoutPortsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutPortsInput>, Enumerable<ShippingPortUncheckedCreateWithoutPortsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutPortsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutPortsInput>
+    createMany?: ShippingPortCreateManyPortsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutPortsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutPortsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
   export type berthsUncheckedUpdateManyWithoutPortsInput = {
@@ -33787,18 +33787,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<port_filesScalarWhereInput>
   }
 
-  export type shipping_portsUncheckedUpdateManyWithoutPortsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutPortsInput>, Enumerable<shipping_portsUncheckedCreateWithoutPortsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutPortsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutPortsInput>
-    createMany?: shipping_portsCreateManyPortsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutPortsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutPortsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUncheckedUpdateManyWithoutPortsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutPortsInput>, Enumerable<ShippingPortUncheckedCreateWithoutPortsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutPortsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutPortsInput>
+    createMany?: ShippingPortCreateManyPortsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutPortsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutPortsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
   export type berth_productsCreateNestedManyWithoutProductsInput = {
@@ -33808,11 +33808,11 @@ export namespace Prisma {
     connect?: Enumerable<berth_productsWhereUniqueInput>
   }
 
-  export type shipping_productsCreateNestedManyWithoutProductsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutProductsInput>, Enumerable<shipping_productsUncheckedCreateWithoutProductsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutProductsInput>
-    createMany?: shipping_productsCreateManyProductsInputEnvelope
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
+  export type ShippingProductCreateNestedManyWithoutProductInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutProductInput>, Enumerable<ShippingProductUncheckedCreateWithoutProductInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutProductInput>
+    createMany?: ShippingProductCreateManyProductInputEnvelope
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
   }
 
   export type berth_productsUncheckedCreateNestedManyWithoutProductsInput = {
@@ -33822,11 +33822,11 @@ export namespace Prisma {
     connect?: Enumerable<berth_productsWhereUniqueInput>
   }
 
-  export type shipping_productsUncheckedCreateNestedManyWithoutProductsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutProductsInput>, Enumerable<shipping_productsUncheckedCreateWithoutProductsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutProductsInput>
-    createMany?: shipping_productsCreateManyProductsInputEnvelope
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
+  export type ShippingProductUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutProductInput>, Enumerable<ShippingProductUncheckedCreateWithoutProductInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutProductInput>
+    createMany?: ShippingProductCreateManyProductInputEnvelope
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
   }
 
   export type berth_productsUpdateManyWithoutProductsInput = {
@@ -33843,18 +33843,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<berth_productsScalarWhereInput>
   }
 
-  export type shipping_productsUpdateManyWithoutProductsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutProductsInput>, Enumerable<shipping_productsUncheckedCreateWithoutProductsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutProductsInput>
-    upsert?: Enumerable<shipping_productsUpsertWithWhereUniqueWithoutProductsInput>
-    createMany?: shipping_productsCreateManyProductsInputEnvelope
-    set?: Enumerable<shipping_productsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_productsWhereUniqueInput>
-    delete?: Enumerable<shipping_productsWhereUniqueInput>
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
-    update?: Enumerable<shipping_productsUpdateWithWhereUniqueWithoutProductsInput>
-    updateMany?: Enumerable<shipping_productsUpdateManyWithWhereWithoutProductsInput>
-    deleteMany?: Enumerable<shipping_productsScalarWhereInput>
+  export type ShippingProductUpdateManyWithoutProductInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutProductInput>, Enumerable<ShippingProductUncheckedCreateWithoutProductInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutProductInput>
+    upsert?: Enumerable<ShippingProductUpsertWithWhereUniqueWithoutProductInput>
+    createMany?: ShippingProductCreateManyProductInputEnvelope
+    set?: Enumerable<ShippingProductWhereUniqueInput>
+    disconnect?: Enumerable<ShippingProductWhereUniqueInput>
+    delete?: Enumerable<ShippingProductWhereUniqueInput>
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
+    update?: Enumerable<ShippingProductUpdateWithWhereUniqueWithoutProductInput>
+    updateMany?: Enumerable<ShippingProductUpdateManyWithWhereWithoutProductInput>
+    deleteMany?: Enumerable<ShippingProductScalarWhereInput>
   }
 
   export type berth_productsUncheckedUpdateManyWithoutProductsInput = {
@@ -33871,18 +33871,18 @@ export namespace Prisma {
     deleteMany?: Enumerable<berth_productsScalarWhereInput>
   }
 
-  export type shipping_productsUncheckedUpdateManyWithoutProductsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutProductsInput>, Enumerable<shipping_productsUncheckedCreateWithoutProductsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutProductsInput>
-    upsert?: Enumerable<shipping_productsUpsertWithWhereUniqueWithoutProductsInput>
-    createMany?: shipping_productsCreateManyProductsInputEnvelope
-    set?: Enumerable<shipping_productsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_productsWhereUniqueInput>
-    delete?: Enumerable<shipping_productsWhereUniqueInput>
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
-    update?: Enumerable<shipping_productsUpdateWithWhereUniqueWithoutProductsInput>
-    updateMany?: Enumerable<shipping_productsUpdateManyWithWhereWithoutProductsInput>
-    deleteMany?: Enumerable<shipping_productsScalarWhereInput>
+  export type ShippingProductUncheckedUpdateManyWithoutProductInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutProductInput>, Enumerable<ShippingProductUncheckedCreateWithoutProductInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutProductInput>
+    upsert?: Enumerable<ShippingProductUpsertWithWhereUniqueWithoutProductInput>
+    createMany?: ShippingProductCreateManyProductInputEnvelope
+    set?: Enumerable<ShippingProductWhereUniqueInput>
+    disconnect?: Enumerable<ShippingProductWhereUniqueInput>
+    delete?: Enumerable<ShippingProductWhereUniqueInput>
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
+    update?: Enumerable<ShippingProductUpdateWithWhereUniqueWithoutProductInput>
+    updateMany?: Enumerable<ShippingProductUpdateManyWithWhereWithoutProductInput>
+    deleteMany?: Enumerable<ShippingProductScalarWhereInput>
   }
 
   export type proformasCreateNestedOneWithoutProforma_filesInput = {
@@ -34189,18 +34189,18 @@ export namespace Prisma {
     connect?: Enumerable<shipping_filesWhereUniqueInput>
   }
 
-  export type shipping_portsCreateNestedManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutShippingsInput>, Enumerable<shipping_portsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutShippingsInput>
-    createMany?: shipping_portsCreateManyShippingsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortCreateNestedManyWithoutShippingsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutShippingsInput>, Enumerable<ShippingPortUncheckedCreateWithoutShippingsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutShippingsInput>
+    createMany?: ShippingPortCreateManyShippingsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
-  export type shipping_productsCreateNestedManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutShippingsInput>, Enumerable<shipping_productsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutShippingsInput>
-    createMany?: shipping_productsCreateManyShippingsInputEnvelope
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
+  export type ShippingProductCreateNestedManyWithoutShippingInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutShippingInput>, Enumerable<ShippingProductUncheckedCreateWithoutShippingInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutShippingInput>
+    createMany?: ShippingProductCreateManyShippingInputEnvelope
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
   }
 
   export type subsetsCreateNestedManyWithoutShippingsInput = {
@@ -34238,18 +34238,18 @@ export namespace Prisma {
     connect?: Enumerable<shipping_filesWhereUniqueInput>
   }
 
-  export type shipping_portsUncheckedCreateNestedManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutShippingsInput>, Enumerable<shipping_portsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutShippingsInput>
-    createMany?: shipping_portsCreateManyShippingsInputEnvelope
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
+  export type ShippingPortUncheckedCreateNestedManyWithoutShippingsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutShippingsInput>, Enumerable<ShippingPortUncheckedCreateWithoutShippingsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutShippingsInput>
+    createMany?: ShippingPortCreateManyShippingsInputEnvelope
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
   }
 
-  export type shipping_productsUncheckedCreateNestedManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutShippingsInput>, Enumerable<shipping_productsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutShippingsInput>
-    createMany?: shipping_productsCreateManyShippingsInputEnvelope
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
+  export type ShippingProductUncheckedCreateNestedManyWithoutShippingInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutShippingInput>, Enumerable<ShippingProductUncheckedCreateWithoutShippingInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutShippingInput>
+    createMany?: ShippingProductCreateManyShippingInputEnvelope
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
   }
 
   export type subsetsUncheckedCreateNestedManyWithoutShippingsInput = {
@@ -34321,32 +34321,32 @@ export namespace Prisma {
     deleteMany?: Enumerable<shipping_filesScalarWhereInput>
   }
 
-  export type shipping_portsUpdateManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutShippingsInput>, Enumerable<shipping_portsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutShippingsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutShippingsInput>
-    createMany?: shipping_portsCreateManyShippingsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutShippingsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutShippingsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUpdateManyWithoutShippingsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutShippingsInput>, Enumerable<ShippingPortUncheckedCreateWithoutShippingsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutShippingsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutShippingsInput>
+    createMany?: ShippingPortCreateManyShippingsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutShippingsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutShippingsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
-  export type shipping_productsUpdateManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutShippingsInput>, Enumerable<shipping_productsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutShippingsInput>
-    upsert?: Enumerable<shipping_productsUpsertWithWhereUniqueWithoutShippingsInput>
-    createMany?: shipping_productsCreateManyShippingsInputEnvelope
-    set?: Enumerable<shipping_productsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_productsWhereUniqueInput>
-    delete?: Enumerable<shipping_productsWhereUniqueInput>
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
-    update?: Enumerable<shipping_productsUpdateWithWhereUniqueWithoutShippingsInput>
-    updateMany?: Enumerable<shipping_productsUpdateManyWithWhereWithoutShippingsInput>
-    deleteMany?: Enumerable<shipping_productsScalarWhereInput>
+  export type ShippingProductUpdateManyWithoutShippingInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutShippingInput>, Enumerable<ShippingProductUncheckedCreateWithoutShippingInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutShippingInput>
+    upsert?: Enumerable<ShippingProductUpsertWithWhereUniqueWithoutShippingInput>
+    createMany?: ShippingProductCreateManyShippingInputEnvelope
+    set?: Enumerable<ShippingProductWhereUniqueInput>
+    disconnect?: Enumerable<ShippingProductWhereUniqueInput>
+    delete?: Enumerable<ShippingProductWhereUniqueInput>
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
+    update?: Enumerable<ShippingProductUpdateWithWhereUniqueWithoutShippingInput>
+    updateMany?: Enumerable<ShippingProductUpdateManyWithWhereWithoutShippingInput>
+    deleteMany?: Enumerable<ShippingProductScalarWhereInput>
   }
 
   export type subsetsUpdateManyWithoutShippingsInput = {
@@ -34419,32 +34419,32 @@ export namespace Prisma {
     deleteMany?: Enumerable<shipping_filesScalarWhereInput>
   }
 
-  export type shipping_portsUncheckedUpdateManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_portsCreateWithoutShippingsInput>, Enumerable<shipping_portsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_portsCreateOrConnectWithoutShippingsInput>
-    upsert?: Enumerable<shipping_portsUpsertWithWhereUniqueWithoutShippingsInput>
-    createMany?: shipping_portsCreateManyShippingsInputEnvelope
-    set?: Enumerable<shipping_portsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_portsWhereUniqueInput>
-    delete?: Enumerable<shipping_portsWhereUniqueInput>
-    connect?: Enumerable<shipping_portsWhereUniqueInput>
-    update?: Enumerable<shipping_portsUpdateWithWhereUniqueWithoutShippingsInput>
-    updateMany?: Enumerable<shipping_portsUpdateManyWithWhereWithoutShippingsInput>
-    deleteMany?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortUncheckedUpdateManyWithoutShippingsInput = {
+    create?: XOR<Enumerable<ShippingPortCreateWithoutShippingsInput>, Enumerable<ShippingPortUncheckedCreateWithoutShippingsInput>>
+    connectOrCreate?: Enumerable<ShippingPortCreateOrConnectWithoutShippingsInput>
+    upsert?: Enumerable<ShippingPortUpsertWithWhereUniqueWithoutShippingsInput>
+    createMany?: ShippingPortCreateManyShippingsInputEnvelope
+    set?: Enumerable<ShippingPortWhereUniqueInput>
+    disconnect?: Enumerable<ShippingPortWhereUniqueInput>
+    delete?: Enumerable<ShippingPortWhereUniqueInput>
+    connect?: Enumerable<ShippingPortWhereUniqueInput>
+    update?: Enumerable<ShippingPortUpdateWithWhereUniqueWithoutShippingsInput>
+    updateMany?: Enumerable<ShippingPortUpdateManyWithWhereWithoutShippingsInput>
+    deleteMany?: Enumerable<ShippingPortScalarWhereInput>
   }
 
-  export type shipping_productsUncheckedUpdateManyWithoutShippingsInput = {
-    create?: XOR<Enumerable<shipping_productsCreateWithoutShippingsInput>, Enumerable<shipping_productsUncheckedCreateWithoutShippingsInput>>
-    connectOrCreate?: Enumerable<shipping_productsCreateOrConnectWithoutShippingsInput>
-    upsert?: Enumerable<shipping_productsUpsertWithWhereUniqueWithoutShippingsInput>
-    createMany?: shipping_productsCreateManyShippingsInputEnvelope
-    set?: Enumerable<shipping_productsWhereUniqueInput>
-    disconnect?: Enumerable<shipping_productsWhereUniqueInput>
-    delete?: Enumerable<shipping_productsWhereUniqueInput>
-    connect?: Enumerable<shipping_productsWhereUniqueInput>
-    update?: Enumerable<shipping_productsUpdateWithWhereUniqueWithoutShippingsInput>
-    updateMany?: Enumerable<shipping_productsUpdateManyWithWhereWithoutShippingsInput>
-    deleteMany?: Enumerable<shipping_productsScalarWhereInput>
+  export type ShippingProductUncheckedUpdateManyWithoutShippingInput = {
+    create?: XOR<Enumerable<ShippingProductCreateWithoutShippingInput>, Enumerable<ShippingProductUncheckedCreateWithoutShippingInput>>
+    connectOrCreate?: Enumerable<ShippingProductCreateOrConnectWithoutShippingInput>
+    upsert?: Enumerable<ShippingProductUpsertWithWhereUniqueWithoutShippingInput>
+    createMany?: ShippingProductCreateManyShippingInputEnvelope
+    set?: Enumerable<ShippingProductWhereUniqueInput>
+    disconnect?: Enumerable<ShippingProductWhereUniqueInput>
+    delete?: Enumerable<ShippingProductWhereUniqueInput>
+    connect?: Enumerable<ShippingProductWhereUniqueInput>
+    update?: Enumerable<ShippingProductUpdateWithWhereUniqueWithoutShippingInput>
+    updateMany?: Enumerable<ShippingProductUpdateManyWithWhereWithoutShippingInput>
+    deleteMany?: Enumerable<ShippingProductScalarWhereInput>
   }
 
   export type subsetsUncheckedUpdateManyWithoutShippingsInput = {
@@ -35496,7 +35496,7 @@ export namespace Prisma {
     maxBeam?: number | null
     waterDensity?: number | null
     ports?: portsCreateNestedOneWithoutBerthsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsUncheckedCreateWithoutBerth_productsInput = {
@@ -35513,7 +35513,7 @@ export namespace Prisma {
     maxDeadWeightTonnage?: number | null
     maxBeam?: number | null
     waterDensity?: number | null
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsCreateOrConnectWithoutBerth_productsInput = {
@@ -35527,7 +35527,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shipping_products?: shipping_productsCreateNestedManyWithoutProductsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutProductInput
   }
 
   export type productsUncheckedCreateWithoutBerth_productsInput = {
@@ -35537,7 +35537,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutProductsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type productsCreateOrConnectWithoutBerth_productsInput = {
@@ -35634,7 +35634,7 @@ export namespace Prisma {
     maxBeam?: NullableFloatFieldUpdateOperationsInput | number | null
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
     ports?: portsUpdateOneWithoutBerthsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutBerthsInput
   }
 
   export type berthsUncheckedUpdateWithoutBerth_productsInput = {
@@ -35651,7 +35651,7 @@ export namespace Prisma {
     maxDeadWeightTonnage?: NullableFloatFieldUpdateOperationsInput | number | null
     maxBeam?: NullableFloatFieldUpdateOperationsInput | number | null
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutBerthsInput
   }
 
   export type productsUpsertWithoutBerth_productsInput = {
@@ -35665,7 +35665,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shipping_products?: shipping_productsUpdateManyWithoutProductsInput
+    shipping_products?: ShippingProductUpdateManyWithoutProductInput
   }
 
   export type productsUncheckedUpdateWithoutBerth_productsInput = {
@@ -35675,7 +35675,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutProductsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutProductInput
   }
 
   export type proformasUpsertWithWhereUniqueWithoutBerth_productsInput = {
@@ -35736,7 +35736,7 @@ export namespace Prisma {
     slug?: string | null
     country?: CountryCreateNestedOneWithoutPortsInput
     port_files?: port_filesCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutPortsInput
   }
 
   export type portsUncheckedCreateWithoutBerthsInput = {
@@ -35748,7 +35748,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     slug?: string | null
     port_files?: port_filesUncheckedCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutPortsInput
   }
 
   export type portsCreateOrConnectWithoutBerthsInput = {
@@ -35787,42 +35787,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type shipping_portsCreateWithoutBerthsInput = {
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+  export type ShippingPortCreateWithoutBerthsInput = {
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
     ports?: portsCreateNestedOneWithoutShipping_portsInput
     shippings?: ShippingCreateNestedOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedCreateWithoutBerthsInput = {
+  export type ShippingPortUncheckedCreateWithoutBerthsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    portId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    port_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_portsCreateOrConnectWithoutBerthsInput = {
-    where: shipping_portsWhereUniqueInput
-    create: XOR<shipping_portsCreateWithoutBerthsInput, shipping_portsUncheckedCreateWithoutBerthsInput>
+  export type ShippingPortCreateOrConnectWithoutBerthsInput = {
+    where: ShippingPortWhereUniqueInput
+    create: XOR<ShippingPortCreateWithoutBerthsInput, ShippingPortUncheckedCreateWithoutBerthsInput>
   }
 
-  export type shipping_portsCreateManyBerthsInputEnvelope = {
-    data: Enumerable<shipping_portsCreateManyBerthsInput>
+  export type ShippingPortCreateManyBerthsInputEnvelope = {
+    data: Enumerable<ShippingPortCreateManyBerthsInput>
     skipDuplicates?: boolean
   }
 
@@ -35839,7 +35839,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     country?: CountryUpdateOneWithoutPortsInput
     port_files?: port_filesUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutPortsInput
   }
 
   export type portsUncheckedUpdateWithoutBerthsInput = {
@@ -35851,7 +35851,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     port_files?: port_filesUncheckedUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutPortsInput
   }
 
   export type berth_productsUpsertWithWhereUniqueWithoutBerthsInput = {
@@ -35884,39 +35884,39 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter | Date | string | null
   }
 
-  export type shipping_portsUpsertWithWhereUniqueWithoutBerthsInput = {
-    where: shipping_portsWhereUniqueInput
-    update: XOR<shipping_portsUpdateWithoutBerthsInput, shipping_portsUncheckedUpdateWithoutBerthsInput>
-    create: XOR<shipping_portsCreateWithoutBerthsInput, shipping_portsUncheckedCreateWithoutBerthsInput>
+  export type ShippingPortUpsertWithWhereUniqueWithoutBerthsInput = {
+    where: ShippingPortWhereUniqueInput
+    update: XOR<ShippingPortUpdateWithoutBerthsInput, ShippingPortUncheckedUpdateWithoutBerthsInput>
+    create: XOR<ShippingPortCreateWithoutBerthsInput, ShippingPortUncheckedCreateWithoutBerthsInput>
   }
 
-  export type shipping_portsUpdateWithWhereUniqueWithoutBerthsInput = {
-    where: shipping_portsWhereUniqueInput
-    data: XOR<shipping_portsUpdateWithoutBerthsInput, shipping_portsUncheckedUpdateWithoutBerthsInput>
+  export type ShippingPortUpdateWithWhereUniqueWithoutBerthsInput = {
+    where: ShippingPortWhereUniqueInput
+    data: XOR<ShippingPortUpdateWithoutBerthsInput, ShippingPortUncheckedUpdateWithoutBerthsInput>
   }
 
-  export type shipping_portsUpdateManyWithWhereWithoutBerthsInput = {
-    where: shipping_portsScalarWhereInput
-    data: XOR<shipping_portsUpdateManyMutationInput, shipping_portsUncheckedUpdateManyWithoutShipping_portsInput>
+  export type ShippingPortUpdateManyWithWhereWithoutBerthsInput = {
+    where: ShippingPortScalarWhereInput
+    data: XOR<ShippingPortUpdateManyMutationInput, ShippingPortUncheckedUpdateManyWithoutShipping_portsInput>
   }
 
-  export type shipping_portsScalarWhereInput = {
-    AND?: Enumerable<shipping_portsScalarWhereInput>
-    OR?: Enumerable<shipping_portsScalarWhereInput>
-    NOT?: Enumerable<shipping_portsScalarWhereInput>
+  export type ShippingPortScalarWhereInput = {
+    AND?: Enumerable<ShippingPortScalarWhereInput>
+    OR?: Enumerable<ShippingPortScalarWhereInput>
+    NOT?: Enumerable<ShippingPortScalarWhereInput>
     id?: IntFilter | number
-    estimatedTimeOfArrival?: DateTimeNullableFilter | Date | string | null
-    estimatedTimeOfBerthing?: DateTimeNullableFilter | Date | string | null
-    estimatedTimeOfSailing?: DateTimeNullableFilter | Date | string | null
-    timeOfArrival?: DateTimeNullableFilter | Date | string | null
-    timeOfBerthing?: DateTimeNullableFilter | Date | string | null
-    timeOfSailing?: DateTimeNullableFilter | Date | string | null
-    shippingId?: IntNullableFilter | number | null
-    portId?: IntNullableFilter | number | null
-    berthId?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_arrival?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_berthing?: DateTimeNullableFilter | Date | string | null
+    estimated_time_of_sailing?: DateTimeNullableFilter | Date | string | null
+    time_of_arrival?: DateTimeNullableFilter | Date | string | null
+    time_of_berthing?: DateTimeNullableFilter | Date | string | null
+    time_of_sailing?: DateTimeNullableFilter | Date | string | null
+    shipping_id?: IntNullableFilter | number | null
+    port_id?: IntNullableFilter | number | null
+    berth_id?: IntNullableFilter | number | null
+    created_at?: DateTimeFilter | Date | string
+    updated_at?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
   }
 
   export type ChecklistTemplateItemCreateWithoutChecklistTemplateInput = {
@@ -36070,8 +36070,8 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
   }
@@ -36126,8 +36126,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
   }
@@ -36233,8 +36233,8 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
   }
@@ -36289,8 +36289,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
   }
@@ -36345,7 +36345,7 @@ export namespace Prisma {
     slug?: string | null
     berths?: berthsCreateNestedManyWithoutPortsInput
     port_files?: port_filesCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutPortsInput
   }
 
   export type portsUncheckedCreateWithoutCountryInput = {
@@ -36357,7 +36357,7 @@ export namespace Prisma {
     slug?: string | null
     berths?: berthsUncheckedCreateNestedManyWithoutPortsInput
     port_files?: port_filesUncheckedCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutPortsInput
   }
 
   export type portsCreateOrConnectWithoutCountryInput = {
@@ -36574,7 +36574,7 @@ export namespace Prisma {
     slug?: string | null
     country?: CountryCreateNestedOneWithoutPortsInput
     berths?: berthsCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutPortsInput
   }
 
   export type portsUncheckedCreateWithoutPort_filesInput = {
@@ -36586,7 +36586,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     slug?: string | null
     berths?: berthsUncheckedCreateNestedManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutPortsInput
   }
 
   export type portsCreateOrConnectWithoutPort_filesInput = {
@@ -36649,7 +36649,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     country?: CountryUpdateOneWithoutPortsInput
     berths?: berthsUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutPortsInput
   }
 
   export type portsUncheckedUpdateWithoutPort_filesInput = {
@@ -36661,7 +36661,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     berths?: berthsUncheckedUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutPortsInput
   }
 
   export type CountryCreateWithoutPortsInput = {
@@ -36701,7 +36701,7 @@ export namespace Prisma {
     maxBeam?: number | null
     waterDensity?: number | null
     berth_products?: berth_productsCreateNestedManyWithoutBerthsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsUncheckedCreateWithoutPortsInput = {
@@ -36718,7 +36718,7 @@ export namespace Prisma {
     maxBeam?: number | null
     waterDensity?: number | null
     berth_products?: berth_productsUncheckedCreateNestedManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutBerthsInput
   }
 
   export type berthsCreateOrConnectWithoutPortsInput = {
@@ -36762,42 +36762,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type shipping_portsCreateWithoutPortsInput = {
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+  export type ShippingPortCreateWithoutPortsInput = {
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
     berths?: berthsCreateNestedOneWithoutShipping_portsInput
     shippings?: ShippingCreateNestedOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedCreateWithoutPortsInput = {
+  export type ShippingPortUncheckedCreateWithoutPortsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_portsCreateOrConnectWithoutPortsInput = {
-    where: shipping_portsWhereUniqueInput
-    create: XOR<shipping_portsCreateWithoutPortsInput, shipping_portsUncheckedCreateWithoutPortsInput>
+  export type ShippingPortCreateOrConnectWithoutPortsInput = {
+    where: ShippingPortWhereUniqueInput
+    create: XOR<ShippingPortCreateWithoutPortsInput, ShippingPortUncheckedCreateWithoutPortsInput>
   }
 
-  export type shipping_portsCreateManyPortsInputEnvelope = {
-    data: Enumerable<shipping_portsCreateManyPortsInput>
+  export type ShippingPortCreateManyPortsInputEnvelope = {
+    data: Enumerable<ShippingPortCreateManyPortsInput>
     skipDuplicates?: boolean
   }
 
@@ -36891,20 +36891,20 @@ export namespace Prisma {
     userId?: IntNullableFilter | number | null
   }
 
-  export type shipping_portsUpsertWithWhereUniqueWithoutPortsInput = {
-    where: shipping_portsWhereUniqueInput
-    update: XOR<shipping_portsUpdateWithoutPortsInput, shipping_portsUncheckedUpdateWithoutPortsInput>
-    create: XOR<shipping_portsCreateWithoutPortsInput, shipping_portsUncheckedCreateWithoutPortsInput>
+  export type ShippingPortUpsertWithWhereUniqueWithoutPortsInput = {
+    where: ShippingPortWhereUniqueInput
+    update: XOR<ShippingPortUpdateWithoutPortsInput, ShippingPortUncheckedUpdateWithoutPortsInput>
+    create: XOR<ShippingPortCreateWithoutPortsInput, ShippingPortUncheckedCreateWithoutPortsInput>
   }
 
-  export type shipping_portsUpdateWithWhereUniqueWithoutPortsInput = {
-    where: shipping_portsWhereUniqueInput
-    data: XOR<shipping_portsUpdateWithoutPortsInput, shipping_portsUncheckedUpdateWithoutPortsInput>
+  export type ShippingPortUpdateWithWhereUniqueWithoutPortsInput = {
+    where: ShippingPortWhereUniqueInput
+    data: XOR<ShippingPortUpdateWithoutPortsInput, ShippingPortUncheckedUpdateWithoutPortsInput>
   }
 
-  export type shipping_portsUpdateManyWithWhereWithoutPortsInput = {
-    where: shipping_portsScalarWhereInput
-    data: XOR<shipping_portsUpdateManyMutationInput, shipping_portsUncheckedUpdateManyWithoutShipping_portsInput>
+  export type ShippingPortUpdateManyWithWhereWithoutPortsInput = {
+    where: ShippingPortScalarWhereInput
+    data: XOR<ShippingPortUpdateManyMutationInput, ShippingPortUncheckedUpdateManyWithoutShipping_portsInput>
   }
 
   export type berth_productsCreateWithoutProductsInput = {
@@ -36938,30 +36938,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type shipping_productsCreateWithoutProductsInput = {
+  export type ShippingProductCreateWithoutProductInput = {
     weight?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    shippings?: ShippingCreateNestedOneWithoutShipping_productsInput
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
+    shipping?: ShippingCreateNestedOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedCreateWithoutProductsInput = {
+  export type ShippingProductUncheckedCreateWithoutProductInput = {
     id?: number
     weight?: number | null
-    shippingId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    shipping_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_productsCreateOrConnectWithoutProductsInput = {
-    where: shipping_productsWhereUniqueInput
-    create: XOR<shipping_productsCreateWithoutProductsInput, shipping_productsUncheckedCreateWithoutProductsInput>
+  export type ShippingProductCreateOrConnectWithoutProductInput = {
+    where: ShippingProductWhereUniqueInput
+    create: XOR<ShippingProductCreateWithoutProductInput, ShippingProductUncheckedCreateWithoutProductInput>
   }
 
-  export type shipping_productsCreateManyProductsInputEnvelope = {
-    data: Enumerable<shipping_productsCreateManyProductsInput>
+  export type ShippingProductCreateManyProductInputEnvelope = {
+    data: Enumerable<ShippingProductCreateManyProductInput>
     skipDuplicates?: boolean
   }
 
@@ -36981,33 +36981,33 @@ export namespace Prisma {
     data: XOR<berth_productsUpdateManyMutationInput, berth_productsUncheckedUpdateManyWithoutBerth_productsInput>
   }
 
-  export type shipping_productsUpsertWithWhereUniqueWithoutProductsInput = {
-    where: shipping_productsWhereUniqueInput
-    update: XOR<shipping_productsUpdateWithoutProductsInput, shipping_productsUncheckedUpdateWithoutProductsInput>
-    create: XOR<shipping_productsCreateWithoutProductsInput, shipping_productsUncheckedCreateWithoutProductsInput>
+  export type ShippingProductUpsertWithWhereUniqueWithoutProductInput = {
+    where: ShippingProductWhereUniqueInput
+    update: XOR<ShippingProductUpdateWithoutProductInput, ShippingProductUncheckedUpdateWithoutProductInput>
+    create: XOR<ShippingProductCreateWithoutProductInput, ShippingProductUncheckedCreateWithoutProductInput>
   }
 
-  export type shipping_productsUpdateWithWhereUniqueWithoutProductsInput = {
-    where: shipping_productsWhereUniqueInput
-    data: XOR<shipping_productsUpdateWithoutProductsInput, shipping_productsUncheckedUpdateWithoutProductsInput>
+  export type ShippingProductUpdateWithWhereUniqueWithoutProductInput = {
+    where: ShippingProductWhereUniqueInput
+    data: XOR<ShippingProductUpdateWithoutProductInput, ShippingProductUncheckedUpdateWithoutProductInput>
   }
 
-  export type shipping_productsUpdateManyWithWhereWithoutProductsInput = {
-    where: shipping_productsScalarWhereInput
-    data: XOR<shipping_productsUpdateManyMutationInput, shipping_productsUncheckedUpdateManyWithoutShipping_productsInput>
+  export type ShippingProductUpdateManyWithWhereWithoutProductInput = {
+    where: ShippingProductScalarWhereInput
+    data: XOR<ShippingProductUpdateManyMutationInput, ShippingProductUncheckedUpdateManyWithoutShipping_productsInput>
   }
 
-  export type shipping_productsScalarWhereInput = {
-    AND?: Enumerable<shipping_productsScalarWhereInput>
-    OR?: Enumerable<shipping_productsScalarWhereInput>
-    NOT?: Enumerable<shipping_productsScalarWhereInput>
+  export type ShippingProductScalarWhereInput = {
+    AND?: Enumerable<ShippingProductScalarWhereInput>
+    OR?: Enumerable<ShippingProductScalarWhereInput>
+    NOT?: Enumerable<ShippingProductScalarWhereInput>
     id?: IntFilter | number
     weight?: FloatNullableFilter | number | null
-    shippingId?: IntNullableFilter | number | null
-    productId?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
+    shipping_id?: IntNullableFilter | number | null
+    product_id?: IntNullableFilter | number | null
+    created_at?: DateTimeFilter | Date | string
+    updated_at?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
   }
 
   export type proformasCreateWithoutProforma_filesInput = {
@@ -37301,8 +37301,8 @@ export namespace Prisma {
     users?: usersCreateNestedOneWithoutShippingsInput
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -37357,8 +37357,8 @@ export namespace Prisma {
     total_load_expected?: number | null
     total_load_actual?: number | null
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -37597,8 +37597,8 @@ export namespace Prisma {
     users?: usersUpdateOneWithoutShippingsInput
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -37653,8 +37653,8 @@ export namespace Prisma {
     total_load_expected?: NullableIntFieldUpdateOperationsInput | number | null
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -37863,8 +37863,8 @@ export namespace Prisma {
     users?: usersCreateNestedOneWithoutShippingsInput
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -37919,8 +37919,8 @@ export namespace Prisma {
     total_load_expected?: number | null
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -38026,8 +38026,8 @@ export namespace Prisma {
     users?: usersUpdateOneWithoutShippingsInput
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -38082,8 +38082,8 @@ export namespace Prisma {
     total_load_expected?: NullableIntFieldUpdateOperationsInput | number | null
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -38246,7 +38246,7 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -38302,7 +38302,7 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -38433,7 +38433,7 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -38489,7 +38489,7 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -38568,7 +38568,7 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -38624,7 +38624,7 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -38713,7 +38713,7 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -38769,7 +38769,7 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -38987,69 +38987,69 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type shipping_portsCreateWithoutShippingsInput = {
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+  export type ShippingPortCreateWithoutShippingsInput = {
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
     berths?: berthsCreateNestedOneWithoutShipping_portsInput
     ports?: portsCreateNestedOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedCreateWithoutShippingsInput = {
+  export type ShippingPortUncheckedCreateWithoutShippingsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    portId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    port_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_portsCreateOrConnectWithoutShippingsInput = {
-    where: shipping_portsWhereUniqueInput
-    create: XOR<shipping_portsCreateWithoutShippingsInput, shipping_portsUncheckedCreateWithoutShippingsInput>
+  export type ShippingPortCreateOrConnectWithoutShippingsInput = {
+    where: ShippingPortWhereUniqueInput
+    create: XOR<ShippingPortCreateWithoutShippingsInput, ShippingPortUncheckedCreateWithoutShippingsInput>
   }
 
-  export type shipping_portsCreateManyShippingsInputEnvelope = {
-    data: Enumerable<shipping_portsCreateManyShippingsInput>
+  export type ShippingPortCreateManyShippingsInputEnvelope = {
+    data: Enumerable<ShippingPortCreateManyShippingsInput>
     skipDuplicates?: boolean
   }
 
-  export type shipping_productsCreateWithoutShippingsInput = {
+  export type ShippingProductCreateWithoutShippingInput = {
     weight?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    products?: productsCreateNestedOneWithoutShipping_productsInput
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
+    product?: productsCreateNestedOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedCreateWithoutShippingsInput = {
+  export type ShippingProductUncheckedCreateWithoutShippingInput = {
     id?: number
     weight?: number | null
-    productId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    product_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_productsCreateOrConnectWithoutShippingsInput = {
-    where: shipping_productsWhereUniqueInput
-    create: XOR<shipping_productsCreateWithoutShippingsInput, shipping_productsUncheckedCreateWithoutShippingsInput>
+  export type ShippingProductCreateOrConnectWithoutShippingInput = {
+    where: ShippingProductWhereUniqueInput
+    create: XOR<ShippingProductCreateWithoutShippingInput, ShippingProductUncheckedCreateWithoutShippingInput>
   }
 
-  export type shipping_productsCreateManyShippingsInputEnvelope = {
-    data: Enumerable<shipping_productsCreateManyShippingsInput>
+  export type ShippingProductCreateManyShippingInputEnvelope = {
+    data: Enumerable<ShippingProductCreateManyShippingInput>
     skipDuplicates?: boolean
   }
 
@@ -39109,12 +39109,12 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
     user?: usersCreateNestedOneWithoutShippingChecklistItemInput
   }
 
@@ -39123,13 +39123,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     updated_by_user_id?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type ShippingChecklistItemCreateOrConnectWithoutShippingInput = {
@@ -39301,36 +39301,36 @@ export namespace Prisma {
     userId?: IntNullableFilter | number | null
   }
 
-  export type shipping_portsUpsertWithWhereUniqueWithoutShippingsInput = {
-    where: shipping_portsWhereUniqueInput
-    update: XOR<shipping_portsUpdateWithoutShippingsInput, shipping_portsUncheckedUpdateWithoutShippingsInput>
-    create: XOR<shipping_portsCreateWithoutShippingsInput, shipping_portsUncheckedCreateWithoutShippingsInput>
+  export type ShippingPortUpsertWithWhereUniqueWithoutShippingsInput = {
+    where: ShippingPortWhereUniqueInput
+    update: XOR<ShippingPortUpdateWithoutShippingsInput, ShippingPortUncheckedUpdateWithoutShippingsInput>
+    create: XOR<ShippingPortCreateWithoutShippingsInput, ShippingPortUncheckedCreateWithoutShippingsInput>
   }
 
-  export type shipping_portsUpdateWithWhereUniqueWithoutShippingsInput = {
-    where: shipping_portsWhereUniqueInput
-    data: XOR<shipping_portsUpdateWithoutShippingsInput, shipping_portsUncheckedUpdateWithoutShippingsInput>
+  export type ShippingPortUpdateWithWhereUniqueWithoutShippingsInput = {
+    where: ShippingPortWhereUniqueInput
+    data: XOR<ShippingPortUpdateWithoutShippingsInput, ShippingPortUncheckedUpdateWithoutShippingsInput>
   }
 
-  export type shipping_portsUpdateManyWithWhereWithoutShippingsInput = {
-    where: shipping_portsScalarWhereInput
-    data: XOR<shipping_portsUpdateManyMutationInput, shipping_portsUncheckedUpdateManyWithoutShipping_portsInput>
+  export type ShippingPortUpdateManyWithWhereWithoutShippingsInput = {
+    where: ShippingPortScalarWhereInput
+    data: XOR<ShippingPortUpdateManyMutationInput, ShippingPortUncheckedUpdateManyWithoutShipping_portsInput>
   }
 
-  export type shipping_productsUpsertWithWhereUniqueWithoutShippingsInput = {
-    where: shipping_productsWhereUniqueInput
-    update: XOR<shipping_productsUpdateWithoutShippingsInput, shipping_productsUncheckedUpdateWithoutShippingsInput>
-    create: XOR<shipping_productsCreateWithoutShippingsInput, shipping_productsUncheckedCreateWithoutShippingsInput>
+  export type ShippingProductUpsertWithWhereUniqueWithoutShippingInput = {
+    where: ShippingProductWhereUniqueInput
+    update: XOR<ShippingProductUpdateWithoutShippingInput, ShippingProductUncheckedUpdateWithoutShippingInput>
+    create: XOR<ShippingProductCreateWithoutShippingInput, ShippingProductUncheckedCreateWithoutShippingInput>
   }
 
-  export type shipping_productsUpdateWithWhereUniqueWithoutShippingsInput = {
-    where: shipping_productsWhereUniqueInput
-    data: XOR<shipping_productsUpdateWithoutShippingsInput, shipping_productsUncheckedUpdateWithoutShippingsInput>
+  export type ShippingProductUpdateWithWhereUniqueWithoutShippingInput = {
+    where: ShippingProductWhereUniqueInput
+    data: XOR<ShippingProductUpdateWithoutShippingInput, ShippingProductUncheckedUpdateWithoutShippingInput>
   }
 
-  export type shipping_productsUpdateManyWithWhereWithoutShippingsInput = {
-    where: shipping_productsScalarWhereInput
-    data: XOR<shipping_productsUpdateManyMutationInput, shipping_productsUncheckedUpdateManyWithoutShipping_productsInput>
+  export type ShippingProductUpdateManyWithWhereWithoutShippingInput = {
+    where: ShippingProductScalarWhereInput
+    data: XOR<ShippingProductUpdateManyMutationInput, ShippingProductUncheckedUpdateManyWithoutShipping_productsInput>
   }
 
   export type subsetsUpsertWithWhereUniqueWithoutShippingsInput = {
@@ -39413,14 +39413,14 @@ export namespace Prisma {
     name?: StringFilter | string
     description?: StringNullableFilter | string | null
     type?: StringFilter | string
-    deadline_date?: StringNullableFilter | string | null
+    deadline_date?: DateTimeNullableFilter | Date | string | null
     commentary?: StringNullableFilter | string | null
     is_done?: BoolFilter | boolean
     shipping_id?: IntFilter | number
     updated_by_user_id?: IntNullableFilter | number | null
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-    deletedAt?: DateTimeNullableFilter | Date | string | null
+    created_at?: DateTimeFilter | Date | string
+    updated_ut?: DateTimeFilter | Date | string
+    deleted_at?: DateTimeNullableFilter | Date | string | null
   }
 
   export type ShippingCreateWithoutSubsetsInput = {
@@ -39472,8 +39472,8 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
   }
@@ -39528,8 +39528,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
   }
@@ -39593,8 +39593,8 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
   }
@@ -39649,8 +39649,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
   }
@@ -39887,8 +39887,8 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -39943,8 +39943,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -40045,12 +40045,12 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
     shipping?: ShippingCreateNestedOneWithoutShippingChecklistItemInput
   }
 
@@ -40059,13 +40059,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     shipping_id: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type ShippingChecklistItemCreateOrConnectWithoutUserInput = {
@@ -40724,8 +40724,8 @@ export namespace Prisma {
     users?: usersCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     inquires?: inquiresCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
@@ -40780,8 +40780,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     inquires?: inquiresUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
@@ -40972,8 +40972,8 @@ export namespace Prisma {
     vessel?: VesselCreateNestedOneWithoutShippingsInput
     shipping_documents?: shipping_documentsCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductCreateNestedManyWithoutShippingInput
     subsets?: subsetsCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemCreateNestedManyWithoutShippingInput
   }
@@ -41028,8 +41028,8 @@ export namespace Prisma {
     total_load_actual?: number | null
     shipping_documents?: shipping_documentsUncheckedCreateNestedManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedCreateNestedManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedCreateNestedManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedCreateNestedManyWithoutShippingInput
     subsets?: subsetsUncheckedCreateNestedManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedCreateNestedManyWithoutShippingInput
   }
@@ -41160,8 +41160,8 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
   }
@@ -41216,8 +41216,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
   }
@@ -41763,19 +41763,19 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
-  export type shipping_portsCreateManyBerthsInput = {
+  export type ShippingPortCreateManyBerthsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    portId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    port_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type berth_productsUpdateWithoutBerthsInput = {
@@ -41809,48 +41809,48 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_portsUpdateWithoutBerthsInput = {
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ShippingPortUpdateWithoutBerthsInput = {
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ports?: portsUpdateOneWithoutShipping_portsInput
     shippings?: ShippingUpdateOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedUpdateWithoutBerthsInput = {
+  export type ShippingPortUncheckedUpdateWithoutBerthsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    portId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    port_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_portsUncheckedUpdateManyWithoutShipping_portsInput = {
+  export type ShippingPortUncheckedUpdateManyWithoutShipping_portsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    portId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    port_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChecklistTemplateItemCreateManyChecklistTemplateInput = {
@@ -41943,7 +41943,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     berths?: berthsUpdateManyWithoutPortsInput
     port_files?: port_filesUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutPortsInput
   }
 
   export type portsUncheckedUpdateWithoutCountryInput = {
@@ -41955,7 +41955,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     berths?: berthsUncheckedUpdateManyWithoutPortsInput
     port_files?: port_filesUncheckedUpdateManyWithoutPortsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutPortsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutPortsInput
   }
 
   export type portsUncheckedUpdateManyWithoutPortsInput = {
@@ -42088,19 +42088,19 @@ export namespace Prisma {
     userId?: number | null
   }
 
-  export type shipping_portsCreateManyPortsInput = {
+  export type ShippingPortCreateManyPortsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    shippingId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    shipping_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type berthsUpdateWithoutPortsInput = {
@@ -42116,7 +42116,7 @@ export namespace Prisma {
     maxBeam?: NullableFloatFieldUpdateOperationsInput | number | null
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
     berth_products?: berth_productsUpdateManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutBerthsInput
   }
 
   export type berthsUncheckedUpdateWithoutPortsInput = {
@@ -42133,7 +42133,7 @@ export namespace Prisma {
     maxBeam?: NullableFloatFieldUpdateOperationsInput | number | null
     waterDensity?: NullableFloatFieldUpdateOperationsInput | number | null
     berth_products?: berth_productsUncheckedUpdateManyWithoutBerthsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutBerthsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutBerthsInput
   }
 
   export type berthsUncheckedUpdateManyWithoutBerthsInput = {
@@ -42183,33 +42183,33 @@ export namespace Prisma {
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type shipping_portsUpdateWithoutPortsInput = {
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ShippingPortUpdateWithoutPortsInput = {
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     berths?: berthsUpdateOneWithoutShipping_portsInput
     shippings?: ShippingUpdateOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedUpdateWithoutPortsInput = {
+  export type ShippingPortUncheckedUpdateWithoutPortsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    berthId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    berth_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type berth_productsCreateManyProductsInput = {
@@ -42222,13 +42222,13 @@ export namespace Prisma {
     deletedAt?: Date | string | null
   }
 
-  export type shipping_productsCreateManyProductsInput = {
+  export type ShippingProductCreateManyProductInput = {
     id?: number
     weight?: number | null
-    shippingId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    shipping_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type berth_productsUpdateWithoutProductsInput = {
@@ -42252,30 +42252,30 @@ export namespace Prisma {
     proformas?: proformasUncheckedUpdateManyWithoutBerth_productsInput
   }
 
-  export type shipping_productsUpdateWithoutProductsInput = {
+  export type ShippingProductUpdateWithoutProductInput = {
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shippings?: ShippingUpdateOneWithoutShipping_productsInput
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping?: ShippingUpdateOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedUpdateWithoutProductsInput = {
+  export type ShippingProductUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_productsUncheckedUpdateManyWithoutShipping_productsInput = {
+  export type ShippingProductUncheckedUpdateManyWithoutShipping_productsInput = {
     id?: IntFieldUpdateOperationsInput | number
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    shippingId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shipping_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type proforma_filesCreateManyProformasInput = {
@@ -42474,28 +42474,28 @@ export namespace Prisma {
     userId?: number | null
   }
 
-  export type shipping_portsCreateManyShippingsInput = {
+  export type ShippingPortCreateManyShippingsInput = {
     id?: number
-    estimatedTimeOfArrival?: Date | string | null
-    estimatedTimeOfBerthing?: Date | string | null
-    estimatedTimeOfSailing?: Date | string | null
-    timeOfArrival?: Date | string | null
-    timeOfBerthing?: Date | string | null
-    timeOfSailing?: Date | string | null
-    portId?: number | null
-    berthId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    estimated_time_of_arrival?: Date | string | null
+    estimated_time_of_berthing?: Date | string | null
+    estimated_time_of_sailing?: Date | string | null
+    time_of_arrival?: Date | string | null
+    time_of_berthing?: Date | string | null
+    time_of_sailing?: Date | string | null
+    port_id?: number | null
+    berth_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
-  export type shipping_productsCreateManyShippingsInput = {
+  export type ShippingProductCreateManyShippingInput = {
     id?: number
     weight?: number | null
-    productId?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    product_id?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type subsetsCreateManyShippingsInput = {
@@ -42519,13 +42519,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     updated_by_user_id?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type shipping_documentsUpdateWithoutShippingsInput = {
@@ -42619,50 +42619,50 @@ export namespace Prisma {
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type shipping_portsUpdateWithoutShippingsInput = {
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  export type ShippingPortUpdateWithoutShippingsInput = {
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     berths?: berthsUpdateOneWithoutShipping_portsInput
     ports?: portsUpdateOneWithoutShipping_portsInput
   }
 
-  export type shipping_portsUncheckedUpdateWithoutShippingsInput = {
+  export type ShippingPortUncheckedUpdateWithoutShippingsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    estimatedTimeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    estimatedTimeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfArrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfBerthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    timeOfSailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    portId?: NullableIntFieldUpdateOperationsInput | number | null
-    berthId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estimated_time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_arrival?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_berthing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    time_of_sailing?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    port_id?: NullableIntFieldUpdateOperationsInput | number | null
+    berth_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type shipping_productsUpdateWithoutShippingsInput = {
+  export type ShippingProductUpdateWithoutShippingInput = {
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    products?: productsUpdateOneWithoutShipping_productsInput
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    product?: productsUpdateOneWithoutShipping_productsInput
   }
 
-  export type shipping_productsUncheckedUpdateWithoutShippingsInput = {
+  export type ShippingProductUncheckedUpdateWithoutShippingInput = {
     id?: IntFieldUpdateOperationsInput | number
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
-    productId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    product_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type subsetsUpdateWithoutShippingsInput = {
@@ -42717,12 +42717,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: usersUpdateOneWithoutShippingChecklistItemInput
   }
 
@@ -42731,13 +42731,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
     updated_by_user_id?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ShippingChecklistItemUncheckedUpdateManyWithoutShippingChecklistItemInput = {
@@ -42745,13 +42745,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
     updated_by_user_id?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type shipping_documentsCreateManyUsersInput = {
@@ -42874,13 +42874,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     type: string
-    deadline_date?: string | null
+    deadline_date?: Date | string | null
     commentary?: string | null
     is_done: boolean
     shipping_id: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
+    created_at?: Date | string
+    updated_ut?: Date | string
+    deleted_at?: Date | string | null
   }
 
   export type group_emailsCreateManyUsersInput = {
@@ -43040,8 +43040,8 @@ export namespace Prisma {
     vessel?: VesselUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -43096,8 +43096,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
@@ -43225,12 +43225,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     shipping?: ShippingUpdateOneWithoutShippingChecklistItemInput
   }
 
@@ -43239,13 +43239,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
-    deadline_date?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentary?: NullableStringFieldUpdateOperationsInput | string | null
     is_done?: BoolFieldUpdateOperationsInput | boolean
     shipping_id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_ut?: DateTimeFieldUpdateOperationsInput | Date | string
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type group_emailsUpdateWithoutUsersInput = {
@@ -43436,8 +43436,8 @@ export namespace Prisma {
     users?: usersUpdateOneWithoutShippingsInput
     shipping_documents?: shipping_documentsUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUpdateManyWithoutShippingInput
     subsets?: subsetsUpdateManyWithoutShippingsInput
     inquires?: inquiresUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUpdateManyWithoutShippingInput
@@ -43492,8 +43492,8 @@ export namespace Prisma {
     total_load_actual?: NullableIntFieldUpdateOperationsInput | number | null
     shipping_documents?: shipping_documentsUncheckedUpdateManyWithoutShippingsInput
     shipping_files?: shipping_filesUncheckedUpdateManyWithoutShippingsInput
-    shipping_ports?: shipping_portsUncheckedUpdateManyWithoutShippingsInput
-    shipping_products?: shipping_productsUncheckedUpdateManyWithoutShippingsInput
+    shipping_ports?: ShippingPortUncheckedUpdateManyWithoutShippingsInput
+    shipping_products?: ShippingProductUncheckedUpdateManyWithoutShippingInput
     subsets?: subsetsUncheckedUpdateManyWithoutShippingsInput
     inquires?: inquiresUncheckedUpdateManyWithoutShippingsInput
     ShippingChecklistItem?: ShippingChecklistItemUncheckedUpdateManyWithoutShippingInput
