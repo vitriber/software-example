@@ -1,0 +1,677 @@
+generator client {
+    provider   = "prisma-client-js"
+    engineType = "binary"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Agency {
+    id         Int       @id @default(autoincrement())
+    name       String
+    country_id Int?
+    created_at DateTime  @default(now()) @db.Timestamp(6)
+    updated_at DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at DateTime?
+
+    country           Country?            @relation(fields: [country_id], references: [id], onDelete: SetNull)
+    users             users[]
+    ChecklistTemplate ChecklistTemplate[]
+
+    @@map("agencies")
+}
+
+model berth_products {
+    id                Int         @id(map: "PK_a705733cb52e9e4a8515ee51c5d") @default(autoincrement())
+    loadingCapacity   Float?
+    unloadingCapacity Float?
+    berthId           Int
+    productId         Int
+    createdAt         DateTime    @default(now()) @db.Timestamp(6)
+    updatedAt         DateTime    @default(now()) @db.Timestamp(6)
+    deletedAt         DateTime?   @db.Timestamp(6)
+    berths            berths      @relation(fields: [berthId], references: [id], onDelete: SetNull, map: "BerthProductToBerth")
+    products          products    @relation(fields: [productId], references: [id], onDelete: SetNull, map: "BerthProductToProduct")
+    proformas         proformas[]
+}
+
+model berths {
+    id                   Int              @id(map: "PK_036bf9e9b029e1df80fdabe1b99") @default(autoincrement())
+    name                 String?
+    description          String?
+    portId               Int?
+    createdAt            DateTime         @default(now()) @db.Timestamp(6)
+    updatedAt            DateTime         @default(now()) @db.Timestamp(6)
+    deletedAt            DateTime?        @db.Timestamp(6)
+    maxDraft             Float?
+    airDraft             Float?
+    maxLengthOverall     Float?
+    maxDeadWeightTonnage Float?
+    maxBeam              Float?
+    waterDensity         Float?
+    ports                ports?           @relation(fields: [portId], references: [id], map: "BerthToPort")
+    berth_products       berth_products[]
+    shipping_ports       ShippingPort[]
+}
+
+model ChecklistTemplate {
+    id             Int                     @id(map: "PK_336ade2047f3d713e1afa20d2c6") @default(autoincrement())
+    name           String
+    operation_type String?
+    agency_id      Int?
+    created_at     DateTime                @default(now()) @db.Timestamp(6)
+    updated_at     DateTime                @default(now()) @db.Timestamp(6)
+    deleted_at     DateTime?               @db.Timestamp(6)
+    items          ChecklistTemplateItem[]
+    agency         Agency?                 @relation(fields: [agency_id], references: [id])
+
+    @@map("checklists")
+}
+
+model ChecklistTemplateItem {
+    id                    Int                @id(map: "PK_bae00945a1d4789bd648e583e29") @default(autoincrement())
+    name                  String
+    description           String?
+    type                  String
+    working_days          Int?
+    checklist_template_id Int
+    createdAt             DateTime           @default(now()) @db.Timestamp(6)
+    updatedAt             DateTime           @default(now()) @db.Timestamp(6)
+    deletedAt             DateTime?          @db.Timestamp(6)
+    checklistTemplate     ChecklistTemplate? @relation(fields: [checklist_template_id], references: [id], map: "ChecklistItemToChecklist")
+
+    @@map("checklist_items")
+}
+
+model ShippingChecklistItem {
+    id                 Int       @id(map: "PK_4e041be9654bdfc0f4ff43a2a4b") @default(autoincrement())
+    name               String
+    description        String?
+    type               String
+    deadline_date      DateTime?
+    commentary         String?
+    is_done            Boolean
+    shipping_id        Int
+    updated_by_user_id Int?
+    created_at         DateTime  @default(now()) @db.Timestamp(6)
+    updated_ut         DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at         DateTime? @db.Timestamp(6)
+    shipping           Shipping? @relation(fields: [shipping_id], references: [id], map: "ChecklistShippingItemToShipping")
+    user               users?    @relation(fields: [updated_by_user_id], references: [id], map: "ChecklistShippingItemToUser")
+
+    @@map("shipping_checklist_items")
+}
+
+model Country {
+    id        Int       @id(map: "PK_b2d7006793e8697ab3ae2deff18") @default(autoincrement())
+    name      String?
+    flag      String?
+    createdAt DateTime  @default(now()) @db.Timestamp(6)
+    updatedAt DateTime  @default(now()) @db.Timestamp(6)
+    deletedAt DateTime? @db.Timestamp(6)
+    ports     ports[]
+    vessels   Vessel[]
+    agency    Agency[]
+
+    @@map("countries")
+}
+
+model migrations {
+    id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+    timestamp Int
+    name      String
+}
+
+model port_files {
+    id           Int       @id(map: "PK_c81b92f105ee635d4eea4e2172a") @default(autoincrement())
+    title        String?
+    filename     String?
+    originalName String?
+    portId       Int?
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    updatedAt    DateTime  @default(now()) @db.Timestamp(6)
+    deletedAt    DateTime? @db.Timestamp(6)
+    userId       Int?
+    users        users?    @relation(fields: [userId], references: [id], map: "PortFileToUser")
+    ports        ports?    @relation(fields: [portId], references: [id], map: "PortFileToPort")
+}
+
+model ports {
+    id             Int            @id(map: "PK_291c9f372b1ce97c885e96f5ff4") @default(autoincrement())
+    name           String?
+    time_zone      String?
+    countryId      Int?
+    createdAt      DateTime       @default(now()) @db.Timestamp(6)
+    updatedAt      DateTime       @default(now()) @db.Timestamp(6)
+    deletedAt      DateTime?      @db.Timestamp(6)
+    slug           String?
+    country        Country?       @relation(fields: [countryId], references: [id], map: "PortToCountry")
+    berths         berths[]
+    port_files     port_files[]
+    shipping_ports ShippingPort[]
+}
+
+model products {
+    id                Int               @id(map: "PK_0806c755e0aca124e67c0cf6d7d") @default(autoincrement())
+    name              String?
+    description       String?
+    createdAt         DateTime          @default(now()) @db.Timestamp(6)
+    updatedAt         DateTime          @default(now()) @db.Timestamp(6)
+    deletedAt         DateTime?         @db.Timestamp(6)
+    berth_products    berth_products[]
+    shipping_products ShippingProduct[]
+}
+
+model proforma_files {
+    id           Int        @id(map: "PK_1df6365ab76e23513c23a83b638") @default(autoincrement())
+    title        String?
+    filename     String?
+    originalName String?
+    proformaId   Int?
+    createdAt    DateTime   @default(now()) @db.Timestamp(6)
+    updatedAt    DateTime   @default(now()) @db.Timestamp(6)
+    deletedAt    DateTime?  @db.Timestamp(6)
+    proformas    proformas? @relation(fields: [proformaId], references: [id], map: "ProformaFileToProforma")
+}
+
+model proformas {
+    id                     Int              @id(map: "PK_b79c62b9ae44960defadcacdcba") @default(autoincrement())
+    taxes                  String?
+    totalValue             Int?
+    berthedHours           Float?
+    berthProductId         Int
+    createdAt              DateTime         @default(now()) @db.Timestamp(6)
+    updatedAt              DateTime         @default(now()) @db.Timestamp(6)
+    deletedAt              DateTime?        @db.Timestamp(6)
+    idHash                 String?
+    applicantName          String?
+    applicantEmail         String?
+    vesselName             String?
+    imo                    String?
+    deadWeightTonnage      Float?
+    lengthOverall          Float?
+    grossTonnage           Float?
+    package                String?
+    builtYear              Int?
+    agencyType             String?
+    operationType          String?
+    productTonnage         Float?
+    usd                    Float?
+    isCargillInternational Boolean?
+    beam                   Float?
+    etb                    DateTime?        @db.Timestamp(6)
+    draft                  Float?
+    requestingCustomer     String?
+    vesselType             String?
+    berth_products         berth_products   @relation(fields: [berthProductId], references: [id], onDelete: SetNull, map: "ProformaToBerthProduct")
+    proforma_files         proforma_files[]
+}
+
+model shipping_documents {
+    id                                 Int               @id(map: "PK_7bb7e5b810a85ce7f03d748ac41") @default(autoincrement())
+    type                               String?
+    document_number                    String?
+    consignee                          String?
+    vessel_name                        String?
+    port_of_loading                    String?
+    port_of_discharge                  String?
+    notify                             String?
+    product_name_extra_info            String?
+    product_weight_extra_info          String?
+    freight_type                       String?
+    charter_party_date                 String?
+    ship_boarded_date                  String?
+    issue_place_date                   String?
+    number_of_original_bill_of_landing Float?
+    shipper_id                         Int?
+    product_id                         Int?
+    master_name                        String?
+    signature                          String?
+    shipping_id                        Int?
+    user_id                            Int?
+    createdAt                          DateTime          @default(now()) @db.Timestamp(6)
+    updatedAt                          DateTime          @default(now()) @db.Timestamp(6)
+    deletedAt                          DateTime?         @db.Timestamp(6)
+    order                              Int?
+    subset_id                          Int?
+    product_gross_weight               Float?
+    product_net_weight                 Float?
+    product_quantity                   Float?
+    product_packing                    String?
+    shippings                          Shipping?         @relation(fields: [shipping_id], references: [id], map: "ShippingDocumentToShipping")
+    subsets                            subsets?          @relation(fields: [subset_id], references: [id], map: "SubsetToShippingDocument")
+    users                              users?            @relation(fields: [user_id], references: [id], map: "ShippingDocumentToUser")
+    document_shipper                   document_shipper? @relation(fields: [shipper_id], references: [id], map: "ShippingDocumentToDocumentShipper")
+    document_product                   document_product? @relation(fields: [product_id], references: [id], map: "ShippingDocumentToDocumentProduct")
+}
+
+model document_shipper {
+    id                 Int                  @id @default(autoincrement())
+    name               String?
+    cnpj               String?
+    complement         String?
+    shipping_documents shipping_documents[]
+}
+
+model document_product {
+    id                 Int                  @id @default(autoincrement())
+    name               String?
+    abbreviation       String?
+    description        String?
+    packing_type       String?
+    shipping_documents shipping_documents[]
+}
+
+model shipping_files {
+    id           Int       @id(map: "PK_a7c2a9f3a566abe20315aee35b0") @default(autoincrement())
+    title        String?
+    filename     String?
+    originalName String?
+    shippingId   Int?
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    updatedAt    DateTime  @default(now()) @db.Timestamp(6)
+    deletedAt    DateTime? @db.Timestamp(6)
+    userId       Int?
+    shippings    Shipping? @relation(fields: [shippingId], references: [id], map: "ShippingFileToShipping")
+    users        users?    @relation(fields: [userId], references: [id], map: "ShippingFileToUser")
+}
+
+model ShippingPort {
+    id                         Int       @id(map: "PK_bd4755ceda68fe38ab8247078a6") @default(autoincrement())
+    estimated_time_of_arrival  DateTime? @db.Timestamp(6)
+    estimated_time_of_berthing DateTime? @db.Timestamp(6)
+    estimated_time_of_sailing  DateTime? @db.Timestamp(6)
+    time_of_arrival            DateTime? @db.Timestamp(6)
+    time_of_berthing           DateTime? @db.Timestamp(6)
+    time_of_sailing            DateTime? @db.Timestamp(6)
+    shipping_id                Int?
+    port_id                    Int?
+    berth_id                   Int?
+    created_at                 DateTime  @default(now()) @db.Timestamp(6)
+    updated_at                 DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at                 DateTime? @db.Timestamp(6)
+    berths                     berths?   @relation(fields: [berth_id], references: [id], map: "ShippingPortToBerth")
+    ports                      ports?    @relation(fields: [port_id], references: [id], map: "ShippingPortToPort")
+    shippings                  Shipping? @relation(fields: [shipping_id], references: [id], map: "ShippingPortToShipping")
+
+    @@map("shipping_ports")
+}
+
+model ShippingProduct {
+    id          Int       @id(map: "PK_7479fa04dcbdfcbff3cfc522734") @default(autoincrement())
+    weight      Float?
+    shipping_id Int?
+    product_id  Int?
+    created_at  DateTime  @default(now()) @db.Timestamp(6)
+    updated_at  DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at  DateTime? @db.Timestamp(6)
+    product     products? @relation(fields: [product_id], references: [id], map: "ShippingProductToProduct")
+    shipping    Shipping? @relation(fields: [shipping_id], references: [id], map: "ShippingProductToShipping")
+
+    @@map("shipping_products")
+}
+
+model Shipping {
+    id                              Int                     @id(map: "PK_665fb613135782a598a2b47e5b2") @unique @default(autoincrement())
+    status                          String?
+    owner_head_name                 String?
+    owner_head_address              String?
+    disponent_owner                 String?
+    charter_name                    String?
+    master_name                     String?
+    master_email                    String?
+    estimated_draft_arrival         String?
+    estimated_draft_departure       String?
+    arrival_draft                   Float?
+    depart_draft                    Float?
+    vessel_operator                 String?
+    vessel_operator_email           String?
+    operation_type                  String?
+    agency_type                     String?
+    voyage_number                   String?
+    external_code                   String?
+    comments                        String?
+    last_port                       String?
+    next_port                       String?
+    broker                          String?
+    boat                            String?
+    tugs                            String?
+    garbage                         String?
+    last_cargoes                    String?
+    sscec_port                      String?
+    sscec_exp                       String?
+    in_marsat_c_number              String?
+    master_phone_01                 String?
+    master_phone_02                 String?
+    vessel_expert                   String?
+    vessel_expert_phone01           String?
+    vessel_expert_phone02           String?
+    vessel_expert_alternate         String?
+    vessel_expert_alternate_phone01 String?
+    vessel_expert_alternate_phone02 String?
+    vessel_operator_phone01         String?
+    vessel_operator_phone02         String?
+    vessel_operator_city_country    String?
+    created_at                      DateTime                @default(now()) @db.Timestamp(6)
+    updated_at                      DateTime                @default(now()) @db.Timestamp(6)
+    deleted_at                      DateTime?               @db.Timestamp(6)
+    vessel_id                       Int?
+    user_id                         Int?
+    total_load_expected             Float?
+    total_load_actual               Float?
+    port_operator                   String?
+    users                           users?                  @relation(fields: [user_id], references: [id], map: "ShippingToUser")
+    vessel                          Vessel?                 @relation(fields: [vessel_id], references: [id], map: "ShippingToVessel")
+    shipping_documents              shipping_documents[]
+    shipping_files                  shipping_files[]
+    shipping_ports                  ShippingPort[]
+    shipping_products               ShippingProduct[]
+    subsets                         subsets[]
+    inquires                        inquires[]
+    ShippingChecklistItem           ShippingChecklistItem[]
+    sof                             sof?
+
+    @@map("shippings")
+}
+
+model subsets {
+    id                 Int                  @id(map: "PK_d20318e6d3ba92913be722f7187") @default(autoincrement())
+    name               String?
+    shippingId         Int?
+    createdAt          DateTime             @default(now()) @db.Timestamp(6)
+    updatedAt          DateTime             @default(now()) @db.Timestamp(6)
+    deletedAt          DateTime?            @db.Timestamp(6)
+    shippings          Shipping?            @relation(fields: [shippingId], references: [id], map: "SubsetsToShippings")
+    shipping_documents shipping_documents[]
+}
+
+model user_files {
+    id           Int       @id(map: "PK_a62f81d2afadf20a024e11b43bd") @default(autoincrement())
+    title        String?
+    filename     String?
+    originalName String?
+    userId       Int?
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    updatedAt    DateTime  @default(now()) @db.Timestamp(6)
+    deletedAt    DateTime? @db.Timestamp(6)
+    users        users?    @relation(fields: [userId], references: [id], map: "UserFileToUser")
+}
+
+model users {
+    id                           Int                        @id(map: "PK_a3ffb1c0c8416b9fc6f907b7433") @default(autoincrement())
+    name                         String?
+    email                        String?
+    password                     String?
+    agencyId                     Int?
+    createdAt                    DateTime                   @default(now()) @db.Timestamp(6)
+    updatedAt                    DateTime                   @default(now()) @db.Timestamp(6)
+    deletedAt                    DateTime?                  @db.Timestamp(6)
+    shipping_documents           shipping_documents[]
+    shipping_files               shipping_files[]
+    shippings                    Shipping[]
+    user_files                   user_files[]
+    inquires                     inquires[]
+    inquires_comments            inquires_comments[]
+    ShippingChecklistItem        ShippingChecklistItem[]
+    group_emails                 group_emails[]
+    port_files                   port_files[]
+    vessel_files                 vessel_files[]
+    agency                       Agency?                    @relation(fields: [agencyId], references: [id])
+    users_preference             users_preference[]
+    shipping_sof_port_log_events ShippingSofPortLogEvents[]
+}
+
+model users_preference {
+    id           Int     @id @default(autoincrement())
+    team         String?
+    ports        String?
+    initial_page String?
+    user_id      Int?    @unique
+    users        users?  @relation(fields: [user_id], references: [id], map: "PreferenceToUsers")
+}
+
+model vessel_files {
+    id           Int       @id(map: "PK_64cea928d7c81abbae7042b71cd") @default(autoincrement())
+    title        String?
+    filename     String?
+    originalName String?
+    vessel_id    Int?
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    updatedAt    DateTime  @default(now()) @db.Timestamp(6)
+    deletedAt    DateTime? @db.Timestamp(6)
+    userId       Int?
+    users        users?    @relation(fields: [userId], references: [id], map: "PortFileToUser")
+    vessels      Vessel?   @relation(fields: [vessel_id], references: [id], map: "VesselFileToVessel")
+}
+
+model Vessel {
+    id                            Int            @id(map: "PK_be5a5b1f0d546d8bec08e0d1583") @default(autoincrement())
+    name                          String?
+    imo                           String?        @unique
+    call_sign                     String?
+    satellite_telephone           String?
+    classification_society        String?
+    type                          String?
+    length_overall                Float?
+    dead_weight_tonnage           Float?
+    beam                          Float?
+    cubic_meters                  Float?
+    gross_tonnage                 Float?
+    net_tonnage                   Float?
+    panama_gross_tonnage          Float?
+    panama_net_tonnage            Float?
+    suez_gross_tonnage            Float?
+    suez_net_tonnage              Float?
+    reduced_gross_tonnage         Float?
+    length_between_perpendiculars Float?
+    molded_depth                  Float?
+    number_of_holds               Float?
+    number_of_tanks               Float?
+    created_at                    DateTime       @default(now()) @db.Timestamp(6)
+    updated_at                    DateTime       @default(now()) @db.Timestamp(6)
+    deleted_at                    DateTime?      @db.Timestamp(6)
+    country_id                    Int?
+    draft_sw                      String?
+    built_year                    Int?
+    country                       Country?       @relation(fields: [country_id], references: [id], map: "VesselToCountry")
+    shippings                     Shipping[]
+    vessel_files                  vessel_files[]
+
+    group_emails group_emails[]
+
+    @@map("vessels")
+}
+
+model inquires {
+    id                 Int                 @id @default(autoincrement())
+    title              String?             @db.VarChar
+    group              String?
+    shipping_id        Int?
+    updated_by_user_id Int?
+    shippings          Shipping?           @relation(fields: [shipping_id], references: [id], map: "InquiresToShipping")
+    users              users?              @relation(fields: [updated_by_user_id], references: [id], map: "InquiresToUsers")
+    inquires_comments  inquires_comments[]
+    deleted            Boolean             @default(false)
+    created_at         DateTime            @default(now()) @db.Timestamp(6)
+    updated_at         DateTime            @default(now()) @db.Timestamp(6)
+    deleted_at         DateTime?           @db.Timestamp(6)
+}
+
+model inquires_comments {
+    id            Int       @id @default(autoincrement())
+    body          String?   @db.VarChar
+    type          String?   @db.VarChar
+    is_done       Boolean
+    deadline_date DateTime?
+    inquire_id    Int?
+    user_id       Int?
+    inquires      inquires? @relation(fields: [inquire_id], references: [id], map: "CommentsToInquires")
+    users         users?    @relation(fields: [user_id], references: [id], map: "CommentsToUsers")
+    deleted       Boolean   @default(false)
+    created_at    DateTime  @default(now()) @db.Timestamp(6)
+    updated_at    DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at    DateTime? @db.Timestamp(6)
+}
+
+model group_emails {
+    id                 Int     @id @default(autoincrement())
+    name               String? @db.VarChar
+    emails             String? @db.VarChar
+    vessel_id          Int?
+    updated_by_user_id Int?
+    vessel             Vessel? @relation(fields: [vessel_id], references: [id], map: "GroupEmailsToVessel")
+    users              users?  @relation(fields: [updated_by_user_id], references: [id], map: "GroupEmailsToUsers")
+}
+
+model sof {
+    id                  Int                        @id @default(autoincrement())
+    hidden_attributes   String?
+    shipping_id         Int?                       @unique
+    shipping            Shipping?                  @relation(fields: [shipping_id], references: [id])
+    sof_holidays        sof_holidays[]
+    sof_remarks         sof_remarks[]
+    sof_draft           sof_draft[]
+    sof_bunker_figures  sof_bunker_figures[]
+    created_at          DateTime                   @default(now()) @db.Timestamp(6)
+    updated_at          DateTime                   @default(now()) @db.Timestamp(6)
+    deleted_at          DateTime?
+    sof_port_log_events ShippingSofPortLogEvents[]
+    sof_shipper_cargo   sof_shipper_cargo[]
+}
+
+model sof_holidays {
+    id         Int       @id @default(autoincrement())
+    name       String?   @db.VarChar
+    date       DateTime?
+    sof_id     Int?
+    sof        sof?      @relation(fields: [sof_id], references: [id], map: "SofHolidaysToSof")
+    created_at DateTime  @default(now()) @db.Timestamp(6)
+    updated_at DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at DateTime?
+}
+
+model sof_remarks {
+    id                Int                 @id @default(autoincrement())
+    title             String?             @db.VarChar
+    sof_id            Int?
+    sof               sof?                @relation(fields: [sof_id], references: [id], map: "SofRemarkToSof")
+    created_at        DateTime            @default(now()) @db.Timestamp(6)
+    updated_at        DateTime            @default(now()) @db.Timestamp(6)
+    deleted_at        DateTime?
+    sof_remarks_itens sof_remarks_items[]
+}
+
+model sof_remarks_items {
+    id            Int          @id @default(autoincrement())
+    title         String?      @db.VarChar
+    value         String?      @db.VarChar
+    is_single     Boolean      @default(false)
+    sof_remark_id Int
+    sof_remarks   sof_remarks? @relation(fields: [sof_remark_id], references: [id], map: "ItensToRemarks")
+    deleted       Boolean      @default(false)
+    created_at    DateTime     @default(now()) @db.Timestamp(6)
+    updated_at    DateTime     @default(now()) @db.Timestamp(6)
+    deleted_at    DateTime?
+}
+
+model sof_draft {
+    id         Int       @id @default(autoincrement())
+    title      String?   @db.VarChar
+    fwd        Float?
+    mid        Float?
+    aft        Float?
+    sof_id     Int?
+    sof        sof?      @relation(fields: [sof_id], references: [id], map: "SofDraftToSof")
+    created_at DateTime  @default(now()) @db.Timestamp(6)
+    updated_at DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at DateTime?
+}
+
+model sof_bunker_figures {
+    id         Int       @id @default(autoincrement())
+    title      String?   @db.VarChar
+    ifo        Float?
+    mdo        Float?
+    fw         Float?
+    sof_id     Int?
+    sof        sof?      @relation(fields: [sof_id], references: [id], map: "SofBunkerFiguresToSof")
+    created_at DateTime  @default(now()) @db.Timestamp(6)
+    updated_at DateTime  @default(now()) @db.Timestamp(6)
+    deleted_at DateTime?
+}
+
+model SofPortLogEventCategories {
+    id         Int                @id @default(autoincrement())
+    name       String?
+    created_at DateTime           @default(now()) @db.Timestamp(6)
+    updated_at DateTime           @default(now()) @db.Timestamp(6)
+    deleted_at DateTime?
+    events     SofPortLogEvents[]
+
+    @@map("sof_port_log_event_categories")
+}
+
+model SofPortLogEvents {
+    id                       Int                        @id @default(autoincrement())
+    name                     String?
+    description              String?
+    created_at               DateTime                   @default(now()) @db.Timestamp(6)
+    updated_at               DateTime                   @default(now()) @db.Timestamp(6)
+    deleted_at               DateTime?
+    category                 SofPortLogEventCategories? @relation(fields: [category_id], references: [id])
+    category_id              Int?
+    ShippingSofPortLogEvents ShippingSofPortLogEvents[]
+
+    @@map("sof_port_log_events")
+}
+
+model ShippingSofPortLogEvents {
+    id                    Int               @id @default(autoincrement())
+    name                  String?
+    commentary            String?
+    is_important          Boolean?
+    is_highlighted        Boolean?
+    start_date            DateTime?
+    end_date              DateTime?
+    sof_port_log_event_id Int
+    shipping_sof_id       Int
+    created_by_user_id    Int
+    created_at            DateTime          @default(now()) @db.Timestamp(6)
+    updated_at            DateTime          @default(now()) @db.Timestamp(6)
+    deleted_at            DateTime?
+    sof_port_log_event    SofPortLogEvents? @relation(fields: [sof_port_log_event_id], references: [id])
+    shipping_sof          sof?              @relation(fields: [shipping_sof_id], references: [id])
+    created_by_user       users?            @relation(fields: [created_by_user_id], references: [id])
+
+    @@map("shipping_sof_port_log_events")
+}
+
+model sof_shipper_cargo {
+    id                Int                 @id @default(autoincrement())
+    berth             String?
+    cargo             String?
+    sof_id            Int?
+    sof               sof?                @relation(fields: [sof_id], references: [id], map: "SofShipperCargoLoadToSof")
+    created_at        DateTime            @default(now()) @db.Timestamp(6)
+    updated_at        DateTime            @default(now()) @db.Timestamp(6)
+    deleted_at        DateTime?
+    sof_shipper       sof_shipper[]
+    sof_shipper_value sof_shipper_value[]
+}
+
+model sof_shipper {
+    id                   Int                @id @default(autoincrement())
+    name                 String?
+    quantity             Float?
+    sof_shipper_cargo_id Int?
+    sof_shipper_cargo    sof_shipper_cargo? @relation(fields: [sof_shipper_cargo_id], references: [id], map: "SofShipperToSofShipperCargo")
+}
+
+model sof_shipper_value {
+    id                   Int                @id @default(autoincrement())
+    value                Float?
+    sof_shipper_cargo_id Int?
+    sof_shipper_cargo    sof_shipper_cargo? @relation(fields: [sof_shipper_cargo_id], references: [id], map: "SofShipperValueToSofShipperCargo")
+}
